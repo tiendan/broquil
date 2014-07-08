@@ -1,0 +1,87 @@
+/* Pager customizations */
+h2.fillSpace
+{
+  display:inline-block;
+  margin:0;
+}
+
+.pager li>a
+{
+    width: 220px;
+}
+
+.pager .previous
+{
+    text-align: left;
+}
+
+.pager .next
+{
+    text-align: right;
+}
+
+.blankpreviouspager
+{
+    width: 220px;
+    height: 1px;
+    float: left;
+}
+
+.blanknextpager
+{
+    width: 220px;
+    height: 1px;
+    float: right;
+}
+
+/* Table columns for orders, products, etc. */
+.quantity
+{
+    width: 80px;
+}
+
+.price, .quantity
+{
+    text-align: right;
+}
+
+
+.total
+{
+    text-align: right;
+    font-weight: bold;   
+}
+
+.total-info
+{
+    text-align: right;
+    font-weight: bold;
+}
+
+.total-lg
+{
+    text-align: right;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.category-row
+{
+    text-align: center;
+    font-weight: bold;
+    font-size: larger;
+}
+
+/* Language selection flag styles */
+.flag {
+	width: 16px;
+	height: 11px;
+	background:url(/static/images/flags.png) no-repeat
+}
+
+.flag.flag-ca {background-position: -16px 0}
+.flag.flag-es {background-position: -32px 0}
+.flag.flag-fr {background-position: 0 -11px}
+.flag.flag-gb {background-position: -16px -11px}
+.flag.flag-it {background-position: -32px -11px}
+.flag.flag-tr {background-position: 0 -22px}
