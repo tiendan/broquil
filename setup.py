@@ -9,12 +9,12 @@ if 'REDISCLOUD_URL' in os.environ and 'REDISCLOUD_PORT' in os.environ and 'REDIS
      packages.append('django-redis-cache')
      packages.append('hiredis')
 
-setup(name='YourAppName',
+setup(name='BroquilDelGotic',
       version='1.0',
-      description='OpenShift App',
-      author='Your Name',
-      author_email='example@example.com',
-      url='https://pypi.python.org/pypi',
+      description='El Broquil del Gotic app',
+      author='Onur Ferhat',
+      author_email='tiendan@gmail.com',
+      url='https://onurferhat.com',
       install_requires=packages,
 )
 

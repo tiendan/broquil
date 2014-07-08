@@ -8,6 +8,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 import os
 import imp
 
@@ -48,16 +50,24 @@ else:
 # Application definition
 
 INSTALLED_APPS = (
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'elbroquil',
+    'formadmin',
+    'django_tables2',
+    'xlrd',
+    'xlutils',
+    'rosetta',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -89,6 +99,7 @@ WSGI_APPLICATION = 'wsgi.application'
 
 TEMPLATE_DIRS = (
      os.path.join(BASE_DIR,'templates'),
+     os.path.join(BASE_DIR,'elbroquil/templates'),
 )
 
 # Database
@@ -121,8 +132,67 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+    os.path.join(BASE_DIR, 'shop/locale'),
+)
+
+LANGUAGES = (
+    ('tr', _('Turkish')),
+    ('ca', _('Catala')),
+    ('es', _('Castellano')),
+    ('en', _('English')),
+)
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+
+LOGIN_REDIRECT_URL = '/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
+
+# STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
+STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
+
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, '..', 'static'),
+)
+
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+    'django.core.context_processors.request',
+    'django.core.context_processors.i18n',
+)
+
+# Django Suit configuration example
+SUIT_CONFIG = {
+    # header
+    'ADMIN_NAME': 'El Broquil | Admin',
+    # 'HEADER_DATE_FORMAT': 'l, j. F Y',
+    # 'HEADER_TIME_FORMAT': 'H:i',
+
+    # forms
+    # 'SHOW_REQUIRED_ASTERISK': True,  # Default True
+    # 'CONFIRM_UNSAVED_CHANGES': True, # Default True
+
+    # menu
+    # 'SEARCH_URL': '/admin/auth/user/',
+    # 'MENU_ICONS': {
+    #    'sites': 'icon-leaf',
+    #    'auth': 'icon-lock',
+    # },
+    # 'MENU_OPEN_FIRST_CHILD': True, # Default True
+    # 'MENU_EXCLUDE': ('auth.group',),
+    'MENU': (
+      'sites',
+      {'app': 'auth', 'label': 'Users', 'icon':'icon-user', 'models': ('user', 'group')},
+      {'app': 'shop', 'label': 'Shop', 'icon':'icon-shopping-cart', 'models': ('category', 'producer', 'product')},
+      {'label': 'Upload Product List', 'icon':'icon-upload', 'url': _('/products/')},
+    ),
+
+    # misc
+    # 'LIST_PER_PAGE': 15
+}

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load l10n %}
+
+{% block content_title %}
+<h1>{% trans "Update order" %} <button id="save_button" type="button" class="btn btn-lg btn-success pull-right" style="margin-top: 10px;" disabled="disabled">{% trans "Save changes" %}</button></h1>
+{% endblock %}
+
+
+{% block extrahead %}
+<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
+<!--<link rel="stylesheet" href="/static/styles/accordion.css" type="text/css">
+<link rel="stylesheet" href="/static/styles/custom.css" type="text/css">
+-->
+<!-- #accordion .ui-accordion-content {
+	width: 100%;
+	background-color: #f3f3f3;
+	color: #777;
+	font-size: 10pt;
+	line-height: 16pt;
+} -->
+
+
+{% endblock %}
+
+{% block scriptincludes %}
+<script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
+{% endblock %}
+
+{% block menuitems %}
+ 	<li class="active"><a href="{% url 'elbroquil.views.view_order' %}">{% trans "Update Order" %}</a></li>
+ 	<li><a href="{% url 'elbroquil.views.view_order_totals' %}">{% trans "Make Permanencia" %}</a></li>
+ 	<li><a href="{% url 'about' %}">{% trans "About" %}</a></li>
+{% endblock %}
+
+{% block content %}
+    <div id="content-main" class="inner-two-columns">
+		{% if products %}
+			<div class="progress">
+			  <div class="progress-bar progress-bar-info" style="width: {{ progress }}%">
+			    <span class="sr-only">{{ progress }}% {% trans "Complete" %}</span>
+			  </div>
+			</div>
+	        <form action="{% url 'elbroquil.views.update_order' category_no %}" method="POST">
+		    	{% csrf_token %}
+				<!--<button type="button" value="save" id="product_save_button" class="btn btn-primary" data-role="button" data-loading-text="Saving...">
+					Save
+				</button> -->
+				<div>
+					<div>
+						<ul class="pager">
+							{% if prev_category_no %}	
+							  <li class="previous"><a href="{% url 'elbroquil.views.update_order' prev_category_no %}">&larr; {{ prev_category_name }}</a></li>
+							{% else %}
+							  <li class="previous blankpreviouspager"></li>
+							{% endif %}
+						  <li><h2 class="fillSpace">{{ category_name }}</h2></li>
+							{% if next_category_no %}	
+							  <li class="next"><a href="{% url 'elbroquil.views.update_order' next_category_no %}">{{ next_category_name }} &rarr;</a></li>
+							{% else %}
+							  <li class="previous blanknextpager"></li>
+							{% endif %}
+						</ul>
+					</div>
+					
+					<div class="table-responsive">
+						<table id="table_{{ category_id }}" class="category-table table table-striped table-condensed table-bordered" >
+						<thead>
+							<tr><th>{% trans "Order" %}</th><th>{% trans "Product" %}</th><th>{% trans "Price" %}</th><th>{% trans "Unit" %}</th><th>{% trans "Origin" %}</th></tr>
+						</thead>
+						<tbody>
+							{% for product, product_order in products %}
+							<tr {% if product_order %}class="success"{% endif %}>
+								<td class="quantity"><div class="input-group input-group-sm" ><input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text"  class="quantity-input product-order form-control" {% if product_order %} value="{{ product_order|localize }}" {% endif %}/></div></td>
+								<td>{{ product.name }} {% if product.comments %}<span class="glyphicon glyphicon-comment" title="{{ product.comments }}"></span>{% endif %}</td>
+								<td class="price">{{ product.price }}</td>
+								<td>&euro;/{{ product.unit }}</td>
+								<td>{{ product.origin }}</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+						</table>
+					</div>
+				</div>
+	        </form>
+		{% else %}
+			<div class="alert alert-warning">{% trans "No products offered this week!" %}</div>
+		{% endif %}
+    </div>
+	    </div>
+{% endblock %}
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {	
+		$(".right-tooltip").tooltip({
+		    placement: "right"
+		});
+		
+		// If text inputs are changed, highlight the table row depending on textbox contents
+		// When textbox is filled (product is ordered), row is highlighted with green color ('success' class)
+		$('input.product-order').keyup(function( event ) {
+			
+			if(event.target.value.trim() == '')
+				$('#' + event.target.id).parent().parent().parent().removeClass('success');
+			else
+				$('#' + event.target.id).parent().parent().parent().addClass('success');
+				
+			// If text inputs are changed, enable the save button
+			$('#save_button').removeAttr('disabled');
+		});
+			
+		// If left and right arrow keys are pressed (outside input boxes), switch to next or previous
+		// category of products
+		$("body").keydown(function(e) {
+		  if( e.target.tagName.toLowerCase() !== 'input' &&
+			  e.target.tagName.toLowerCase() !== 'textarea' && 
+			  e.keyCode == 37) { // left
+			if($('li.previous > a').length)
+		    	window.location = $('li.previous > a').attr('href');
+		  }
+		  else if(	e.target.tagName.toLowerCase() !== 'input' &&
+			  		e.target.tagName.toLowerCase() !== 'textarea' && 
+					e.keyCode == 39) { // right
+			if($('li.next > a').length)
+				window.location = $('li.next > a').attr('href');
+		  }
+		});
+		
+		// Activate the save button's form submit
+		$("#save_button").click(function(e) {
+			$("form").submit();
+		});
+	  });	
+</script>
+{% endblock %}

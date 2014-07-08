@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content_title %}
+<h1>{% trans "Your order for this week" %} <a href="{% url 'elbroquil.views.update_order' 1 %}" class="btn btn-success btn-lg active pull-right" role="button" style="margin-top: 10px;">{% trans "Update your order" %} &rarr;</a></h1>
+{% endblock %}
+
+
+{% block extrahead %}
+<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
+{% endblock %}
+
+{% block scriptincludes %}
+<script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
+{% endblock %}
+
+{% block menuitems %}
+	<li class="active"><a href="{% url 'elbroquil.views.view_order' %}">{% trans "Update Order" %}</a></li>
+	<li><a href="{% url 'elbroquil.views.view_order_totals' %}">{% trans "Make Permanencia" %}</a></li>
+	<li><a href="{% url 'about' %}">{% trans "About" %}</a></li>
+{% endblock %}
+
+{% block content %}
+    <div id="content-main" class="inner-two-columns">
+		{% if orders_with_totals %}
+	        <div class="table-responsive">
+				<table class="category_table table table-striped table-condensed table-bordered" >
+				<thead>
+					<tr><th class="product_name_header">{% trans "Product" %}</th><th class="product_price_header">{% trans "Price" %}</th><th class="product_order_header">{% trans "Order" %}</th><th class="product_unit_header">{% trans "Unit" %}</th><th class="product_total_header">{% trans "Total" %}</th></tr>
+				</thead>
+				<tbody>
+					{% for order, total in orders_with_totals %}
+					<tr>
+						<td>{{ order.product.name }}</td>
+						<td class="price">{{ order.product.price }}</td>
+						<td class="quantity">{{ order.quantity }}</td>
+						<td>{{ order.product.unit }}</td>
+						<td class="total success">{{ total }}</td>
+					</tr>
+					{% endfor %}
+					<tr>
+						<td colspan="2"></td>
+						<td colspan="2" class="total-info success">{% trans "TOTAL TO PAY:" %}</td>
+						<td class="success total-lg" style="border: 2px solid green;">{{ overall_sum }} &euro;</td>
+					</tr>
+				</tbody>
+				</table>
+			</div>
+		{% else %}
+			<div class="alert alert-warning">{% trans "You do not have any order currently!" %}</div>
+		{% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content_title %}
+	{% if products %}
+<h1>{% trans "This week's order" %}
+<a href="{% url 'elbroquil.views.view_product_orders' 1 %}" class="btn btn-success btn-lg active pull-right" role="button" style="margin-top: 10px;">{% trans "Start distributing products" %} &rarr;</a></h1>
+	{% else %}
+<h1>No orders</h1>
+	{% endif %}
+{% endblock %}
+
+
+{% block extrahead %}
+<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
+{% endblock %}
+
+{% block scriptincludes %}
+<script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
+{% endblock %}
+
+{% block menuitems %}
+ 	<li><a href="{% url 'elbroquil.views.view_order' %}">{% trans "Update Order" %}</a></li>
+ 	<li class="active"><a href="{% url 'elbroquil.views.view_order_totals' %}">{% trans "Make Permanencia" %}</a></li>
+ 	<li><a href="{% url 'about' %}">{% trans "About" %}</a></li>
+{% endblock %}
+
+
+{% block content %}
+	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "Check that all the products has arrived. You can mark the products you have checked by clicking on them." %}</div>
+    <div id="content-main" class="inner-two-columns">
+		{% if products %}
+		<div class="progress">
+		  <div class="progress-bar progress-bar-warning" style="width: 5%">
+		    <span class="sr-only">{% trans "Checking arrived products" %}</span>
+		  </div>
+		</div>
+        <div class="table-responsive">
+			<table id="totals_table" class="category_table table table-striped table-condensed table-bordered" >
+			<tbody>
+				{% for product, add_category_row in products %}
+					{% if add_category_row %}
+					<tr>
+						<td class="category-row info" colspan="4">{{ product.category.visible_name }}</td>
+					</tr>
+					<tr><th class="product_name_header">{% trans "Product" %}</th><th class="product_price_header">{% trans "Price" %}</th><th class="product_order_header">{% trans "Order" %}</th><th class="product_unit_header">{% trans "Unit" %}</th></tr>
+					{% endif %}
+					<tr class="selectablerow" id="selectablerow_{{ product.id }}">
+						<td>{{ product.name }}</td>
+						<td class="price">{{ product.price }}</td>
+						<td class="quantity">{{ product.total_order }}</td>
+						<td>{{ product.unit }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+			</table>
+		</div>
+		{% else %}
+		<div class="alert alert-warning">{% trans "No orders made this week!" %}</div>
+		{% endif %}
+    </div>
+{% endblock %}
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {
+		// Cookie parameters for this page
+		var cookie_name = 'selected_rows';
+		var cookie_expires = 2;
+		
+		// On row clicked, add/remove highlight ('success' class) to the product row
+		// Update the cookie value that contains the selected rows and save cookie
+		$(".selectablerow").click(function(e){
+			var product_id = $(this).attr('id').split('_')[1];
+			
+			cookie_value = $.cookie(cookie_name);
+			
+			if (cookie_value == undefined)
+				cookie_value = '';
+			
+			if($(this).hasClass("success")) {
+			 	$(this).removeClass("success");
+				cookie_value = cookie_value.replace(';' + product_id + ';', '');
+			}
+			else {
+			 	$(this).addClass("success");
+				cookie_value += ';' + product_id + ';';
+			}
+			
+			$.cookie(cookie_name, cookie_value, { expires: cookie_expires });
+		});
+		
+		// Read the cookie, highlight the rows contained in the saved selected row list 
+		selected_rows = $.cookie(cookie_name);
+		if(selected_rows != undefined) {
+			selected_rows = selected_rows.split(';');
+		
+			for(i=0; i<selected_rows.length; i++) {
+				if(selected_rows[i]) {
+					$('#selectablerow_' + selected_rows[i]).addClass("success");
+				}
+			}
+		}
+	  });
+</script>
+{% endblock %}

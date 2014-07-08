@@ -1,0 +1,87 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block extrahead %}
+<!--<link rel="stylesheet" href="/static/styles/jquery.dataTables.css" type="text/css">-->
+<script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="content-main">
+        <div class="inner-center-column">
+        <form id="form-check" action="confirm" method="POST" class="form-horizontal">
+			<div class="toolbar-content clearfix">
+			<!--<div class="inner-right-column">
+		        <div class="box save-box">
+					<div class="submit-row clearfix">-->
+					<div class="object-tools">
+						<input type="submit" name="submit" class="btn btn-high btn-info" value="{% trans "Save products" %}"/>
+					</div>
+					<!--</div>
+		        </div>-->
+			</div>
+		
+            	{% csrf_token %}
+				<table id="products_table" class="table table-striped table-bordered table-hover table-condensed">
+				<thead>
+				<tr><th>{% trans "Category" %}</th><th>{% trans "Product Name" %}</th><th>{% trans "Price" %}</th><th>{% trans "Unit" %}</th><th>{% trans "Origin" %}</th><th>{% trans "Comments" %}</th></tr>
+				</thead>
+				<tbody>
+				{% for product in products %}
+					<tr>
+					{% for product_property in product %}
+					<td>{% if product_property %}{{ product_property }}{% endif %}</td>
+					{% endfor %}
+					</tr>
+				{% endfor %}
+				</tbody>
+				</table>
+				<input id="table_data" name="table_data" type="hidden"/>
+				<input id="producer_id" name="producer_id" type="hidden" value="{{ producer }}" />
+			
+			
+        </form>
+</div>	
+		<script type="text/javascript">
+		/* $(document).ready(function() {
+		    $('#products_table').dataTable( {
+	        	"bPaginate": false,
+		        "bLengthChange": true,
+		        "bFilter": true,
+		        "bSort": false,
+		        "bInfo": false,
+		        "bAutoWidth": true
+			    } );
+		} ); */
+		
+		$(function() {
+             $("#form-check").on("submit", function(event) {
+                //event.preventDefault();
+				var myTableArray = [];
+
+				$("table#products_table tr").each(function() {
+				    var arrayOfThisRow = [];
+				    var tableData = $(this).find('td');
+				    if (tableData.length > 0) {
+				        tableData.each(function() { arrayOfThisRow.push($(this).text()); });
+				        myTableArray.push(arrayOfThisRow);
+				    }
+				});
+				
+				//alert(JSON.stringify(myTableArray));
+				$("#table_data").val(JSON.stringify(myTableArray));
+				
+                /* $.ajax({
+                     url: "somefile.php",
+                     type: "post",
+                     data: JSON.stringify(myTableArray)//,
+                     //success: function(d) {
+                     //    ;
+                     //}
+                 });
+*/
+             });
+         });
+		</script>
+    </div>
+{% endblock %}
