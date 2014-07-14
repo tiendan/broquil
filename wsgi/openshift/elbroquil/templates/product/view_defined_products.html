@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load admin_urls %}
+
+{% block content_title %}
+<h1>{% trans "Currently defined products for producer" %}</h1>
+{% endblock %}
+
+
+{% block scriptincludes %}
+<script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="content-main" class="inner-two-columns">
+		<form id="producer_form" role="form"  action="{% url 'elbroquil.views.view_products' %}" method="POST"  class="form-horizontal">
+            	{% csrf_token %}
+
+			  <div class="form-group">
+			    <label for="producer_id" class="col-sm-2 control-label">{% trans "Producer" %}</label>
+			    <div class="col-sm-6">
+		      		 <select id="producer_id" name="producer_id" class="form-control">
+				  		<option value="1"></option>
+						{% for producer in producers %}
+					  		<option value="{{ producer.id }}" {% if producer_id == producer.id %}selected{% endif %}>{{ producer }}</option>
+					  	{% endfor %}
+					</select>
+			    </div>
+			  </div>
+			
+		</form>
+		{% if products %}
+        <div class="table-responsive">
+			<table id="totals_table" class="category_table table table-striped table-condensed table-bordered" >
+			<tbody>
+				{% for product, add_category_row in products %}
+					{% if add_category_row %}
+					<tr>
+						<td class="category-row info" colspan="7">{{ product.category }}</td>
+					</tr>
+					<tr><th class="product_name_header">{% trans "Product" %}</th><th class="product_price_header">{% trans "Price" %}</th><th class="product_unit_header">{% trans "Unit" %}</th><th class="product_origin_header">{% trans "Origin" %}</th><th class="product_comments_header">{% trans "Comments" %}</th><th>{% trans "Unit Demand" %}</th></tr>
+					{% endif %}
+					<tr id="selectablerow_{{ product.id }}">
+						<td><a href="{% url 'admin:elbroquil_product_change' product.pk %}">{{ product.name }}</a></td>
+						<td class="price">{{ product.price }}</td>
+						<td>{{ product.unit }}</td>
+						<td>{{ product.origin }}</td>
+						<td>{{ product.comments }}</td>
+					{% if product.integer_demand %}
+						<td>{% trans "TRUE" %}</td>
+					{% else %}
+						<td></td>
+					{% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+			</table>
+		</div>
+		{% else %}
+		<br/>
+		<div class="alert alert-warning">{% trans "No products defined for producer!" %}</div>
+		{% endif %}
+    </div>
+{% endblock %}
+
+
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {	
+		// Set selected menu item
+		$('#menu-item-product').addClass("active");
+		
+		// Bind the event so that when dropdown (producer) changes, form is submitted
+		$("#producer_id").change(function(e) {
+			$("#producer_form").submit();
+		});
+	  });	
+</script>
+{% endblock %}

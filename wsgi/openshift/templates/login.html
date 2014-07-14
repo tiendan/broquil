@@ -22,7 +22,8 @@
 </label>-->
 <input type="hidden" name="next" value="{{ next }}" />
 <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Sign in" %}</button>
-
+<br/>
+<small><a href="{% url 'django.contrib.auth.views.password_reset' %}">{% trans "Forgot password" %}</a></small>
 </form>
 
 {% endblock %}

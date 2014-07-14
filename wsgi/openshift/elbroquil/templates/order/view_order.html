@@ -2,23 +2,16 @@
 {% load i18n %}
 
 {% block content_title %}
-<h1>{% trans "Your order for this week" %} <a href="{% url 'elbroquil.views.update_order' 1 %}" class="btn btn-success btn-lg active pull-right" role="button" style="margin-top: 10px;">{% trans "Update your order" %} &rarr;</a></h1>
+<h1>{% trans "Your order for this week" %} {% if available_product_count %}<a href="{% url 'elbroquil.views.update_order' 1 %}" class="btn btn-success btn-lg active pull-right" role="button">{% trans "Update your order" %} &rarr;</a>{% endif %}</h1>
 {% endblock %}
 
 
 {% block extrahead %}
-<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
 {% endblock %}
 
 {% block scriptincludes %}
 <script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
-{% endblock %}
-
-{% block menuitems %}
-	<li class="active"><a href="{% url 'elbroquil.views.view_order' %}">{% trans "Update Order" %}</a></li>
-	<li><a href="{% url 'elbroquil.views.view_order_totals' %}">{% trans "Make Permanencia" %}</a></li>
-	<li><a href="{% url 'about' %}">{% trans "About" %}</a></li>
 {% endblock %}
 
 {% block content %}
@@ -32,9 +25,9 @@
 				<tbody>
 					{% for order, total in orders_with_totals %}
 					<tr>
-						<td>{{ order.product.name }}</td>
+						<td>{% if not order.arrived_quantity %}<s>{{ order.product.name }}</s>{% else %}{{ order.product.name }}{% endif%}</td>
 						<td class="price">{{ order.product.price }}</td>
-						<td class="quantity">{{ order.quantity }}</td>
+						<td class="quantity">{{ order.arrived_quantity }}</td>
 						<td>{{ order.product.unit }}</td>
 						<td class="total success">{{ total }}</td>
 					</tr>
@@ -51,4 +44,14 @@
 			<div class="alert alert-warning">{% trans "You do not have any order currently!" %}</div>
 		{% endif %}
     </div>
+{% endblock %}
+
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {
+		// Set selected menu item
+		$('#menu-item-order').addClass("active");
+	  });
+</script>
 {% endblock %}

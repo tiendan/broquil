@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content_title %}
+<h1>{% trans "Prepare baskets" %}</h1>
+{% endblock %}
+
+
+{% block extrahead %}
+<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
+<link rel="stylesheet" href="/static/styles/bootstrap-formhelpers.min.css" type="text/css">
+{% endblock %}
+
+{% block scriptincludes %}
+<script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/static/scripts/bootstrap-formhelpers-number.js"></script>
+{% endblock %}
+
+
+{% block content %}
+	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "In case the product quantity/weight has to be changed, make the changes and don't forget to save them." %}</div>
+    <div id="content-main" class="inner-two-columns">
+		<div class="progress">
+		  <div class="progress-bar progress-bar-warning" style="width: 10%">
+		    <span class="sr-only">{% trans "Checked arrived products" %}</span>
+		  </div>
+		  <div class="progress-bar progress-bar-info" style="width: {{ progress }}%">
+		    <span class="sr-only">{{ progress }}% {% trans "Complete" %}</span>
+		  </div>
+		</div>
+        <form action="{% url 'elbroquil.views.view_product_orders' current_product_no %}" method="POST">
+	    	{% csrf_token %}
+			<div>
+				<div>
+				<ul class="pager">
+				{% if prev_product_no %}	
+				  <li class="previous"><a href="{% url 'elbroquil.views.view_product_orders' prev_product_no %}">&larr; {{ prev_product_name }}</a></li>
+				{% else %}	
+				  <li class="previous"><a href="{% url 'elbroquil.views.view_order_totals' %}">&larr; {% trans "Back to order summary" %}</a></li>
+				{% endif %}
+				  <li><h2 class="fillSpace">{{ product_name }}</h2></li>
+				{% if next_product_no %}
+				  <li class="next"><a href="{% url 'elbroquil.views.view_product_orders' next_product_no %}">{{ next_product_name }} &rarr;</a></li>
+				{% else %}	
+				  <li class="next blanknextpager"></li>
+				{% endif %}
+				</ul>
+				</div>
+				<div class="table-responsive">
+					<table id="table_product_order" class="product_order_table table table-striped table-condensed table-bordered" >
+					<thead>
+						<tr><th class="member_name_header">{% trans "Cooperative Member" %}</th><th class="product_order_header">{% trans "Order" %} ({{ product_orders.0.product.unit }})</th><th class="product_order_header">{% trans "Arrived" %} ({{ product_orders.0.product.unit }})</th></tr>
+					</thead>
+					<tbody>
+						{% for order in product_orders %}
+						<tr class="selectablerow" id="selectablerow_{{ order.id }}">
+							<td class="member_name_col">{{ order.user.first_name }} {{ order.user.last_name }}</td>
+							<td class="quantity"><input id="order_{{ order.id }}" name="order_{{ order.id }}" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-buttons="false" value="{{ order.quantity }}" disabled /></td>
+							<td class="quantity"><input id="order_arrived_{{ order.id }}" name="order_arrived_{{ order.id }}" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ order.arrived_quantity }}"/></td>
+						</tr>
+						{% endfor %}
+						<tr {% if product_order %}class="success"{% endif %}>
+							<td class="total-info">{% trans "TOTAL:" %}</td>
+							<td class="success total-lg" style="border: 2px solid green;">{{ total_quantity }} {{ product_orders.0.product.unit }}</td>
+							<td class="success total-lg" style="border: 2px solid green;">{{ total_arrived_quantity }} {{ product_orders.0.product.unit }}</td>
+						</tr>
+					</tbody>
+					</table>
+				</div>
+			</div>
+			
+        </form>
+    </div>
+	    </div>
+{% endblock %}
+
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {
+		// Set selected menu item
+		$('#menu-item-distribution').addClass("active");
+		
+		// Cookie parameters for this page
+		var cookie_name = 'selected_person_rows_'+{{ current_product_id }};
+		var cookie_expires = 2;
+		
+		// On row clicked, add/remove highlight ('success' class) to the person row
+		// Update the cookie value that contains the selected rows and save cookie
+		$(".selectablerow").click(function(e){
+			var person_id = $(this).attr('id').split('_')[1];
+
+			cookie_value = $.cookie(cookie_name);
+			
+			if (cookie_value == undefined)
+				cookie_value = '';
+			
+			if(e.target.tagName.toLowerCase() !== 'input' &&
+				  e.target.tagName.toLowerCase() !== 'textarea') {
+				if($(this).hasClass("success")){
+				 	$(this).removeClass("success");
+					cookie_value = cookie_value.replace(';' + person_id + ';', '');
+				}
+				else {
+				 	$(this).addClass("success");
+					cookie_value += ';' + person_id + ';';
+				}
+				
+				$.cookie(cookie_name, cookie_value, { expires: cookie_expires });
+			}
+		});
+		
+		// If left and right arrow keys are pressed (outside input boxes), 
+		// switch to next or previous product
+		$("body").keydown(function(e) {
+		  if( e.target.tagName.toLowerCase() !== 'input' &&
+			  e.target.tagName.toLowerCase() !== 'textarea' && 
+			  e.keyCode == 37) { // left
+			if($('li.previous > a').length)
+		    	window.location = $('li.previous > a').attr('href');
+		  }
+		  else if(	e.target.tagName.toLowerCase() !== 'input' &&
+			  		e.target.tagName.toLowerCase() !== 'textarea' && 
+					e.keyCode == 39) { // right
+			if($('li.next > a').length)
+				window.location = $('li.next > a').attr('href');
+		  }
+		});
+		
+		// If text inputs are changed, enable the save button
+		$('input.product-order').keyup(function( event ) {
+			$('#save_button').removeAttr('disabled');
+		});
+		
+		// Read the cookie, highlight the rows contained in the saved selected row list
+		selected_rows = $.cookie(cookie_name);
+		if(selected_rows != undefined) {
+			selected_rows = selected_rows.split(';');
+		
+			for(i=0; i<selected_rows.length; i++) {
+				if(selected_rows[i]) {
+					$('#selectablerow_' + selected_rows[i]).addClass("success");
+				}
+			}
+		}
+		
+		// Activate the save button's form submit
+		$("#save_button").click(function(e) {
+			$("form").submit();
+		});
+	  });
+</script>
+{% endblock %}

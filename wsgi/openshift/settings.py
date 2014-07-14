@@ -63,6 +63,8 @@ INSTALLED_APPS = (
     'xlrd',
     'xlutils',
     'rosetta',
+    'bootstrapform',
+    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -112,17 +114,21 @@ if ON_OPENSHIFT:
          }
      }
 else:
-     DATABASES = {
-         'default': {
-             'ENGINE': 'django.db.backends.sqlite3',
-             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-         }
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'elbroquil_ultim',
+            'USER': 'onur2',
+            'PASSWORD': '12345',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
     }
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'tr'
 
 TIME_ZONE = 'UTC'
 
@@ -134,7 +140,7 @@ USE_TZ = True
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
-    os.path.join(BASE_DIR, 'shop/locale'),
+    os.path.join(BASE_DIR, 'elbroquil/locale'),
 )
 
 LANGUAGES = (
@@ -150,14 +156,17 @@ LOGIN_REDIRECT_URL = '/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
+if ON_OPENSHIFT:
+    STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
+    STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
-STATIC_URL = '/static/'
-
-
-#STATICFILES_DIRS = (
-#    os.path.join(BASE_DIR, '..', 'static'),
-#)
+else:
+    STATIC_ROOT = 'staticfiles'
+    STATIC_URL = '/static/'
+    
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, '..', 'static'),
+    )
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
 
@@ -188,7 +197,7 @@ SUIT_CONFIG = {
     'MENU': (
       'sites',
       {'app': 'auth', 'label': 'Users', 'icon':'icon-user', 'models': ('user', 'group')},
-      {'app': 'shop', 'label': 'Shop', 'icon':'icon-shopping-cart', 'models': ('category', 'producer', 'product')},
+      {'app': 'elbroquil', 'label': 'Shop', 'icon':'icon-shopping-cart', 'models': ('category', 'producer', 'product')},
       {'label': 'Upload Product List', 'icon':'icon-upload', 'url': _('/products/')},
     ),
 

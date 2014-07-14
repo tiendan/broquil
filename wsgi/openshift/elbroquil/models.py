@@ -35,6 +35,16 @@ EXCEL_FORMAT_CHOICES = (
     (LA_SELVATANA, 'La Selvatana'),  
 )
 
+STATUS_NORMAL = 0
+STATUS_DID_NOT_ARRIVE = 10
+STATUS_MIN_ORDER_NOT_MET = 20
+
+STATUS_CHOICES = (  
+    (STATUS_NORMAL, _(u'Normal')),
+    (STATUS_DID_NOT_ARRIVE, _(u'Did not arrive')),
+    (STATUS_MIN_ORDER_NOT_MET, _('Min. order not met')),
+)
+
 class Producer(models.Model):
     first_name = models.CharField(_(u'first name'), max_length=50)
     last_name = models.CharField(_(u'last name'), max_length=50, null=True, blank=True)
@@ -49,6 +59,7 @@ class Producer(models.Model):
     excel_format = models.SmallIntegerField(_(u'excel format'), choices=EXCEL_FORMAT_CHOICES, default=STANDARD)
     default_category_name = models.CharField(_(u'default category name'), max_length=50, null=True, blank=True)
     active = models.BooleanField(_(u'active'), default=True)
+    transportation_cost = models.DecimalField(_(u'transportation cost'), decimal_places=2, max_digits=5, default=0)
     
     def __unicode__(self):
         return self.first_name + " " + self.last_name + " (" + self.company_name + ")"
@@ -79,8 +90,8 @@ class Category(models.Model):
         if len(self.visible_name.strip()) > 0:
             return unicode(self.visible_name)
         else:
-            return unicode(self.name)
-
+            return unicode(self.name.title())
+                
     class Meta:
         verbose_name = _('category')
         verbose_name_plural = _('categories')
@@ -95,6 +106,11 @@ class Product(models.Model):
     integer_demand = models.BooleanField(_(u'integer demand'), default=False)
     distribution_date = models.DateField(_(u'distribution date'), null=True, blank=True)
     archived = models.BooleanField(_(u'archived'), default=False)
+    
+    total_quantity = models.DecimalField(_(u'total quantity'), decimal_places=2, max_digits=5, default=0)
+    arrived_quantity = models.DecimalField(_(u'arrived quantity'), decimal_places=2, max_digits=5, default=0)
+    order_limit_date = models.DateField(_(u'order limit date'), null=True, blank=True)
+    average_rating = models.DecimalField(_(u'average rating'), decimal_places=1, max_digits=5, default=0)
     
     def active(self):
         return self.distribution_date >= timezone.now().date() and not self.archived 
@@ -114,6 +130,8 @@ class Order(models.Model):
     arrived = models.BooleanField(_(u'arrived'), default=True)
     canceled = models.BooleanField(_(u'canceled'), default=False)
     archived = models.BooleanField(_(u'archived'), default=False)
+    status = models.SmallIntegerField(_(u'status'), choices=STATUS_CHOICES, default=STATUS_NORMAL)
+    arrived_quantity = models.DecimalField(_(u'arrived quantity'), decimal_places=2, max_digits=5)
 
     class Meta:
         verbose_name = _('order')

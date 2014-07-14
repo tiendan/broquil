@@ -2,24 +2,19 @@
 {% load i18n %}
 
 {% block content_title %}
-<h1>{% trans "Distribute product" %} <button id="save_button" type="button" class="btn btn-lg btn-success pull-right" style="margin-top: 10px;" disabled="disabled">{% trans "Save changes" %}</button></h1>
+<h1>{% trans "Distribute product" %} <button id="save_button" type="button" class="btn btn-lg btn-success pull-right" disabled="disabled">{% trans "Save changes" %}</button></h1>
 {% endblock %}
 
 
 {% block extrahead %}
 <link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
+<link rel="stylesheet" href="/static/styles/bootstrap-formhelpers.min.css" type="text/css">
 {% endblock %}
 
 {% block scriptincludes %}
 <script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
-{% endblock %}
-
-
-{% block menuitems %}
- 	<li><a href="{% url 'elbroquil.views.view_order' %}">{% trans "Update Order" %}</a></li>
- 	<li class="active"><a href="{% url 'elbroquil.views.view_order_totals' %}">{% trans "Make Permanencia" %}</a></li>
- 	<li><a href="{% url 'about' %}">{% trans "About" %}</a></li>
+<script type="text/javascript" src="/static/scripts/bootstrap-formhelpers-number.js"></script>
 {% endblock %}
 
 
@@ -41,8 +36,8 @@
 				<ul class="pager">
 				{% if prev_product_no %}	
 				  <li class="previous"><a href="{% url 'elbroquil.views.view_product_orders' prev_product_no %}">&larr; {{ prev_product_name }}</a></li>
-				{% else %}
-				  <li class="previous blankpreviouspager"></li>
+				{% else %}	
+				  <li class="previous"><a href="{% url 'elbroquil.views.view_order_totals' %}">&larr; {% trans "Back to order summary" %}</a></li>
 				{% endif %}
 				  <li><h2 class="fillSpace">{{ product_name }}</h2></li>
 				{% if next_product_no %}
@@ -55,18 +50,20 @@
 				<div class="table-responsive">
 					<table id="table_product_order" class="product_order_table table table-striped table-condensed table-bordered" >
 					<thead>
-						<tr><th class="member_name_header">{% trans "Cooperative Member" %}</th><th class="product_order_header">{% trans "Order" %} ({{ product_orders.0.product.unit }})</th></tr>
+						<tr><th class="member_name_header">{% trans "Cooperative Member" %}</th><th class="product_order_header">{% trans "Order" %} ({{ product_orders.0.product.unit }})</th><th class="product_order_header">{% trans "Arrived" %} ({{ product_orders.0.product.unit }})</th></tr>
 					</thead>
 					<tbody>
 						{% for order in product_orders %}
 						<tr class="selectablerow" id="selectablerow_{{ order.id }}">
 							<td class="member_name_col">{{ order.user.first_name }} {{ order.user.last_name }}</td>
-							<td class="quantity"><div class="input-group input-group-sm" ><input id="order_{{ order.id }}" name="order_{{ order.id }}" type="text"  class="product-order form-control" value="{{ order.quantity }}"/></div></td>
+							<td class="quantity"><input id="order_{{ order.id }}" name="order_{{ order.id }}" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-buttons="false" value="{{ order.quantity }}" disabled /></td>
+							<td class="quantity"><input id="order_arrived_{{ order.id }}" name="order_arrived_{{ order.id }}" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ order.arrived_quantity }}"/></td>
 						</tr>
 						{% endfor %}
 						<tr {% if product_order %}class="success"{% endif %}>
 							<td class="total-info">{% trans "TOTAL:" %}</td>
 							<td class="success total-lg" style="border: 2px solid green;">{{ total_quantity }} {{ product_orders.0.product.unit }}</td>
+							<td class="success total-lg" style="border: 2px solid green;">{{ total_arrived_quantity }} {{ product_orders.0.product.unit }}</td>
 						</tr>
 					</tbody>
 					</table>
@@ -82,6 +79,9 @@
 {% block extrascripts %}
 <script type="text/javascript">
 	 $(function() {
+		// Set selected menu item
+		$('#menu-item-distribution').addClass("active");
+		
 		// Cookie parameters for this page
 		var cookie_name = 'selected_person_rows_'+{{ current_product_id }};
 		var cookie_expires = 2;

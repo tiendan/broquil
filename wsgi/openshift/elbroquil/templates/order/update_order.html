@@ -3,12 +3,13 @@
 {% load l10n %}
 
 {% block content_title %}
-<h1>{% trans "Update order" %} <button id="save_button" type="button" class="btn btn-lg btn-success pull-right" style="margin-top: 10px;" disabled="disabled">{% trans "Save changes" %}</button></h1>
+<h1>{% trans "Update order" %} <button id="save_button" type="button" class="btn btn-lg btn-success pull-right" disabled="disabled">{% trans "Save changes" %}</button></h1>
 {% endblock %}
 
 
 {% block extrahead %}
 <link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
+<link rel="stylesheet" href="/static/styles/bootstrap-formhelpers.min.css" type="text/css">
 <!--<link rel="stylesheet" href="/static/styles/accordion.css" type="text/css">
 <link rel="stylesheet" href="/static/styles/custom.css" type="text/css">
 -->
@@ -26,12 +27,7 @@
 {% block scriptincludes %}
 <script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
-{% endblock %}
-
-{% block menuitems %}
- 	<li class="active"><a href="{% url 'elbroquil.views.view_order' %}">{% trans "Update Order" %}</a></li>
- 	<li><a href="{% url 'elbroquil.views.view_order_totals' %}">{% trans "Make Permanencia" %}</a></li>
- 	<li><a href="{% url 'about' %}">{% trans "About" %}</a></li>
+<script type="text/javascript" src="/static/scripts/bootstrap-formhelpers-number.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -72,7 +68,15 @@
 						<tbody>
 							{% for product, product_order in products %}
 							<tr {% if product_order %}class="success"{% endif %}>
-								<td class="quantity"><div class="input-group input-group-sm" ><input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text"  class="quantity-input product-order form-control" {% if product_order %} value="{{ product_order|localize }}" {% endif %}/></div></td>
+								<td class="quantity">
+									{% if product.integer_demand %}
+									<div class="input-group input-group-sm" >
+									<input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text" class="quantity-input product-order form-control bfh-number" data-keyboard="true" data-integer="true" {% if product_order %} value="{{ product_order|localize }}" {% endif %}/>
+									</div>
+									{% else %}
+									<input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text" class="quantity-input product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-buttons="false"{% if product_order %} value="{{ product_order|localize }}" {% endif %}/>
+									{% endif %}
+									</td>
 								<td>{{ product.name }} {% if product.comments %}<span class="glyphicon glyphicon-comment" title="{{ product.comments }}"></span>{% endif %}</td>
 								<td class="price">{{ product.price }}</td>
 								<td>&euro;/{{ product.unit }}</td>
@@ -91,21 +95,30 @@
 	    </div>
 {% endblock %}
 
+
 {% block extrascripts %}
 <script type="text/javascript">
 	 $(function() {	
+		// Set selected menu item
+		$('#menu-item-order').addClass("active");
+		
 		$(".right-tooltip").tooltip({
 		    placement: "right"
 		});
 		
 		// If text inputs are changed, highlight the table row depending on textbox contents
 		// When textbox is filled (product is ordered), row is highlighted with green color ('success' class)
-		$('input.product-order').keyup(function( event ) {
+		$('input.product-order').change(function( event ) {
+			
+			parent_row = $('#' + event.target.id);
+			
+			while(parent_row.prop("tagName").toLowerCase() != 'tr')
+				parent_row = parent_row.parent();
 			
 			if(event.target.value.trim() == '')
-				$('#' + event.target.id).parent().parent().parent().removeClass('success');
+				parent_row.removeClass('success');
 			else
-				$('#' + event.target.id).parent().parent().parent().addClass('success');
+				parent_row.addClass('success');
 				
 			// If text inputs are changed, enable the save button
 			$('#save_button').removeAttr('disabled');

@@ -1,3 +1,8 @@
+/* Bootstrap customizations */
+.maincontent
+{
+    min-height: 300px;
+}
 /* Pager customizations */
 h2.fillSpace
 {
@@ -37,7 +42,17 @@ h2.fillSpace
 /* Table columns for orders, products, etc. */
 .quantity
 {
-    width: 80px;
+    width: 140px;
+}
+
+.quantity > .input-group
+{
+    min-width: 120px;
+}
+
+.quantity > input
+{
+    min-width: 120px;
 }
 
 .price, .quantity
@@ -85,3 +100,22 @@ h2.fillSpace
 .flag.flag-gb {background-position: -16px -11px}
 .flag.flag-it {background-position: -32px -11px}
 .flag.flag-tr {background-position: 0 -22px}
+
+/* Table styles */
+table > thead > tr > th
+{
+    text-align: center;
+}
+
+table > tbody > tr > th
+{
+    text-align: center;
+}
+
+
+/* Dropdown login menu styles */
+.login { padding: 1em; }
+.login a { color: #08c; display: inline; padding: 0; }
+
+/* .login > form > input {margin-bottom: 10px;} */
+.login > form > button {margin-bottom: 10px; margin-top: 10px;}

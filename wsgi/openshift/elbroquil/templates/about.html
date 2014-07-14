@@ -4,12 +4,16 @@
 {% block title %}El Broquil | {% trans "About" %}{% endblock %}
 {% block content_title %}<h1>I am writing you from my new view</h1>{% endblock %}
 
-{% block menuitems %}
- 	<li><a href="{% url 'elbroquil.views.view_order' %}">{% trans "Update Order" %}</a></li>
- 	<li><a href="{% url 'elbroquil.views.view_order_totals' %}">{% trans "Make Permanencia" %}</a></li>
- 	<li class="active"><a href="{% url 'about' %}">{% trans "About" %}</a></li>
-{% endblock %}
-
 {% block content %}
 <p>This is the content of our first view</p>
+{% endblock %}
+
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {
+		// Set selected menu item
+		$('#menu-item-about').addClass("active");
+	  });
+</script>
 {% endblock %}

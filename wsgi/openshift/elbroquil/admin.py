@@ -30,4 +30,4 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(models.Producer, ProducerAdmin)
 
 admin.site.register(models.Category, CategoryAdmin)
-admin.site.register(models.Product) #, ProductAdmin)
+admin.site.register(models.Product, ProductAdmin)
