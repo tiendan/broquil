@@ -1,0 +1,1 @@
+* * * * * /usr/local/myproject/bin/chroniker -e /usr/local/myproject/.env/bin/activate_this.py 
