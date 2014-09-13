@@ -3,4 +3,4 @@
 # available.  Otherwise it will execute while your application is stopped
 # before the build step.  This script gets executed directly, so it
 # could be python, php, ruby, etc.
-source ${OPENSHIFT_DATA_DIR}/.myenv
+source ${OPENSHIFT_DATA_DIR}/.myenv 
