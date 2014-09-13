@@ -9,6 +9,11 @@ h2.fillSpace
   display:inline-block;
   margin:0;
 }
+h5.fillSpace
+{
+  display:inline-block;
+  margin:0;
+}
 
 .pager li>a
 {
@@ -60,6 +65,10 @@ h2.fillSpace
     text-align: right;
 }
 
+.centered
+{
+    text-align: center;
+}
 
 .total
 {
@@ -119,3 +128,70 @@ table > tbody > tr > th
 
 /* .login > form > input {margin-bottom: 10px;} */
 .login > form > button {margin-bottom: 10px; margin-top: 10px;}
+
+
+/* Distribution styles */
+.basket-icon {
+    font-size: 16pt;
+}
+
+/* Sidebar styles */
+affix {
+    
+}
+
+affix-top {
+    margin-top: 0px;
+}
+
+affix-bottom {
+    
+}
+
+.focusedInput {
+    border-color: #ccc;
+    border-color: rgba(82,168,236,.8);
+    outline: 0;
+    outline: thin dotted \9;
+    -webkit-box-shadow: 0 0 8px rgba(82,168,236,.6);
+    box-shadow: 0 0 8px rgba(82,168,236,.6);
+}
+
+footer {
+    padding-top: 60px;
+}
+
+div.panel-heading.incident-panel {
+    background-image: linear-gradient(to bottom,#F1E2E2 0,#EC8B8B 100%);
+}
+
+.summary-dropdown {
+    width: 220px;
+    padding: 0 10px 0 10px;
+}
+
+.summary-table > tbody > tr > td {
+    border-top: none;
+}
+
+.summary-table {
+    margin-bottom: 5px;
+}
+
+.larger-text {
+    font-size: 16px;
+}
+
+.info-container {
+    display: none !important;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    cursor: default !important;
+}
+
+/* Account summary styles */
+.producer-group > h3 {
+    margin-top: 10px;
+    margin-left: 50px;
+}

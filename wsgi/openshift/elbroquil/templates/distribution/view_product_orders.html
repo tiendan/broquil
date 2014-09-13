@@ -2,18 +2,16 @@
 {% load i18n %}
 
 {% block content_title %}
-<h1>{% trans "Distribute product" %} <button id="save_button" type="button" class="btn btn-lg btn-success pull-right" disabled="disabled">{% trans "Save changes" %}</button></h1>
+<h1>{% trans "Distribute product" %}</h1>
 {% endblock %}
 
 
 {% block extrahead %}
-<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
-<link rel="stylesheet" href="/static/styles/bootstrap-formhelpers.min.css" type="text/css">
 {% endblock %}
 
 {% block scriptincludes %}
 <script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
+<!-- <script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script> -->
 <script type="text/javascript" src="/static/scripts/bootstrap-formhelpers-number.js"></script>
 {% endblock %}
 
@@ -22,7 +20,7 @@
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "In case the product quantity/weight has to be changed, make the changes and don't forget to save them." %}</div>
     <div id="content-main" class="inner-two-columns">
 		<div class="progress">
-		  <div class="progress-bar progress-bar-warning" style="width: 10%">
+		  <div class="progress-bar progress-bar-warning" style="width: 12%">
 		    <span class="sr-only">{% trans "Checked arrived products" %}</span>
 		  </div>
 		  <div class="progress-bar progress-bar-info" style="width: {{ progress }}%">
@@ -37,17 +35,17 @@
 				{% if prev_product_no %}	
 				  <li class="previous"><a href="{% url 'elbroquil.views.view_product_orders' prev_product_no %}">&larr; {{ prev_product_name }}</a></li>
 				{% else %}	
-				  <li class="previous"><a href="{% url 'elbroquil.views.view_order_totals' %}">&larr; {% trans "Back to order summary" %}</a></li>
+				  <li class="previous"><a href="{% url 'elbroquil.views.view_basket_counts' %}">&larr; {% trans "Prepare baskets" %}</a></li>
 				{% endif %}
 				  <li><h2 class="fillSpace">{{ product_name }}</h2></li>
 				{% if next_product_no %}
 				  <li class="next"><a href="{% url 'elbroquil.views.view_product_orders' next_product_no %}">{{ next_product_name }} &rarr;</a></li>
 				{% else %}	
-				  <li class="next blanknextpager"></li>
+				  <li class="next"><a href="{% url 'elbroquil.views.member_payment' %}">{% trans "Payment" %} &rarr;</a></li>
 				{% endif %}
 				</ul>
 				</div>
-				<div class="table-responsive">
+				<div class="table-responsive col-md-offset-2 col-md-8">
 					<table id="table_product_order" class="product_order_table table table-striped table-condensed table-bordered" >
 					<thead>
 						<tr><th class="member_name_header">{% trans "Cooperative Member" %}</th><th class="product_order_header">{% trans "Order" %} ({{ product_orders.0.product.unit }})</th><th class="product_order_header">{% trans "Arrived" %} ({{ product_orders.0.product.unit }})</th></tr>
@@ -62,11 +60,16 @@
 						{% endfor %}
 						<tr {% if product_order %}class="success"{% endif %}>
 							<td class="total-info">{% trans "TOTAL:" %}</td>
-							<td class="success total-lg" style="border: 2px solid green;">{{ total_quantity }} {{ product_orders.0.product.unit }}</td>
-							<td class="success total-lg" style="border: 2px solid green;">{{ total_arrived_quantity }} {{ product_orders.0.product.unit }}</td>
+							<td class="success total-lg" style="border: 2px solid green;">{{ total_quantity|floatformat:-2 }} {{ product_orders.0.product.unit }}</td>
+							<td class="success total-lg" style="border: 2px solid green;">{{ total_arrived_quantity|floatformat:-2 }} {{ product_orders.0.product.unit }}</td>
 						</tr>
 					</tbody>
 					</table>
+				</div>
+				<div class="col-md-2">
+					<div class="sidebar">
+					<button id="save_button" type="button" class="btn btn-lg btn-success pull-right" disabled="disabled">{% trans "Save changes" %}</button>
+					</div>
 				</div>
 			</div>
 			

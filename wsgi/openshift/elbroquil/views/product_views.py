@@ -7,7 +7,7 @@ from datetime import date
 
 from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.urlresolvers import reverse
 from django.db.models import F, Q, Sum
 from django.db import transaction
@@ -20,17 +20,20 @@ from django.utils import translation
 from django.views.generic import FormView
 #from django.core.urlresolvers import resolve
 #from django.template import RequestContext
+from django.utils import timezone
 
 
 import elbroquil.models as models
-from elbroquil.forms import UploadProductsForm, UpdateOrderForm, CheckProductsForm
+from elbroquil.forms import UploadProductsForm, CheckProductsForm
 import elbroquil.parse as parser
+import elbroquil.libraries as libs
 
 '''Get an instance of a logger'''
 logger = logging.getLogger("MYAPP")
 
 '''Page to upload Excel files to define products'''
 @login_required
+@permission_required('elbroquil.modify_products')
 def upload_products(request):
     form = UploadProductsForm()
 
@@ -40,6 +43,7 @@ def upload_products(request):
    
 '''Page to check the parsed product information from the Excel files''' 
 @login_required
+@permission_required('elbroquil.modify_products')
 def check_products(request):
     products = []
     producer_id = ""
@@ -79,6 +83,7 @@ def check_products(request):
         
 '''After parsed product information is verified, this view adds them to database'''
 @login_required
+@permission_required('elbroquil.modify_products')
 def confirm_products(request):
     products = []
 
@@ -110,7 +115,10 @@ def confirm_products(request):
                     the demand should be made in units
                 '''
                 integer_demand = "unitat" in comments_text.lower() or unit_text.lower() != "kg"
-            
+                
+                for exceptional_product in [u"carabassa", u"síndria", u"meló"]:
+                    integer_demand = integer_demand or exceptional_product in name_text.lower()
+                
                 category, created = models.Category.objects.get_or_create(name=category_text, producer_id=producer_id)
             
                 prod = models.Product(name=name_text, category_id=category.id, origin=origin_text, comments=comments_text, price=Decimal(price_text), unit=unit_text, integer_demand=integer_demand)
@@ -121,6 +129,7 @@ def confirm_products(request):
     return HttpResponseRedirect(reverse('elbroquil.views.upload_products', args=()))
         
 @login_required
+@permission_required('elbroquil.modify_products')
 def view_products(request, producer_id=''):
     #return HttpResponseRedirect(reverse('admin:elbroquil_producer_change', args=(producer_id,)))
     products = []
@@ -135,7 +144,7 @@ def view_products(request, producer_id=''):
 
     '''If there are no products with dist_date=None, choose the ones where dist_date>now'''
     if len(products) == 0 and producer_id != '':
-        products = models.Product.objects.filter(Q(distribution_date__gt=date.today().strftime('%Y-%m-%d')), category__producer_id=int(producer_id)).order_by('category__sort_order', 'id')
+        products = models.Product.objects.filter(Q(distribution_date__gt=libs.get_today()), category__producer_id=int(producer_id)).order_by('category__sort_order', 'id')
     
     add_category_row = []
     prev_category = ''
@@ -157,17 +166,3 @@ def view_products(request, producer_id=''):
         'producer_id': producer_id,
     })
 
-
-def set_language(request):
-    #current_url = resolve(request.POST.get(next).strip()).url_name
-    #logger.error("CURRENT URL")
-    #logger.error(current_url)
-
-    user_language = request.GET['language'] or 'ca'
-    translation.activate(user_language)
-    request.session['django_language'] = user_language
-
-    #logger.error("NEXT URL")
-    #logger.error(reverse(current_url, args=()))
-
-    return HttpResponseRedirect(reverse('site_root'))

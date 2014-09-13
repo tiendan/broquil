@@ -3,13 +3,16 @@ from decimal import Decimal
 import ast
 import xlrd
 import logging      # import the logging library
-from datetime import date
+import pickle
+from datetime import date, datetime, timedelta
+from django.utils import timezone
 
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.db.models import F, Q, Sum
+from django.db.models import F, Q, Sum, Count
 from django.db import transaction
 
 from django.http import HttpResponseRedirect, Http404
@@ -22,18 +25,165 @@ from django.views.generic import FormView
 #from django.template import RequestContext
 
 
+
 import elbroquil.models as models
-from elbroquil.forms import UploadProductsForm, UpdateOrderForm, CheckProductsForm
 import elbroquil.parse as parser
+import elbroquil.libraries as libs
 
 '''Get an instance of a logger'''
 logger = logging.getLogger("MYAPP")
-     
-@login_required
-def view_product_orders(request, product_no=''):
-    #products = models.Product.objects.filter(Q(archived=False), Q(distribution_date=date.today().strftime('%Y-%m-%d')),Q(order__isnull=False)).distinct('category__sort_order', 'id', 'name').order_by('category__sort_order', 'id')
 
-    products = models.Product.objects.filter(archived=False, distribution_date=date.today().strftime('%Y-%m-%d'),arrived_quantity__gt=0).order_by('category__sort_order', 'id')
+def arrange_order_tables():
+    today = libs.get_today()
+    nextweek = today + timedelta(days=7)
+    calrosset_products = models.Product.objects.filter(archived=False, distribution_date__isnull=False, category__producer_id=1)
+    
+    for product in calrosset_products:
+        quantity = models.Order.objects.filter(product=product).aggregate(Sum('quantity'))['quantity__sum']
+        
+        if quantity is None:
+            quantity = Decimal(0)
+        
+        product.total_quantity = quantity
+        
+        if product.arrived_quantity == 0:
+            product.arrived_quantity = product.total_quantity
+            
+        #product.distribution_date = date(nextweek.year, 8, 20)
+        #product.order_limit_date = datetime(today.year, 8, 18, 5, 0)
+        product.save()
+
+    canpipi_products = models.Product.objects.filter(archived=False, distribution_date__isnull=False, category__producer_id=2)
+    for product in canpipi_products:
+        quantity = models.Order.objects.filter(product=product).aggregate(Sum('quantity'))['quantity__sum']
+        
+        if quantity is None:
+            quantity = Decimal(0)
+        
+        product.total_quantity = quantity
+
+        if product.arrived_quantity == 0:
+            product.arrived_quantity = product.total_quantity
+
+        #product.distribution_date = nextweek
+        #product.distribution_date = date(nextweek.year, 8, 20)
+        #product.order_limit_date = datetime(nextweek.year, 8, 17, 22, 0)
+        product.save()
+
+@login_required
+@permission_required('elbroquil.prepare_baskets')
+def view_order_totals(request):
+    # TODO REMOVE
+    # arrange_order_tables()
+    
+    products = models.Product.objects.filter(archived=False, distribution_date=libs.get_today(),total_quantity__gt=0).order_by('category__sort_order', 'id')
+
+    add_category_row = []
+    prev_category = ''
+
+
+    '''If the form was submitted'''
+    if request.method == 'POST':
+        with transaction.atomic():
+            for product in products:
+                key = "product_arrived_"+str(product.id)
+                item = request.POST.get(key).strip()
+            
+                if len(item) > 0:
+                    '''Update the arrived quantity and status'''
+                    product.arrived_quantity = Decimal(item.replace(',', '.'))
+                    product.save()
+                
+                    '''If product arrived quantity is marked as 0, mark the product orders too. Also do the reverse'''
+                    if product.arrived_quantity == 0:
+                        models.Order.objects.filter(product_id=product.id).update(arrived_quantity=0, status=models.STATUS_DID_NOT_ARRIVE)
+                    else:
+                        models.Order.objects.filter(product_id=product.id).update(arrived_quantity=F('quantity'), status=models.STATUS_NORMAL)
+
+    for prod in products:
+        if prod.category.name != prev_category:
+            add_category_row.append(True)
+            prev_category = prod.category.name
+        else:
+            add_category_row.append(False)
+    
+    products = zip(products, add_category_row)
+    return render(request, 'distribution/view_order_totals.html', {
+          'products': products,
+      })
+
+@login_required
+@permission_required('elbroquil.prepare_baskets')
+def count_initial_cash(request):
+    if request.method == 'POST':
+        request.session['initial_cash'] = request.POST.get("initial-cash").strip()
+    
+    initial_cash = ''
+    
+    if request.session.get('initial_cash'):
+        initial_cash = request.session['initial_cash']
+    
+    return render(request, 'distribution/count_initial_cash.html', {
+          'initial_cash': initial_cash,
+      })
+
+@login_required
+@permission_required('elbroquil.prepare_baskets')
+def view_basket_counts(request):
+    '''If basket counts are not already calculated and stored in session, calculate them'''
+    if True: #not request.session.get('baskets'):   # TODO ALWAYS GENERATING THE SUMMARY
+        orders = models.Order.objects.filter(product__distribution_date=libs.get_today()).prefetch_related('product', 'user').order_by('user__first_name', 'user__last_name')
+
+        order_summary = []
+        last_order_total = 0
+        last_order_user = -1
+        last_order_user_name = ''
+
+        for order in orders:
+            if order.user.id != last_order_user:
+                if last_order_total > 0:
+                    if last_order_total < 20:
+                        order_summary.append([last_order_user, last_order_user_name, last_order_total, 1])
+                    else:
+                        order_summary.append([last_order_user, last_order_user_name, last_order_total, 2])
+
+                last_order_total = 0
+                last_order_user = order.user.id
+                last_order_user_name = order.user.get_full_name()
+
+            last_order_total += order.quantity * order.product.price
+
+        if last_order_total > 0:
+            if last_order_total < 20:
+                order_summary.append([last_order_user, last_order_user_name, last_order_total, 1])
+            else:
+                order_summary.append([last_order_user, last_order_user_name, last_order_total, 2])
+            
+        pickled_summary = pickle.dumps(order_summary)
+        request.session['baskets'] = pickled_summary
+        
+    else:
+        '''If there is pickled data in the session, load it'''
+        order_summary = pickle.loads(request.session['baskets'])
+        
+    
+    return render(request, 'distribution/view_basket_counts.html', {
+            'order_summary': order_summary,
+            
+            'product_name': '',
+            'prev_product_name': '',
+            'next_product_name': 'Next prod',
+
+            'current_product_no': 0,
+            'prev_product_no': 0,
+            'next_product_no': 1,
+      })
+    
+    
+@login_required
+@permission_required('elbroquil.prepare_baskets')
+def view_product_orders(request, product_no=''):
+    products = models.Product.objects.filter(archived=False, distribution_date=libs.get_today(),arrived_quantity__gt=0).order_by('category__sort_order', 'id')
      
     previous_product = None
     current_product = None
@@ -61,8 +211,6 @@ def view_product_orders(request, product_no=''):
     current_product_id = products[current_product-1].id
 
     if request.method == 'POST': # If the form has been submitted...
-        #for field in form.cleaned_data['producer']
-
         # Delete old orders and insert new ones
         with transaction.atomic():
             orders = models.Order.objects.filter(product_id=current_product_id)
@@ -101,7 +249,10 @@ def view_product_orders(request, product_no=''):
     if next_product:
         next_product_name = products[next_product-1].name
         
-    progress = int(80*current_product/len(products))
+    initial_progress_percentage = 12
+    final_progress_percentage = 12
+    product_progress_percentage = 100 - initial_progress_percentage - final_progress_percentage
+    progress = int(product_progress_percentage*current_product/len(products))
         
     return render(request, 'distribution/view_product_orders.html', {
        'product_orders': product_orders,
@@ -120,44 +271,273 @@ def view_product_orders(request, product_no=''):
        'progress': progress,
     })
     
+    
+@login_required
+@permission_required('elbroquil.prepare_baskets')
+def member_payment(request):
+    member_orders = pickle.loads(request.session['baskets'])
+    member_id = -1
+    
+    products = models.Product.objects.filter(archived=False, distribution_date=libs.get_today(),arrived_quantity__gt=0).order_by('category__sort_order', 'id')
+    
+    previous_product = len(products)
+    prev_product_name = products.last().name
+    
+    counted_product_list = []
+    not_arrived_product_list = []
+    not_ordered_product_list = []
+    amount_changed_product_list = []
+    
+    total_price = 0
+    last_debt = 0
+    quarterly_fee = 0
+    quarterly_fee_paid = False
+    total_to_pay = 0
+    paid_amount = 0
+    next_debt = 0
+    
+    today = libs.get_today()
+    
+    posted_paid_amount = 0
+    posted_quarterly_fee_paid = ""
+    
+    if request.method == 'POST':
+        form_name = request.POST.get("form-name").strip()
+        member_id = int(request.POST.get("member-id").strip())
+        
+        orders = models.Order.objects.filter(user_id=member_id, archived=False, product__distribution_date=today).prefetch_related('product').order_by('product__category__sort_order', 'product__name')
+        
+
+        # Separate the orders according to their status and calculate the order sum
+        # using only the orders which are OK (that arrived)
+        for order in orders:
+            if order.status == models.STATUS_NORMAL:
+                counted_product_list.append(order)
+                
+                total_price += (order.arrived_quantity*order.product.price).quantize(Decimal('.01'))
+                
+                if order.arrived_quantity != order.quantity:
+                    amount_changed_product_list.append(order)
+                
+            elif order.status == models.STATUS_DID_NOT_ARRIVE:
+                not_arrived_product_list.append(order)
+            elif order.status == models.STATUS_MIN_ORDER_NOT_MET:
+                not_ordered_product_list.append(order)
+        
+        # Get debt from last weeks (if exists)
+        debt = models.Debt.objects.filter(user_id=member_id, payment__date__lt=today).order_by('-payment__date').first()
+        
+        if debt is not None:
+            last_debt = debt.amount
+            
+        quarterly = models.Quarterly.objects.filter(Q(user_id=member_id), Q(created_date__gt = timezone.now() - timedelta(days=60)), Q(payment__isnull=True) | Q(payment__date__gte=today) ).first()
+        
+        if quarterly is not None:
+            quarterly_fee = quarterly.amount
+            quarterly_fee_paid = quarterly.payment_id is not None
+        
+        total_to_pay = total_price + last_debt
+        
+        if quarterly_fee_paid:
+            total_to_pay += quarterly_fee
+        
+        payment = models.Payment.objects.filter(user_id=member_id, date__gte=today).first()
+        
+        if payment is not None:
+            paid_amount = payment.amount
+            debt = models.Debt.objects.filter(user_id=member_id, payment__date__gte=today).first()
+            
+            if debt is not None:
+                next_debt = debt.amount
+            else:
+                next_debt = total_to_pay - paid_amount
+            
+        # If payment form was submitted, 
+        if form_name == "payment-form":
+            paid_amount = Decimal(request.POST.get("amount-paid").strip().replace(',', '.'))
+            posted_quarterly_fee_paid = request.POST.get("pay-quarterly") is not None
+            
+            # Update the price variables
+            total_to_pay = total_price + last_debt
+
+            if posted_quarterly_fee_paid:
+                total_to_pay += quarterly_fee
+            
+            next_debt = total_to_pay - paid_amount
+                
+            # update payment, debt, quarterly (and later consumption) tables
+            if payment is not None:
+                payment.amount = paid_amount
+                payment.save()
+            else:
+                payment = models.Payment()
+                payment.user_id = member_id
+                payment.date = libs.get_today()
+                payment.amount = paid_amount
+                payment.save()
+            
+            # Create or update the debt for the following weeks
+            next_debt_object, created = models.Debt.objects.get_or_create(user_id=member_id, payment=payment)
+            
+            next_debt_object.amount = next_debt
+            next_debt_object.save()
+            
+            # If there was a quarterly fee, update its row
+            if quarterly is not None:
+                quarterly_fee_paid = posted_quarterly_fee_paid
+                
+                if posted_quarterly_fee_paid:
+                    quarterly.payment = payment
+                    quarterly.save()
+                else:
+                    quarterly.payment = None
+                    quarterly.save()
+                    
+            # TODO UPDATE CONSUMPTION TABLE
+            consumption, created = models.Consumption.objects.get_or_create(user_id=member_id, payment=payment)
+            
+            #consumption.user_id = member_id
+            consumption.amount = total_price
+            consumption.save()
+
+
+    progress = 4
+    payment_count = models.Payment.objects.filter(date__gte=today).count()
+            
+    return render(request, 'distribution/member_payment.html', {
+       'member_orders': member_orders,
+       'paid_count': payment_count,
+       'total_count': len(member_orders),
+       'member_id': member_id,
+       'previous_product': previous_product,
+       'prev_product_name': prev_product_name,
+       
+       'counted_product_list': counted_product_list,
+       'not_arrived_product_list': not_arrived_product_list,
+       'not_ordered_product_list': not_ordered_product_list,
+       'amount_changed_product_list': amount_changed_product_list,
+       'total_price': total_price,
+       
+       'last_debt': last_debt,
+       'quarterly_fee': quarterly_fee,
+       'quarterly_fee_paid': quarterly_fee_paid,
+       'total_to_pay': total_to_pay,
+       'paid_amount': paid_amount,
+       'next_debt': next_debt,
+       
+       'progress': progress
+    })
 
 @login_required
-def view_order_totals(request):
-    #products = models.Product.objects.filter(Q(archived=False), Q(distribution_date__gt=date.today().strftime('%Y-%m-%d')), Q(order__isnull=False)).annotate(total_order=Sum('order__quantity')).order_by('category__sort_order', 'id')
+@permission_required('elbroquil.prepare_baskets')
+def account_summary(request):
+    today = libs.get_today()
+    initial_cash = 0
+    collected_amount = 0
+    debt_balance = 0
+    final_amount = 0
+    expected_final_amount = 0
     
-    products = models.Product.objects.filter(archived=False, distribution_date=date.today().strftime('%Y-%m-%d'),total_quantity__gt=0).order_by('category__sort_order', 'id')
+    # Read initial cash from session
+    if request.session.get('initial_cash'):
+        initial_cash = Decimal(request.session['initial_cash'])
     
-    add_category_row = []
-    prev_category = ''
+    # Calculate collected amount from Payment table
+    collected_amount = models.Payment.objects.filter(date__gte=today).aggregate(Sum('amount'))['amount__sum'] or 0
+    member_consumed_amount = models.Consumption.objects.filter(payment__date__gte=today).aggregate(Sum('amount'))['amount__sum'] or 0
+    quarterly_fee_collected_amount = models.Quarterly.objects.filter(payment__date__gte=today).aggregate(Sum('amount'))['amount__sum'] or 0
     
+    # Calculate debt balance from Debt table (for each user, check for debt before today and debt today)
+    previous_debt_total = 0
+    current_debt_total = 0
     
-    '''If the form was submitted'''
-    if request.method == 'POST':
-        with transaction.atomic():
-            for product in products:
-                key = "product_arrived_"+str(product.id)
-                item = request.POST.get(key).strip()
-                
-                if len(item) > 0:
-                    '''Update the arrived quantity and status'''
-                    product.arrived_quantity = Decimal(item.replace(',', '.'))
-                    product.save()
-                    
-                    '''If product arrived quantity is marked as 0, mark the product orders too. Also do the reverse'''
-                    if product.arrived_quantity == 0:
-                        models.Order.objects.filter(product_id=product.id).update(arrived_quantity=0, status=models.STATUS_DID_NOT_ARRIVE)
-                    else:
-                        models.Order.objects.filter(product_id=product.id).update(arrived_quantity=F('quantity'), status=models.STATUS_NORMAL)
-    
-    for prod in products:
-        if prod.category.name != prev_category:
-            add_category_row.append(True)
-            prev_category = prod.category.name
-        else:
-            add_category_row.append(False)
+    all_users = User.objects.filter(is_superuser=False)
+    for user in all_users:
+        # Get today's debt for this user
+        debt = models.Debt.objects.filter(user=user, payment__date__gte=today).first()
         
-    products = zip(products, add_category_row)
-    return render(request, 'distribution/view_order_totals.html', {
-          'products': products,
-      })
-
+        # If there is a debt, find the previous debt too and add them to the totals
+        if debt:
+            current_debt_total += debt.amount
+            
+            prev_debt = models.Debt.objects.filter(user=user, payment__date__lt=today).order_by('-payment__date').first()
+            
+            if prev_debt:
+                previous_debt_total += prev_debt.amount
+            
+        # Else if there is no debt from today, find the last debt for the user and add it to both amounts
+        # so that it is reflected in the totals
+        else:
+            prev_debt = models.Debt.objects.filter(user=user, payment__date__lt=today).order_by('-payment__date').first()
+            
+            if prev_debt:
+                previous_debt_total += prev_debt.amount
+                current_debt_total += prev_debt.amount
+    
+    # Debt balance is: the net debt change of the users (the extra amount that the cooperative should receive later on) 
+    debt_balance = current_debt_total - previous_debt_total
+    
+    # Read final amount from DistributionAccountDetail table (if record exists for today)
+    account_detail = models.DistributionAccountDetail.objects.filter(date__gte=today).first()
+        
+    if account_detail:
+        final_amount = account_detail.final_amount
+        
+    
+    # Calculate producer-required payment amount pairs
+    producers_with_order = []
+    producer_totals = []
+    overall_producer_payment = 0
+    
+    all_producers = models.Producer.objects.all().order_by('company_name')
+    for producer in all_producers:
+        products = models.Product.objects.filter(category__producer=producer, distribution_date=today, total_quantity__gt=0)
+        producer_sum = 0
+        
+        for product in products:
+            producer_sum += product.arrived_quantity * product.price
+            
+        if producer_sum > 0:
+            producer_sum += producer.transportation_cost
+            producers_with_order.append(producer)
+            producer_totals.append(producer_sum)
+            overall_producer_payment += producer_sum
+        
+    
+    producer_payments = zip(producers_with_order, producer_totals)
+    
+    expected_final_amount = (initial_cash + collected_amount - overall_producer_payment).quantize(Decimal('.01'))
+    
+    
+    # If form was posted (final amount updated)
+    if request.method == 'POST':
+        # Get posted final amount
+        final_amount = Decimal(request.POST.get("final-amount").strip())
+        
+        # Write the calculated values and create/update the DB record
+        if not account_detail:
+            account_detail = models.DistributionAccountDetail()
+        
+        account_detail.initial_amount = initial_cash
+        account_detail.member_consumed_amount = member_consumed_amount
+        account_detail.producer_paid_amount = overall_producer_payment
+        account_detail.debt_balance_amount = current_debt_total
+        account_detail.quarterly_fee_collected_amount = quarterly_fee_collected_amount
+        account_detail.expected_final_amount = expected_final_amount    
+        
+        account_detail.final_amount = final_amount
+        
+        account_detail.save()
+    
+    progress = 8
+    
+    return render(request, 'distribution/account_summary.html', {
+       'initial_amount': initial_cash,
+       'collected_amount': collected_amount,
+       'debt_balance': debt_balance,
+       'producer_payments': producer_payments,
+       'final_amount': final_amount,
+       'expected_final_amount': expected_final_amount,
+       
+       'progress': progress
+    })

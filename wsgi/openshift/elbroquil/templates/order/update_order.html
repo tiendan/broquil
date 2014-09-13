@@ -1,33 +1,20 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load l10n %}
+{% load tz %}
 
 {% block content_title %}
-<h1>{% trans "Update order" %} <button id="save_button" type="button" class="btn btn-lg btn-success pull-right" disabled="disabled">{% trans "Save changes" %}</button></h1>
+<h1>{% trans "Update order" %}</h1>
 {% endblock %}
 
 
 {% block extrahead %}
-<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
-<link rel="stylesheet" href="/static/styles/bootstrap-formhelpers.min.css" type="text/css">
-<!--<link rel="stylesheet" href="/static/styles/accordion.css" type="text/css">
-<link rel="stylesheet" href="/static/styles/custom.css" type="text/css">
--->
-<!-- #accordion .ui-accordion-content {
-	width: 100%;
-	background-color: #f3f3f3;
-	color: #777;
-	font-size: 10pt;
-	line-height: 16pt;
-} -->
-
-
+<link rel="stylesheet" href="/static/styles/star-rating.min.css" type="text/css">
 {% endblock %}
 
 {% block scriptincludes %}
-<script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/static/scripts/bootstrap-formhelpers-number.js"></script>
+<script type="text/javascript" src="/static/scripts/star-rating.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -51,7 +38,11 @@
 							{% else %}
 							  <li class="previous blankpreviouspager"></li>
 							{% endif %}
-						  <li><h2 class="fillSpace">{{ category_name }}</h2></li>
+						  <li><h2 class="fillSpace">{{ category_name }}<br/><small>{% trans "Available until:"%} <span class="label label-warning">
+							{% timezone "Europe/Berlin" %}
+								{{ products.0.0.order_limit_date }}
+							{% endtimezone %}
+							</span></small></h2></li>
 							{% if next_category_no %}	
 							  <li class="next"><a href="{% url 'elbroquil.views.update_order' next_category_no %}">{{ next_category_name }} &rarr;</a></li>
 							{% else %}
@@ -60,10 +51,10 @@
 						</ul>
 					</div>
 					
-					<div class="table-responsive">
+					<div class="table-responsive col-md-10">
 						<table id="table_{{ category_id }}" class="category-table table table-striped table-condensed table-bordered" >
 						<thead>
-							<tr><th>{% trans "Order" %}</th><th>{% trans "Product" %}</th><th>{% trans "Price" %}</th><th>{% trans "Unit" %}</th><th>{% trans "Origin" %}</th></tr>
+							<tr><th>{% trans "Order" %}</th><th>{% trans "Product" %}</th><th>{% trans "Price" %}</th><th>{% trans "Unit" %}</th><th>{% trans "Origin" %}</th><th>{% trans "Rating" %}</th></tr>
 						</thead>
 						<tbody>
 							{% for product, product_order in products %}
@@ -77,14 +68,20 @@
 									<input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text" class="quantity-input product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-buttons="false"{% if product_order %} value="{{ product_order|localize }}" {% endif %}/>
 									{% endif %}
 									</td>
-								<td>{{ product.name }} {% if product.comments %}<span class="glyphicon glyphicon-comment" title="{{ product.comments }}"></span>{% endif %}</td>
+								<td>{{ product.name }} {% if product.comments %}<span class="glyphicon glyphicon-comment right-tooltip larger-text" data-toggle="tooltip" data-placement="right" title="{{ product.comments }}"></span>{% endif %}</td>
 								<td class="price">{{ product.price }}</td>
 								<td>&euro;/{{ product.unit }}</td>
 								<td>{{ product.origin }}</td>
+								<td>{% if product.average_rating > 0 %}<input class="rating" data-readonly="true" value="{{ product.average_rating|unlocalize }}" data-size="xs" data-show-clear="false" data-show-caption="false">{% endif %}</td>
 							</tr>
 							{% endfor %}
 						</tbody>
 						</table>
+					</div>
+					<div class="col-md-2">
+						<div class="sidebar">
+						<button id="save_button" type="button" class="btn btn-lg btn-success pull-right" disabled="disabled">{% trans "Save changes" %}</button>
+						</div>
 					</div>
 				</div>
 	        </form>
@@ -102,9 +99,7 @@
 		// Set selected menu item
 		$('#menu-item-order').addClass("active");
 		
-		$(".right-tooltip").tooltip({
-		    placement: "right"
-		});
+		$(".right-tooltip").tooltip();
 		
 		// If text inputs are changed, highlight the table row depending on textbox contents
 		// When textbox is filled (product is ordered), row is highlighted with green color ('success' class)

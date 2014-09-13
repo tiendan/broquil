@@ -47,16 +47,24 @@ if DEBUG:
 else:
      ALLOWED_HOSTS = ['*']
 
+
+DEBUG_TOOLBAR_CONFIG = {
+    'JQUERY_URL':'',
+}
+
 # Application definition
 
 INSTALLED_APPS = (
-    'suit',
+    #'suit',
+    'django_admin_bootstrapped.bootstrap3',
+    'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'elbroquil',
     'formadmin',
     'django_tables2',
@@ -65,6 +73,8 @@ INSTALLED_APPS = (
     'rosetta',
     'bootstrapform',
     'debug_toolbar',
+    'chroniker',
+    'suit_redactor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -117,7 +127,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'elbroquil_ultim',
+            'NAME': 'elbroquil_ultim2',
             'USER': 'onur2',
             'PASSWORD': '12345',
             'HOST': 'localhost',
@@ -125,12 +135,22 @@ else:
         }
     }
 
+# Email settings
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_PORT = 587
+
+EMAIL_HOST_SECONDARY_USER = os.environ['EMAIL_HOST_SECONDARY_USER']
+EMAIL_HOST_SECONDARY_PASSWORD = os.environ['EMAIL_HOST_SECONDARY_PASSWORD']
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'tr'
+LANGUAGE_CODE = 'ca'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 

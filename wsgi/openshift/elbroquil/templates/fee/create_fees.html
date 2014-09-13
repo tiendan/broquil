@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load admin_urls %}
+
+{% block content_title %}
+<h1>{% blocktrans %}Create quarterly fee (Year: {{ year }}, Quarter: {{ quarter }}){% endblocktrans %} <button id="confirm_button" type="button" class="btn btn-lg btn-success pull-right">{% trans "Create fees" %}</button></h1>
+{% endblock %}
+
+
+{% block extrahead %}
+<link rel="stylesheet" href="/static/styles/bootstrap-duallistbox.css">
+{% endblock %}
+
+{% block scriptincludes %}
+<script type="text/javascript" src="/static/scripts/jquery.bootstrap-duallistbox.min.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="content-main" class="inner-two-columns">
+		{% if alert_message %}
+		<div class="alert alert-danger" role="alert">{{ alert_message }}</div>
+		{% endif %}
+		<form id="create_fee_form" role="form"  action="{% url 'elbroquil.views.create_fees' %}" method="POST"  class="form-horizontal">
+         {% csrf_token %}
+		  <!-- <div class="form-group"> -->
+			<div class="form-group">
+				<div class="col-md-3">
+					<label class="control-label col-md-3" for="fee_amount">{% trans "Amount:" %}</label>
+				</div>
+				<div class="col-md-3">
+				 	<div class="input-group">	
+						<input id="fee_amount" name="fee_amount" type="text" class="quantity-input form-control bfh-number" data-keyboard="true" data-integer="false"/>
+						<div class="input-group-addon"><strong>&euro;</strong></div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-6">
+					<h4>{% trans "Remaining Members" %}</h4>
+				</div>
+				<div class="col-md-6">
+					<h4>{% trans "Selected Members" %}</h4>
+				</div>
+			</div>
+			<div class="form-group">
+	      		 <select id="user_ids" multiple="multiple" name="user_ids" class="form-control">
+					{% for user in users %}
+				  		<option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+				  	{% endfor %}
+				</select>
+			</div>
+		  <!-- </div> -->
+		</form>
+    </div>
+{% endblock %}
+
+
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {	
+		// Set selected menu item
+		$('#menu-item-fee').addClass("active");
+		
+		// Activate the button's form submit
+		$("#confirm_button").click(function(e) {
+			$("form").submit();
+		});
+		
+		$('#user_ids').bootstrapDualListbox({
+			showFilterInputs: false,
+			infoText: '',
+			infoTextFiltered: '',
+			infoTextEmpty: ''
+			});
+	  });	
+</script>
+{% endblock %}

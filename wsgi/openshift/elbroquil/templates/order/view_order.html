@@ -11,12 +11,13 @@
 
 {% block scriptincludes %}
 <script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script>
+<!-- <script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script> -->
 {% endblock %}
 
 {% block content %}
     <div id="content-main" class="inner-two-columns">
 		{% if orders_with_totals %}
+			<h2>{{ orders_with_totals.0.0.product.distribution_date }}</h2>
 	        <div class="table-responsive">
 				<table class="category_table table table-striped table-condensed table-bordered" >
 				<thead>
@@ -32,6 +33,20 @@
 						<td class="total success">{{ total }}</td>
 					</tr>
 					{% endfor %}
+					{% if debt != 0 %}
+					<tr>
+						<td colspan="2"></td>
+						<td colspan="2" class="">{% trans "Debt:" %}</td>
+						<td class="total success">{{ debt }}</td>
+					</tr>
+					{% endif %}
+					{% if quarterly_fee > 0 %}
+					<tr>
+						<td colspan="2"></td>
+						<td colspan="2" class="">{% trans "Quarterly Fee:" %}</td>
+						<td class="total success">{{ quarterly_fee }}</td>
+					</tr>
+					{% endif %}
 					<tr>
 						<td colspan="2"></td>
 						<td colspan="2" class="total-info success">{% trans "TOTAL TO PAY:" %}</td>
@@ -42,6 +57,28 @@
 			</div>
 		{% else %}
 			<div class="alert alert-warning">{% trans "You do not have any order currently!" %}</div>
+		{% endif %}
+		
+		{% if rest_of_orders %}
+			<h2>{% trans "Products to be distributed later" %}</h2>
+	        <div class="table-responsive">
+				<table class="category_table table table-striped table-condensed table-bordered" >
+				<thead>
+					<tr><th>{% trans "Distribution Date" %}</th><th class="product_name_header">{% trans "Product" %}</th><th class="product_price_header">{% trans "Price" %}</th><th class="product_order_header">{% trans "Order" %}</th><th class="product_unit_header">{% trans "Unit" %}</th></tr>
+				</thead>
+				<tbody>
+					{% for order in rest_of_orders %}
+					<tr>
+						<td>{{ order.product.distribution_date }}</td>
+						<td>{% if not order.arrived_quantity %}<s>{{ order.product.name }}</s>{% else %}{{ order.product.name }}{% endif%}</td>
+						<td class="price">{{ order.product.price }}</td>
+						<td class="quantity">{{ order.arrived_quantity }}</td>
+						<td>{{ order.product.unit }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+				</table>
+			</div>
 		{% endif %}
     </div>
 {% endblock %}

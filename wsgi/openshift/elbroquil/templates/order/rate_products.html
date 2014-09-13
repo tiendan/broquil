@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load l10n %}
+
+{% block content_title %}
+<h1>{% trans "Rate products" %}</h1>
+{% endblock %}
+
+
+{% block extrahead %}
+<link rel="stylesheet" href="/static/styles/star-rating.min.css" type="text/css">
+{% endblock %}
+
+{% block scriptincludes %}
+<script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
+<!-- <script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script> -->
+<script type="text/javascript" src="/static/scripts/bootstrap-formhelpers-number.js"></script>
+<script type="text/javascript" src="/static/scripts/star-rating.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="content-main" class="inner-two-columns">
+		{% if orders %}
+	        <form action="{% url 'elbroquil.views.rate_products' %}" method="POST">
+		    	{% csrf_token %}
+				<div>
+					<div class="table-responsive col-md-10">
+						<table id="table_{{ category_id }}" class="category-table table table-striped table-condensed table-bordered" >
+						<thead>
+							<tr><th>{% trans "Product" %}</th><th>{% trans "Rating" %}</th></tr>
+						</thead>
+						<tbody>
+							{% for order in orders %}
+							<tr {% if product_order %}class="success"{% endif %}>
+								<td>{{ order.product.name }}</td>
+								<td><input id="rating-{{ order.id }}" name="rating-{{ order.id }}" {% if order.rating %}value="{{ order.rating }}"{% else %}value="0" {% endif %} type="number" class="rating" min="0" max="5" step="1" data-size="xs" data-default-caption="{% trans "{rating} stars" %}" data-star-captions="{}" data-clear-caption="{% trans "Not rated" %}" data-clear-button-title="{% trans "Clear" %}"></td>
+							</tr>
+							{% endfor %}
+						</tbody>
+						</table>
+					</div>
+					<div class="col-md-2">
+						<div class="sidebar">
+						<button id="save_button" type="submit" class="btn btn-lg btn-success pull-right">{% trans "Save ratings" %}</button>
+						</div>
+					</div>
+				</div>
+	        </form>
+		{% else %}
+			<div class="alert alert-warning">{% trans "No products to rate!" %}</div>
+		{% endif %}
+    </div>
+	    </div>
+{% endblock %}
+
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {	
+		// Set selected menu item
+		$('#menu-item-order').addClass("active");
+	  });	
+</script>
+{% endblock %}

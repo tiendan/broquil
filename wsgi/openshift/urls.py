@@ -9,18 +9,33 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', 'elbroquil.views.view_order', name='site_root'),
     url(_(r'^about/'), TemplateView.as_view(template_name="about.html"), name='about'),
-    url(_(r'^perma/([0-9]+)/$'), 'elbroquil.views.view_product_orders', name='view_product_orders'),
-    url(_(r'^perma/$'), 'elbroquil.views.view_order_totals', name='view_order_totals'),
     
+    # Distribution related URLs
+    url(_(r'^dist/cash/$'), 'elbroquil.views.count_initial_cash', name='count_initial_cash'),
+    url(_(r'^dist/baskets/$'), 'elbroquil.views.view_basket_counts', name='view_basket_counts'),
+    url(_(r'^dist/payment/$'), 'elbroquil.views.member_payment', name='member_payment'),
+    url(_(r'^dist/account/$'), 'elbroquil.views.account_summary', name='account_summary'),
+    url(_(r'^dist/([0-9]+)/$'), 'elbroquil.views.view_product_orders', name='view_product_orders'),
+    url(_(r'^dist/$'), 'elbroquil.views.view_order_totals', name='view_order_totals'),
+    
+    # Order related URLs
+    url(_(r'^order/rate/$'), 'elbroquil.views.rate_products', name='rate_products'),
     url(_(r'^order/([0-9]+)/$'), 'elbroquil.views.update_order', name='update_order'),
     url(_(r'^order/$'), 'elbroquil.views.view_order', name='view_order'),
+    url(_(r'^email/$'), 'elbroquil.views.test_email', name='test_email'),
     
+    # Product related URLs
     url(_(r'^products/view/(?P<producer_id>[0-9]+)$'), 'elbroquil.views.view_products', name='view_products'),
     url(_(r'^products/view/$'), 'elbroquil.views.view_products', name='view_products'),
     url(_(r'^products/confirm/$'), 'elbroquil.views.confirm_products', name='confirm_products'),
     url(_(r'^products/check/$'), 'elbroquil.views.check_products', name='check_products'),
     url(_(r'^products/upload/$'), 'elbroquil.views.upload_products', name='upload_products'),
     
+    # Quarterly fee related URLs
+    url(_(r'^fees/create/$'), 'elbroquil.views.create_fees', name='create_fees'),
+    url(_(r'^fees/view/$'), 'elbroquil.views.view_fees', name='view_fees'),
+    
+    # Admin and account URLs
     url(r'^admin/', include(admin.site.urls)),
     
     (r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),

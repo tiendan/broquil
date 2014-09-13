@@ -191,12 +191,15 @@
                 value = String(value).split(',')[0].split('.')[0].replace(/\D/g, '');
             }
             else {
-                value = String(value).replace(',', '.').replace(/[^0-9\.]/g, '');
+                value = String(value).replace(',', '.').replace(/[^0-9\.-]/g, '');
             }
             
       }
       if (String(value).length === 0) {
-        value = this.options.min;
+          if (this.options.allowblank === true)
+            return '';
+          else
+            value = this.options.min;
       }
       
       if(!(this.options.allowzero === true) && parseInt(value) == 0) {
@@ -218,6 +221,10 @@
           zero;
       
       value = this.getValue();
+      
+      if (this.options.allowblank === true && value == '') {
+          return;
+      }
       
       if (value > this.options.max) {
         if (this.options.wrap === true) {
@@ -243,8 +250,14 @@
         }
       }
       
-      if (value !== this.$element.val()) {
-        this.$element.val(value);
+      
+      if (value !== this.$element.val()) {  
+        if (this.options.integer === false && value != '' && this.options.trailingzeros) {
+            this.$element.val(parseFloat(value).toFixed(2));
+        }
+        else {
+            this.$element.val(value);
+        }
       }
     }
 
