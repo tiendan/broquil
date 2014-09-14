@@ -1,1 +1,1 @@
-chroniker -e activate_this.py 
+chroniker -e $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate_this.py 
