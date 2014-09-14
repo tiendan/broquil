@@ -1,1 +1,1 @@
-chroniker -e $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate_this.py 
+chroniker -e $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate_this.py -p $OPENSHIFT_HOMEDIR/app-root/repo/wsgi/openshift/
