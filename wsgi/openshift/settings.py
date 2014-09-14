@@ -120,10 +120,20 @@ TEMPLATE_DIRS = (
 if ON_OPENSHIFT:
      DATABASES = {
          'default': {
-             'ENGINE': 'django.db.backends.sqlite3',
-             'NAME': os.path.join(os.environ['OPENSHIFT_DATA_DIR'], 'db.sqlite3'),
+             'ENGINE': 'django.db.backends.mysql',
+             'NAME': 'ultim',
+             'USER': 'adminWEZLkW2',             # Not used with sqlite3.
+             'PASSWORD': 'lhi4Kc1tws2E',         # Not used with sqlite3.
+             'HOST': os.environ['OPENSHIFT_MYSQL_DB_HOST'],             # Set to empty string for localhost. Not used with sqlite3.
+             'PORT': os.environ['OPENSHIFT_MYSQL_DB_PORT'],             # Set to empty string for default. Not used with sqlite3.
          }
      }
+     #     DATABASES = {
+     #         'default': {
+     #             'ENGINE': 'django.db.backends.sqlite3',
+     #             'NAME': os.path.join(os.environ['OPENSHIFT_DATA_DIR'], 'db.sqlite3'),
+     #         }
+     #     }
 else:
     DATABASES = {
         'default': {
