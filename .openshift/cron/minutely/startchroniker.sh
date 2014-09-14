@@ -1,1 +1,1 @@
-* * * * * chroniker -e activate_this.py 
+chroniker -e activate_this.py 
