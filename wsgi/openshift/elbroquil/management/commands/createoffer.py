@@ -165,6 +165,8 @@ class Command(BaseCommand):
         # Connect to the Gmail IMAP server
         user = settings.EMAIL_HOST_SECONDARY_USER
         pwd = settings.EMAIL_HOST_SECONDARY_PASSWORD
+        
+        print "IMAP USER AND PASSWORD:", user, pwd
 
         m = imaplib.IMAP4_SSL("imap.gmail.com")
         m.login(user,pwd)
