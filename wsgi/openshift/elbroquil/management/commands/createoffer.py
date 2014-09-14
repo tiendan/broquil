@@ -24,7 +24,7 @@ class Command(BaseCommand):
     help = 'Sends reminder email to the active members'
 
     def handle(self, *args, **options):
-        offer_summary = ""
+        offer_summary = "" 
         
         # Check if there will be an offer this week
         next_dist_date = libs.get_next_distribution_date()
