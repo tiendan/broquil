@@ -10,14 +10,22 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
+from subprocess import call
 import os
 import imp
+
 
 ON_OPENSHIFT = False
 if os.environ.has_key('OPENSHIFT_REPO_DIR'):
      ON_OPENSHIFT = True
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+
+# Read the critical email account and password information into the environment variables
+if ON_OPENSHIFT:
+    call(["source", os.path.join(os.environ['OPENSHIFT_DATA_DIR'], '.myenv')])
+else:
+    call(["source", "../../data/.myenv"])
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/

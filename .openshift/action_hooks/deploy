@@ -7,6 +7,8 @@
 source $OPENSHIFT_DATA_DIR/.myenv
 source $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate
 
+echo $EMAIL_HOST_USER
+
 if [ ! -f $OPENSHIFT_DATA_DIR/db.sqlite3 ]
 then
     echo "Copying $OPENSHIFT_REPO_DIR/wsgi/openshift/db.sqlite3 to $OPENSHIFT_DATA_DIR"
