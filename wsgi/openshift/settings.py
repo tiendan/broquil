@@ -23,6 +23,8 @@ BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 # Read the critical email account and password information into the environment variables
 if ON_OPENSHIFT:
+    print "THE FINAL PATH!!"
+    print os.path.join(os.environ['OPENSHIFT_DATA_DIR'], '.myenv')
     call(["source", os.path.join(os.environ['OPENSHIFT_DATA_DIR'], '.myenv')])
 else:
     call(["source", "../../data/.myenv"])
