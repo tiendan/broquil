@@ -78,7 +78,7 @@ class Command(BaseCommand):
                     email_subject = email.full_subject()
                     html_content = email.body
                     
-                send_email_to_address(email_subject, html_content, producer.email)
+                libs.send_email_to_address(email_subject, html_content, [producer.email])
                 
                 # Skip to next producer
                 continue
