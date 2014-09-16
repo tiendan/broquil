@@ -5,4 +5,3 @@
 # could be python, php, ruby, etc.
 
 # Activate VirtualEnv in order to use the correct libraries
-source $OPENSHIFT_DATA_DIR/.myenv

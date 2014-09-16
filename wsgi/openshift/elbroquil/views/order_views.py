@@ -38,7 +38,7 @@ def update_order(request, category_no=''):
         - having products with order limit date in the future
         - not archived
     '''
-    categories = models.Product.objects.filter(archived=False, order_limit_date__gt=libs.get_now()).distinct('category').values('category__id', 'category__name', 'category__visible_name')
+    categories = models.Category.objects.filter(product__archived=False, product__order_limit_date__gt=libs.get_now()).distinct()
 
     '''Choose the indices for the current, previous and next categories'''
     previous_category = None
@@ -64,7 +64,7 @@ def update_order(request, category_no=''):
             next_category = current_category + 1
 
     '''Get current category id'''
-    current_category_id = categories[current_category-1]['category__id']
+    current_category_id = categories[current_category-1].pk
 
     if request.method == 'POST': # If the form has been submitted...
         # Delete old orders and insert new ones
@@ -100,14 +100,14 @@ def update_order(request, category_no=''):
             product_orders.append(None)
 
     prev_category_name = ''
-    category_name = categories[current_category-1]['category__visible_name'] or categories[current_category-1]['category__name'].title()
+    category_name = categories[current_category-1].visible_name or categories[current_category-1].name.title()
     next_category_name = ''
 
     if previous_category:
-        prev_category_name = categories[previous_category-1]['category__visible_name'] or categories[previous_category-1]['category__name'].title()
+        prev_category_name = categories[previous_category-1].visible_name or categories[previous_category-1].name.title()
 
     if next_category:
-        next_category_name = categories[next_category-1]['category__visible_name'] or categories[next_category-1]['category__name'].title()
+        next_category_name = categories[next_category-1].visible_name or categories[next_category-1].name.title()
 
 
     products = zip(products, product_orders)

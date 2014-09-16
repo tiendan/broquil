@@ -19,10 +19,10 @@ import elbroquil.libraries as libs
 import elbroquil.parse as parser
 
 class Command(BaseCommand):
-    help = 'Sends the order to the producers'
+    help = 'Envia el pedido total al productor'
 
     def handle(self, *args, **options):
-        self.stdout.write('Executed task "send order to producers"')
+        self.stdout.write('Comprobando si hay pedidos para enviar a los productores...')
         
         # Select active producers
         producers = models.Producer.objects.filter(active=True)
@@ -34,14 +34,19 @@ class Command(BaseCommand):
         
         # For each producer defined in the system
         for producer in producers:
+            self.stdout.write('Comprobando el productor: ' + producer.company_name + "...")
+            
             # Get the products which have exceeded their order limit dates 
             # and which are not yet sent to the producer
             products = models.Product.objects.filter(order_limit_date__lt=libs.get_now(), sent_to_producer=False, category__producer=producer).order_by('category__sort_order', 'id')
             
             # If there are no products, continue
             if len(products) == 0:
+                self.stdout.write('No hay productos para este productor.')
                 continue
             
+            self.stdout.write('%d productos pendientes de enviar al productor...' % len(products))
+                    
             # If these products belong to the next distribution date
             # Mark this variable so that later on we may decide to send emails to cooperative members
             # informing that their orders were sent
@@ -59,9 +64,16 @@ class Command(BaseCommand):
                 
                 order_total += product.price * total_quantity
                 
+            self.stdout.write('El total de los pedidos son: %f euros.' % order_total)
+            
             # If producer has a defined minimum order, and it is not exceeded
             # or simply there was no order
             if (producer.minimum_order and order_total < producer.minimum_order) or order_total == 0:
+                if order_total > 0:
+                    self.stdout.write('El total NO LLEGA al minimo (%f)' % producer_minimum_order)
+                
+                self.stdout.write('Enviando el correo de NO PEDIDO al productor...')
+                        
                 # Update the product quantities and set order status
                 products.update(total_quantity=Decimal(0), arrived_quantity=Decimal(0), sent_to_producer=True)
                 models.Order.objects.filter(product__in=products).update(status=models.STATUS_MIN_ORDER_NOT_MET)
@@ -74,23 +86,25 @@ class Command(BaseCommand):
                 email = models.EmailTemplate.objects.filter(email_code=models.EMAIL_PRODUCER_NO_ORDER).first()
                 
                 if email:
-                    self.stdout.write('NO ORDER email template found in database.')
+                    self.stdout.write('NO PEDIDO email plantilla encontrada en el base de datos.')
                     email_subject = email.full_subject()
                     html_content = email.body
                     
                 libs.send_email_to_address(email_subject, html_content, [producer.email])
                 
+                self.stdout.write('NO PEDIDO email enviado correctamente.')
                 # Skip to next producer
                 continue
             
-            # Prepare and send the email to the producer
+            # Prepare and send the email to the producer    
+            self.stdout.write('Enviando el correo de TOTAL DEL PEDIDO al productor...')
             email_subject = '[BroquilGotic]Comanda del Broquil del Gòtic'
             html_content = '[[CONTENT]]'
 
             # If there is an email template stored in DB, use it
             email = models.EmailTemplate.objects.filter(email_code=models.EMAIL_PRODUCER_ORDER_TOTAL).first()
             if email:
-                 self.stdout.write('ORDER TOTAL email template found in database.')
+                 self.stdout.write('TOTAL DEL PEDIDO email plantilla encontrada en el base de datos.')
                  email_subject = email.full_subject()
                  html_content = email.body
                  
@@ -107,6 +121,8 @@ class Command(BaseCommand):
             libs.send_email_to_address(email_subject, html_content, [producer.email])
             products.update(sent_to_producer=True)
             
+            self.stdout.write('TOTAL DEL PEDIDO email enviado correctamente.')
+            
         # If some orders were processed in this run
         if some_orders_processed:
             # Check if there are any remaining products for this distribution date
@@ -114,15 +130,17 @@ class Command(BaseCommand):
             
             # If there are no remaining products, send the emails to the members
             if len(products) == 0:
+                self.stdout.write('No quedan mas productos en la oferta. Informando los miembros de que el pedido se ha enviado a los productores.')
+                
                 email_subject = '[BroquilGotic]S\'ha fet la comanda!!'
                 html_content = '<p>S\'ha fet la comanda, pots passar a recollirla el Dimecres.</p><p>[[CONTENT]]</p><p>Salut!! amb el broquil :P<br></p>'
 
                 # If there is an email template stored in DB, use it
                 email = models.EmailTemplate.objects.filter(email_code=models.EMAIL_ORDER_SENT_TO_PRODUCER).first()
                 if email:
-                     self.stdout.write('ORDER SENT TO PRODUCER email template found in database.')
-                     email_subject = email.full_subject()
-                     html_content = email.body
+                    self.stdout.write('PEDIDO ENVIADO AL PRODUCTOR email plantilla encontrada en el base de datos.')
+                    email_subject = email.full_subject()
+                    html_content = email.body
                 
                 extra_information = ''
                 # TODO ADD INFORMATION ABOUT PRODUCTS FOR WHICH MIN ORDER WAS NOT MET!
@@ -131,6 +149,5 @@ class Command(BaseCommand):
                 html_content = html_content.replace("[[CONTENT]]", extra_information)
                 
                 result = libs.send_email_to_active_users(email_subject, html_content)
-
-                self.stdout.write('"Order sent to producer" email sent to %d people.' % result[0])
+                self.stdout.write('PEDIDO ENVIADO AL PRODUCTOR email enviado a %d personas.' % result[0])
                 

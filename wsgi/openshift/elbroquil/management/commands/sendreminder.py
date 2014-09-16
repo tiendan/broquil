@@ -10,9 +10,11 @@ import html2text
 import elbroquil.libraries as libs
 
 class Command(BaseCommand):
-    help = 'Sends reminder email to the active members'
+    help = 'Envia el correo recordatorio a los miembros activos'
 
     def handle(self, *args, **options):
+        self.stdout.write('Enviando el recordatoria a los miembros...')
+    
         # Send the reminder email to the active members
         email_subject = '[BroquilGotic]No t\'oblidis de fer la comanda'
         html_content = "Hola broquilire!!!!<br/>\
@@ -27,10 +29,10 @@ class Command(BaseCommand):
         email = models.EmailTemplate.objects.filter(email_code=models.EMAIL_REMINDER).first()
         
         if email:
-            self.stdout.write('Reminder email template found in database.')
+            self.stdout.write('RECORDATORIO email plantilla encontrada en el base de datos.')
             email_subject = email.full_subject()
             html_content = email.body
         
         result = libs.send_email_to_active_users(email_subject, html_content)
         
-        self.stdout.write('Reminder email sent to %d people.' % result[0])
+        self.stdout.write('RECORDATORIO email enviado a %d personas.' % result[0])

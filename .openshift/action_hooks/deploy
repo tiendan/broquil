@@ -4,7 +4,6 @@
 # up again.  This script gets executed directly, so it could be python, php,
 # ruby, etc.
 
-source $OPENSHIFT_DATA_DIR/.myenv
 source $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate
 
 
