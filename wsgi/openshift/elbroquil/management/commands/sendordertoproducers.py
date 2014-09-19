@@ -70,7 +70,7 @@ class Command(BaseCommand):
             # or simply there was no order
             if (producer.minimum_order and order_total < producer.minimum_order) or order_total == 0:
                 if order_total > 0:
-                    self.stdout.write('El total NO LLEGA al minimo (%f)' % producer_minimum_order)
+                    self.stdout.write('El total NO LLEGA al minimo (%f)' % producer.minimum_order)
                 
                 self.stdout.write('Enviando el correo de NO PEDIDO al productor...')
                         
