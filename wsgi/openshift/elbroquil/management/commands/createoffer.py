@@ -195,7 +195,7 @@ class Command(BaseCommand):
             return ""
         
         
-        self.stdout.write('>%d emails encontrados en la bandeja de entrada con el tema "%s".' % [len(items), email_subject])
+        self.stdout.write('>%d emails encontrados en la bandeja de entrada con el tema "%s".' % (len(items), email_subject) )
         
         for emailid in items:
             # Get the email
