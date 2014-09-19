@@ -33,7 +33,7 @@ class Command(BaseCommand):
         
         # If there is more than one week until next distribution date, do not create offer
         if days_until_next_distribution > 7:
-            self.stdout.write('Quedan ' + days_until_next_distribution + ' dias para la proxima fecha de distribucion ('"+next_dist_date.strftimeime('%d/%m/%Y')+"'). NO se creara la oferta.')
+            self.stdout.write('Quedan ' + days_until_next_distribution + ' dias para la proxima fecha de distribucion ('"+next_dist_date.strftime('%d/%m/%Y')+"'). NO se creara la oferta.')
             return
         
         # Fetch Cal Rosset excel file from Gmail and get the local file path
@@ -93,7 +93,7 @@ class Command(BaseCommand):
             
             # If this producer is not available in the next dist date, skip it
             if producer_next_dist_date != next_dist_date:
-                self.stdout.write('Para este productor, la proxima fecha de distribucion es: ' + producer_next_dist_date.strftimeime('%d/%m/%Y') + ', saltando el productor.')
+                self.stdout.write('Para este productor, la proxima fecha de distribucion es: ' + producer_next_dist_date.strftime('%d/%m/%Y') + ', saltando el productor.')
                 continue
             
             self.stdout.write('Creando oferta del productor.')
@@ -108,7 +108,7 @@ class Command(BaseCommand):
                 self.stdout.write('El productor tiene ' + str(len(products)) + ' productos...')
                 
                 # Add information of these products to the offer summary included in the email sent to members
-                offer_summary += "<li>" + producer.short_product_explanation + " (" + _(u'until') + " " + limit_date.strftimeime("%d/%m/%Y %H:%M") + ")</li>"
+                offer_summary += "<li>" + producer.short_product_explanation + " (" + _(u'until') + " " + limit_date.strftime("%d/%m/%Y %H:%M") + ")</li>"
                 
                 # Delete all products already copied for this week
                 models.Product.objects.filter(category__producer=producer, distribution_date=next_dist_date).delete()
@@ -185,7 +185,7 @@ class Command(BaseCommand):
         m.select()
         
         # Search for the offer emails (subject='oferta cal rosset' and sent in the last few days)
-        resp, items = m.search(None, '(SUBJECT "'+email_subject+'") (SINCE "'+limit.strftimeime('%d/%m/%Y')+'")')
+        resp, items = m.search(None, '(SUBJECT "'+email_subject+'") (SINCE "'+limit.strftime('%d/%m/%Y')+'")')
         items = items[0].split() # getting the mails id
         
         file_path = ""
