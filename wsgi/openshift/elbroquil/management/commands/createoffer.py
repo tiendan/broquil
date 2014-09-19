@@ -185,7 +185,7 @@ class Command(BaseCommand):
         m.select()
         
         # Search for the offer emails (subject='oferta cal rosset' and sent in the last few days)
-        resp, items = m.search(None, '(SUBJECT "'+email_subject+'") (SINCE "'+limit.strftime('%d/%m/%Y')+'")')
+        resp, items = m.search(None, '(SUBJECT "'+email_subject+'") (SINCE "'+limit.strftime('%d-%b-%Y')+'")')
         items = items[0].split() # getting the mails id
         
         file_path = ""
