@@ -9,6 +9,9 @@ from suit_redactor.widgets import RedactorWidget
 from django.contrib.auth.models import Permission
 
 
+from django.db.models import Q
+import elbroquil.libraries as libs
+
 # Producer availability model is shown inline in the producer admin pages
 class AvailabilityInline(admin.TabularInline):
     model = models.ProducerAvailableDate
@@ -34,8 +37,14 @@ class CategoryAdmin(admin.ModelAdmin):
 
 # Product admin pages
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'price', 'unit')
-    
+    list_display = ('name', 'category', 'price', 'unit', 'distribution_date')
+
+    # Override default queryset so that only relevant products are shown
+    def queryset(self, request):
+        qs = super(ProductAdmin, self).queryset(request).filter(Q(distribution_date__gt=libs.get_today()) | Q(distribution_date=None)).order_by('category__sort_order', 'pk')
+        
+        return qs
+
 # User definition/update pages
 # We define extra information as inline form component, then customize the user forms 
 # and re-register the new user admin

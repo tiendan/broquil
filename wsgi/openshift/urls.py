@@ -35,6 +35,9 @@ urlpatterns = patterns('',
     url(_(r'^fees/create/$'), 'elbroquil.views.create_fees', name='create_fees'),
     url(_(r'^fees/view/$'), 'elbroquil.views.view_fees', name='view_fees'),
     
+    # Management related URLs
+    url(_(r'^dist/view/$'), 'elbroquil.views.view_distribution_detail', name='view_distribution_detail'),
+    
     # Admin and account URLs
     url(r'^admin/', include(admin.site.urls)),
     

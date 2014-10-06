@@ -161,7 +161,7 @@ EMAIL_HOST_SECONDARY_PASSWORD = os.environ['EMAIL_HOST_SECONDARY_PASSWORD']
 
 LANGUAGE_CODE = 'ca'
 
-TIME_ZONE = 'Europe/Berlin'
+TIME_ZONE = 'Europe/Madrid'
 
 USE_I18N = True
 

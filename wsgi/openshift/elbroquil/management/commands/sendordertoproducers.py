@@ -78,7 +78,7 @@ class Command(BaseCommand):
                 products.update(total_quantity=Decimal(0), arrived_quantity=Decimal(0), sent_to_producer=True)
                 models.Order.objects.filter(product__in=products).update(status=models.STATUS_MIN_ORDER_NOT_MET)
                 
-                # Inform producer that there minimum order was not met
+                # Inform producer that their minimum order was not met
                 email_subject = '[BroquilGotic]Aquest cop no arribem al mínim per a fer la comanda'
                 html_content = 'Ho sentim molt'
                 

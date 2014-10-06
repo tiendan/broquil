@@ -72,7 +72,7 @@ def parse_cal_rosset(book):
 # Parse the excel for Can Pipirimosca producer
 def parse_can_pipirimosca(book):
     # Get the sheet with product information and read row and column counts
-    sheet = book.sheet_by_name('Comanda - TOTALS')
+    sheet = book.sheet_by_name('Comanda')
     products = []
     row_count = sheet.nrows
     col_count = sheet.ncols

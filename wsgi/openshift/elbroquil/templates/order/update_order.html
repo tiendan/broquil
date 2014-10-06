@@ -38,8 +38,15 @@
 							{% else %}
 							  <li class="previous blankpreviouspager"></li>
 							{% endif %}
-						  <li><h2 class="fillSpace">{{ category_name }}<br/><small>{% trans "Available until:"%} <span class="label label-warning">
-							{% timezone "Europe/Berlin" %}
+						  <li><h2 class="fillSpace">{{ category_name }}<br/><small>{% trans "Available until:"%} 
+							{% if products.0.0.order_limit_date < few_hours_later %}
+							<span class="label label-danger">
+							{% elif products.0.0.order_limit_date < a_day_later %}
+							<span class="label label-warning">
+							{% else %}
+							<span class="label label-success">
+							{% endif %}
+							{% timezone "Europe/Madrid" %}
 								{{ products.0.0.order_limit_date }}
 							{% endtimezone %}
 							</span></small></h2></li>

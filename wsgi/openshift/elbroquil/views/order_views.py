@@ -116,6 +116,9 @@ def update_order(request, category_no=''):
     
     if not request.session.get('order_total'):
         libs.calculate_order_summary(request)
+        
+    few_hours_later = libs.get_now() + timedelta(hours=4)
+    a_day_later = libs.get_now() + timedelta(days=1)
 
     return render(request, 'order/update_order.html', {
          'products': products,
@@ -129,6 +132,9 @@ def update_order(request, category_no=''):
          'next_category_no': next_category,
      
          'progress': progress,
+         
+         'few_hours_later': few_hours_later,
+         'a_day_later': a_day_later,
 
          'order_total': request.session['order_total'],
          'order_summary': request.session['order_summary'],
