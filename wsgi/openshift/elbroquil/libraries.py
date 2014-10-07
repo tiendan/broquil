@@ -144,9 +144,9 @@ def get_last_distribution_date():
 
 
 # Returns the last date when this producer's products were distributed
-def get_producer_last_distribution_date(producer_id, allow_future=False):
-    if allow_future:
-        last_distributed_product = models.Product.objects.filter(category__producer_id=producer_id).order_by("-distribution_date").first()
+def get_producer_last_distribution_date(producer_id, allow_today=False):
+    if allow_today:
+        last_distributed_product = models.Product.objects.filter(category__producer_id=producer_id, distribution_date__lte=get_today()).order_by("-distribution_date").first()
     else:
         # Consider only products which were distributed at least 6 days ago
         # These are the ones which are closed for being rated
@@ -178,7 +178,8 @@ def get_producer_order_limit_date(producer, next_dist_date):
 
 def get_today():
     #return date(2014, 8, 20)
-    return timezone.now().date()
+    return timezone.now().astimezone(pytztimezone(settings.TIME_ZONE)).date()
+    #return timezone.now().date()
 
 def get_now():
     return timezone.now()

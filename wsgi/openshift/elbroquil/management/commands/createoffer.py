@@ -26,10 +26,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         offer_summary = "" 
         
-        # Check if there will be an offer this week
-        next_dist_date = libs.get_next_distribution_date()
+        # Check if there will be an offer this week (exclude today in case it is Wednesday)
+        next_dist_date = libs.get_next_distribution_date(False)
         
         days_until_next_distribution = (next_dist_date - libs.get_today()).days
+        
+        #self.stdout.write('Para Cal Rosset, la proxima fecha de distribucion es: ' + next_dist_date.strftime('%d/%m/%Y') + '.')
         
         # If there is more than one week until next distribution date, do not create offer
         if days_until_next_distribution > 7:
@@ -89,7 +91,7 @@ class Command(BaseCommand):
         
         for producer in producers:
             self.stdout.write('Comprobando productor: ' + producer.company_name + "...")
-            producer_next_dist_date = libs.get_producer_next_distribution_date(producer.id)
+            producer_next_dist_date = libs.get_producer_next_distribution_date(producer.id, False)
             
             # If this producer is not available in the next dist date, skip it
             if producer_next_dist_date != next_dist_date:
@@ -98,7 +100,7 @@ class Command(BaseCommand):
             
             self.stdout.write('Creando oferta del productor.')
             
-            producer_last_dist_date = libs.get_producer_last_distribution_date(producer.id)
+            producer_last_dist_date = libs.get_producer_last_distribution_date(producer.id, True)
             limit_date = libs.get_producer_order_limit_date(producer, next_dist_date)
             
             # Choose the products with empty distribution dates
@@ -124,14 +126,25 @@ class Command(BaseCommand):
                         product.order_limit_date = limit_date
                         product.distribution_date = next_dist_date
                         
-                        # Get the average rating for this product from previous weeks
-                        prev_product = models.Product.objects.filter(category__producer=producer, distribution_date=producer_last_dist_date, name=product.name, origin=product.origin).first()
-                        
-                        if prev_product:
-                            product.average_rating = prev_product.average_rating
+                        # For producers with limited availability, copy the average ratings from last distribution
+                        if producer.limited_availability:
+                            prev_product = models.Product.objects.filter(category__producer=producer, distribution_date=producer_last_dist_date, name=product.name, origin=product.origin).first()
+                            
+                            if prev_product:
+                                product.average_rating = prev_product.average_rating
+                            else:
+                                product.average_rating = 0
+                                product.new_product = True
+                        # For other producers, ratings will be updated automatically when products are rated
                         else:
                             product.average_rating = 0
-                            product.new_product = True
+                            
+                            # If there is not any product with same name and origin from last week
+                            prev_product = models.Product.objects.filter(category__producer=producer, distribution_date=producer_last_dist_date, name=product.name, origin=product.origin)
+                            
+                            # Mark product as new
+                            if prev_product.count() == 0:
+                                product.new_product = True
                         
                         product.save()
                 

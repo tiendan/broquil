@@ -218,6 +218,9 @@ def rate_products(request):
             # Update product average rating
             order.product.average_rating = models.Order.objects.filter(product=order.product, archived=False, status=models.STATUS_NORMAL, rating__isnull=False).aggregate(Avg('rating'))['rating__avg'] or 0
             order.product.save()
+            
+            # Update the average rating for the same product that has a distribution date in the future (next week's product) (if exists)
+            models.Product.objects.filter(distribution_date__gt=libs.get_now(), name=order.product.name, origin=order.product.origin).update(average_rating=order.product.average_rating)
     
             # No need to reload results as we overwrite the only changed column
     
