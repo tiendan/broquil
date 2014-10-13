@@ -27,11 +27,10 @@ class Command(BaseCommand):
             
         file_path = os.path.join(detach_dir, "encarrecs.xlsx")
         
-        # TODO UNCOMMENT
-        #myfile = urllib2.urlopen("https://docs.google.com/spreadsheet/pub?key=tFyzm2cnCXD1gK_B84p_zGQ&output=xls")
-        #output = open(file_path, 'wb')
-        #output.write(myfile.read())
-        #output.close()
+        myfile = urllib2.urlopen("https://docs.google.com/spreadsheet/pub?key=tFyzm2cnCXD1gK_B84p_zGQ&output=xls")
+        output = open(file_path, 'wb')
+        output.write(myfile.read())
+        output.close()
         
         book = xlrd.open_workbook(file_path)
         sheet = book.sheet_by_index(0)
