@@ -158,7 +158,7 @@ def view_order(request):
             rest_of_orders.append(order)
         else:
             orders.append(order)
-            total_price = (order.arrived_quantity*order.product.price).quantize(Decimal('.01'))
+            total_price = (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
             totals.append(total_price)
             sum += total_price
         

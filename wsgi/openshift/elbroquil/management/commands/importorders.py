@@ -82,7 +82,7 @@ class Command(BaseCommand):
                     if price == '' or str(price).startswith('%%'):
                         continue
                     
-                    price = Decimal(price).quantize(Decimal('.01'))
+                    price = Decimal(price).quantize(Decimal('.0001'))
                     product_name = sheet.cell_value(rowx=product_row, colx=2)
                     member_order = sheet.cell_value(rowx=product_row, colx=member_column)
                     

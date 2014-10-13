@@ -47,7 +47,7 @@ def calculate_order_summary(request):
         order_summary = order_summary + "<thead><tr><th>" + _(u"PRODUCTS") + "</th></tr></thead><tbody>"
         
         for order in orders:
-            total_price = (order.arrived_quantity*order.product.price).quantize(Decimal('.01'))
+            total_price = (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
             
             # For the first "n" items, include the name of product, for the rest, just include "... more products" summary
             if i <= shown_item_count:
@@ -90,7 +90,7 @@ def calculate_user_orders(member, dist_date):
 
     if len(orders) > 0:
         for order in orders:
-            product_price = (order.arrived_quantity*order.product.price).quantize(Decimal('.01'))
+            product_price = (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
 
             order_total += product_price
             product_count += 1

@@ -317,7 +317,7 @@ def member_payment(request):
             if order.status == models.STATUS_NORMAL:
                 counted_product_list.append(order)
                 
-                total_price += (order.arrived_quantity*order.product.price).quantize(Decimal('.01'))
+                total_price += (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
                 
                 if order.arrived_quantity != order.quantity:
                     amount_changed_product_list.append(order)
@@ -466,7 +466,7 @@ def account_summary(request):
                 member_orders = models.Order.objects.filter(user=member, archived=False, product__distribution_date=today, status=models.STATUS_NORMAL).prefetch_related('product')
 
                 for order in member_orders:
-                    member_total_order += (order.arrived_quantity*order.product.price).quantize(Decimal('.01'))
+                    member_total_order += (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
                 
                 member_next_debt = member_total_order + member_debt_amount
                 
