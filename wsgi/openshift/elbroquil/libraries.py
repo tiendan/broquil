@@ -80,7 +80,22 @@ def calculate_order_summary(request):
     
     request.session['order_total'] = str(order_total)
     request.session['order_summary'] = order_summary
-    
+
+def calculate_user_orders(member, dist_date):
+    # Get the orders for next distribution date and for this user
+    orders = models.Order.objects.filter(user=member, product__distribution_date=dist_date, status=models.STATUS_NORMAL).prefetch_related('product').order_by('-quantity', 'product__name')
+
+    order_total = 0
+    product_count = 0
+
+    if len(orders) > 0:
+        for order in orders:
+            product_price = (order.arrived_quantity*order.product.price).quantize(Decimal('.01'))
+
+            order_total += product_price
+            product_count += 1
+
+    return [product_count, order_total]
 # Calculate the date for the next wednesday
 def get_next_wednesday(allow_today=True):
     # Get today

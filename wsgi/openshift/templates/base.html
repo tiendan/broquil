@@ -27,6 +27,7 @@
 	<link rel="stylesheet" href="/static/styles/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
 	<link rel="stylesheet" href="/static/styles/bootstrap-formhelpers.min.css" type="text/css">
+	<link rel="stylesheet" href="/static/styles/fuelux.css" type="text/css">
 	{% block extrahead %}{% endblock %}
 	
     <!-- Custom styles for this template
@@ -88,7 +89,7 @@
 		        </li>
 				{% endif %}
 		
-				<li id="menu-item-about"><a href="{% url 'about' %}">{% trans "About" %}</a></li>
+				{% comment %}<li id="menu-item-about"><a href="{% url 'about' %}">{% trans "About" %}</a></li>{% endcomment %}
 				{% if user.is_staff %}
 				<li id="menu-item-admin"><a href="/admin/">{% trans "Admin" %}</a></li>
 				{% endif %}
@@ -117,9 +118,9 @@
 	                  <b class="caret"></b>
 	                </a>
 	                <ul class="dropdown-menu">
-	                  <li><a class="userlink" href="{% url 'django.contrib.auth.views.password_change' %}">Change Password</a></li>
+	                  <li><a class="userlink" href="{% url 'django.contrib.auth.views.password_change' %}">{% trans "Change password" %}</a></li>
 	                  <li class="divider"></li>
-	                  <li><a class="userlink" href="{% url 'django.contrib.auth.views.logout' %}">Log Out</a></li>
+	                  <li><a class="userlink" href="{% url 'django.contrib.auth.views.logout' %}">{% trans "Log out" %}</a></li>
 	                </ul>
 	              </li>
 	          	{% else %}

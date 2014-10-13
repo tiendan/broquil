@@ -185,6 +185,8 @@
       var value;
       
       value = this.$element.val();
+      
+      
       if (value !== '-1') {
           
             if (this.options.integer === true) {
@@ -202,7 +204,7 @@
             value = this.options.min;
       }
       
-      if(!(this.options.allowzero === true) && parseInt(value) == 0) {
+      if(!(this.options.allowzero === true) && parseFloat(value) == 0) {
           return '';
       }
       

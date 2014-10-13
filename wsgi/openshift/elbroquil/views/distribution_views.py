@@ -249,10 +249,10 @@ def view_product_orders(request, product_no=''):
     if next_product:
         next_product_name = products[next_product-1].name
         
-    initial_progress_percentage = 12
-    final_progress_percentage = 12
-    product_progress_percentage = 100 - initial_progress_percentage - final_progress_percentage
-    progress = int(product_progress_percentage*current_product/len(products))
+    #initial_progress_percentage = 12
+    #final_progress_percentage = 12
+    #product_progress_percentage = 100 - initial_progress_percentage - final_progress_percentage
+    #progress = int(product_progress_percentage*current_product/len(products))
         
     return render(request, 'distribution/view_product_orders.html', {
        'product_orders': product_orders,
@@ -268,14 +268,17 @@ def view_product_orders(request, product_no=''):
        
        'total_quantity': total_quantity,
        'total_arrived_quantity': total_arrived_quantity,
-       'progress': progress,
+       #'progress': progress,
+       
+       'current_product': current_product,
+       'total_products': len(products),
     })
     
     
 @login_required
 @permission_required('elbroquil.prepare_baskets')
 def member_payment(request):
-    member_orders = pickle.loads(request.session['baskets'])
+    member_orders = models.User.objects.filter(order__product__distribution_date=libs.get_today()).distinct().order_by('first_name', 'last_name')
     member_id = -1
     
     products = models.Product.objects.filter(archived=False, distribution_date=libs.get_today(),arrived_quantity__gt=0).order_by('category__sort_order', 'id')
@@ -401,7 +404,7 @@ def member_payment(request):
             consumption.save()
 
 
-    progress = 4
+    #progress = 4
     payment_count = models.Payment.objects.filter(date__gte=today).count()
             
     return render(request, 'distribution/member_payment.html', {
@@ -425,7 +428,7 @@ def member_payment(request):
        'paid_amount': paid_amount,
        'next_debt': next_debt,
        
-       'progress': progress
+       #'progress': progress
     })
 
 @login_required
@@ -441,6 +444,45 @@ def account_summary(request):
     # Read initial cash from session
     if request.session.get('initial_cash'):
         initial_cash = Decimal(request.session['initial_cash'])
+    
+
+    # If form was posted, check if there are any members that have not paid yet
+    if request.method == 'POST':
+        members_with_order = models.User.objects.filter(order__product__distribution_date=libs.get_today()).distinct()
+        
+        for member in members_with_order:
+            # If there is no payment for this member, calculate the debt and save it for next week
+            if models.Payment.objects.filter(date__gte=today, user=member).count() == 0:
+                # Get debt from last weeks
+                member_debt_amount = 0
+                member_debt_from_last_weeks = models.Debt.objects.filter(user=member, payment__date__lt=today).order_by('-payment__date').first()
+
+                if member_debt_from_last_weeks:
+                    member_debt_amount = member_debt_from_last_weeks.amount
+                
+                
+                # Calculate order total for this week
+                member_total_order = 0
+                member_orders = models.Order.objects.filter(user=member, archived=False, product__distribution_date=today, status=models.STATUS_NORMAL).prefetch_related('product')
+
+                for order in member_orders:
+                    member_total_order += (order.arrived_quantity*order.product.price).quantize(Decimal('.01'))
+                
+                member_next_debt = member_total_order + member_debt_amount
+                
+                # Create a dummy payment object for today (with 0 euros paid)
+                payment = models.Payment()
+                payment.user = member
+                payment.date = today
+                payment.amount = 0
+                payment.save()
+
+                # Create the debt for the following weeks
+                next_debt_object, created = models.Debt.objects.get_or_create(user=member, payment=payment)
+
+                next_debt_object.amount = member_next_debt
+                next_debt_object.save()
+    
     
     # Calculate collected amount from Payment table
     collected_amount = models.Payment.objects.filter(date__gte=today).aggregate(Sum('amount'))['amount__sum'] or 0
@@ -508,6 +550,9 @@ def account_summary(request):
     
     expected_final_amount = (initial_cash + collected_amount - overall_producer_payment).quantize(Decimal('.01'))
     
+    # Get the number of people who made an order and the number of people who paid until now
+    order_count = models.User.objects.filter(order__product__distribution_date=today).distinct().count()
+    payment_count = models.Payment.objects.filter(date__gte=today).count()
     
     # If form was posted (final amount updated)
     if request.method == 'POST':
@@ -520,7 +565,8 @@ def account_summary(request):
         
         account_detail.initial_amount = initial_cash
         account_detail.member_consumed_amount = member_consumed_amount
-        account_detail.producer_paid_amount = overall_producer_payment
+        account_detail.total_member_payment_amount = collected_amount
+        #account_detail.producer_paid_amount = overall_producer_payment
         account_detail.debt_balance_amount = current_debt_total
         account_detail.quarterly_fee_collected_amount = quarterly_fee_collected_amount
         account_detail.expected_final_amount = expected_final_amount    
@@ -528,8 +574,17 @@ def account_summary(request):
         account_detail.final_amount = final_amount
         
         account_detail.save()
+        
+        # Delete old Producer Payment records and insert new ones
+        models.ProducerPayment.objects.filter(date=today).delete()
+        for producer, total in producer_payments:
+            payment = models.ProducerPayment()
+            payment.date = today
+            payment.producer = producer
+            payment.amount = total
+            payment.save()
     
-    progress = 8
+    #progress = 8
     
     return render(request, 'distribution/account_summary.html', {
        'initial_amount': initial_cash,
@@ -539,5 +594,8 @@ def account_summary(request):
        'final_amount': final_amount,
        'expected_final_amount': expected_final_amount,
        
-       'progress': progress
+       'order_count': order_count,
+       'payment_count': payment_count,
+       
+       #'progress': progress
     })

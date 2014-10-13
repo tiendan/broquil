@@ -17,16 +17,10 @@
 
 
 {% block content %}
+	{% include "distribution/wizard.html" with step=2 current_product=current_product total_products=total_products %}
+	<br/>
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "In case the product quantity/weight has to be changed, make the changes and don't forget to save them." %}</div>
     <div id="content-main" class="inner-two-columns">
-		<div class="progress">
-		  <div class="progress-bar progress-bar-warning" style="width: 12%">
-		    <span class="sr-only">{% trans "Checked arrived products" %}</span>
-		  </div>
-		  <div class="progress-bar progress-bar-info" style="width: {{ progress }}%">
-		    <span class="sr-only">{{ progress }}% {% trans "Complete" %}</span>
-		  </div>
-		</div>
         <form action="{% url 'elbroquil.views.view_product_orders' current_product_no %}" method="POST">
 	    	{% csrf_token %}
 			<div>
@@ -132,7 +126,7 @@
 		});
 		
 		// If text inputs are changed, enable the save button
-		$('input.product-order').keyup(function( event ) {
+		$('input.product-order').keydown(function( event ) {
 			$('#save_button').removeAttr('disabled');
 		});
 		

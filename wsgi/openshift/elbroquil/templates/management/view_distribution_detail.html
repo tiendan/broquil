@@ -3,7 +3,7 @@
 {% load admin_urls %}
 
 {% block content_title %}
-<h1>{% trans "View fee status" %}</h1>
+<h1>{% trans "View distribution summary" %}</h1>
 {% endblock %}
 
 
@@ -13,24 +13,119 @@
 			<div class="col-md-12">
 				<form id="distribution_date" role="form"  action="{% url 'elbroquil.views.view_distribution_detail' %}" method="POST"  class="form-horizontal">
 		         {% csrf_token %}	
-					<div class="form-group">
-			      		 <select id="date" name="date" class="form-control" value="{{ selected_date }}">
-							<option value="-1">{% trans "CHOOSE DISTRIBUTION DATE" %}</option>
-							{% for text, value in distribution_dates %}
-						  		<option value="{{ value }}" {% if value == selected_date %}selected{% endif %}>{{ text }}</option>
-						  	{% endfor %}
-						</select>
-						<input id="only-latest" name="only-latest" type="checkbox" {% if only_latest_dates %}checked{% endif %}>
+					<div class="form-group col-md-12">
+			      		<label for="date" class="control-label col-md-3">{% trans "Distribution date"%}</label>
+						<div class="col-md-6">
+							<select id="date" name="date" class="form-control" value="{{ selected_date }}">
+								<option value="-1">{% trans "CHOOSE DISTRIBUTION DATE" %}</option>
+								{% for text, value in distribution_dates %}
+							  		<option value="{{ value }}" {% if value == selected_date %}selected{% endif %}>{{ text }}</option>
+							  	{% endfor %}
+							</select>
+						</div>
+					</div>	
+					<div class="form-group col-md-12">
+ 						<label for="only-latest" class="control-label col-md-3">{% trans "Show only recent dates"%}</label>
+						<div class="col-md-6">
+							<input id="only-latest" name="only-latest" type="checkbox" {% if only_latest_dates %}checked{% endif %}>
+						</div>
 					</div>
 				</form>
 			</div>
 		</div>
 		{% if selected_date %}
 		<div class="row">
+			<form id="dummy" role="form"  action="#" method="GET" class="form-horizontal">
+			<div class="col-md-12">
+				<div class="form-group has-success">
+			    	<label for="initial-amount" class="control-label col-md-4">{% trans "Initial cash:" %}</label>
+			    	<div class="col-md-3">
+				    	<div class="input-group"> 
+							<input id="initial-amount" name="initial-amount" type="text" class="form-control bfh-number input-lg quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ initial_cash }}" data-trailingzeros="true" disabled/>
+				      		<div class="input-group-addon"><strong>&euro;</strong></div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="thumbnail producer-group">
+					<h3><span class="glyphicon glyphicon-sort"></span> {% trans "Payments from Members" %}</h3>
+					<div class="form-group has-success">
+				    	<label for="collected-amount" class="control-label col-md-4">{% trans "Collected from members:" %}</label>
+				    	<div class="col-md-3">
+					    	<div class="input-group"> 
+								<input id="collected-amount" name="collected-amount" type="text" class="form-control bfh-number input-lg quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ collected_amount }}" data-trailingzeros="true" disabled/>
+					      		<div class="input-group-addon"><strong>&euro;</strong></div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+				    	<label for="consumed-amount" class="control-label col-md-4">{% trans "Members consumption:" %}</label>
+				    	<div class="col-md-3">
+					    	<div class="input-group"> 
+								<input id="consumed-amount" name="consumed-amount" type="text" class="form-control bfh-number input-sm quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ member_consumed_amount }}" data-trailingzeros="true" disabled/>
+					      		<div class="input-group-addon"><strong>&euro;</strong></div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+				    	<label for="quarterly-collected-amount" class="control-label col-md-4">{% trans "Collected quarterly fees:" %}</label>
+				    	<div class="col-md-3">
+					    	<div class="input-group"> 
+								<input id="quarterly-collected-amount" name="quarterly-collected-amount" type="text" class="form-control bfh-number input-sm quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ quarterly_fee_collected_amount }}" data-trailingzeros="true" disabled/>
+					      		<div class="input-group-addon"><strong>&euro;</strong></div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+				    	<label for="debt-balance" class="control-label col-md-4">{% trans "Debt balance:" %}</label>
+				    	<div class="col-md-3">
+					    	<div class="input-group"> 
+								<input id="debt-balance" name="debt-balance" type="text" class="form-control bfh-number input-sm quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ debt_balance }}" data-trailingzeros="true" data-min="-9999" disabled/>
+					      		<div class="input-group-addon"><strong>&euro;</strong></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="thumbnail producer-group">
+					<h3><span class="glyphicon glyphicon-envelope"></span> {% trans "Paid to Producers" %}</h3>
+					{% for payment in producer_payments %}
+					<div class="form-group has-success">
+				    	<label for="producer-payment-{{ payment.producer.id }}" class="control-label col-md-4">{{ payment.producer.company_name }}</label>
+				    	<div class="col-md-3">
+					    	<div class="input-group"> 
+								<input id="producer-payment-{{ payment.producer.id }}" name="producer-payment-{{ payment.producer.id }}" type="text" class="form-control bfh-number input-lg quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ payment.amount }}" data-trailingzeros="true" disabled/>
+					      		<div class="input-group-addon"><strong>&euro;</strong></div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				<div class="form-group has-success">
+			    	<label for="final-amount" class="control-label col-md-4">{% trans "Final cash:" %}</label>
+			    	<div class="col-md-3">
+				    	<div class="input-group">
+							<input id="final-amount" name="final-amount" type="text" class="form-control bfh-number input-lg quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ final_amount }}" data-trailingzeros="true" data-min="-9999" disabled/>
+				      		<div class="input-group-addon"><strong>&euro;</strong></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group {% if large_final_difference %} has-error {% else %} has-success {% endif %}">
+			    	<label for="expected-final-amount" class="control-label col-md-4">{% trans "Expected final cash:" %}</label>
+			    	<div class="col-md-3">
+				    	<div class="input-group">
+							<input id="expected-final-amount" name="expected-final-amount" type="text" class="form-control bfh-number input-lg quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ expected_final_amount }}" data-trailingzeros="true" data-min="-9999" disabled/>
+				      		<div class="input-group-addon"><strong>&euro;</strong></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</form>
+		</div>
+		<div class="row">
 			<div class="col-md-12">
 				<div class="panel-group" id="accordion">
 				  <div class="panel panel-default">
-				    <div class="panel-heading incident-panel">
+				    <div class="panel-heading {% if not_arrived_product_list|length > 0 or amount_changed_product_list|length > 0 %}incident-panel{% endif %}">
 				      <h4 class="panel-title">
 				        <a data-toggle="collapse" href="#collapseTwo">
 					    	{% trans "INCIDENTS" %}
@@ -59,7 +154,7 @@
 							      </tbody>
 							    </table>
 							</div>
-						    <div class="col-md-6">
+						    <div class="col-md-8">
 								<table class="table table-striped">
 								  <thead>
 							        <tr>
@@ -88,14 +183,14 @@
 					{% else %}
 					<div id="collapseTwo" class="panel-collapse collapse in">
 						<div class="panel-body">
-							<p>{% trans "NO INCIDENTS"}</p>
+							<p>{% trans "NO INCIDENTS" %}</p>
 						</div>
 					</div>
 					{% endif %}
 				  </div>
 				</div>
 			</div>
-		</div>
+		</div>		
 		{% endif %}
     </div>
 {% endblock %}

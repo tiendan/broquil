@@ -144,7 +144,7 @@ def update_order(request, category_no=''):
 @login_required
 def view_order(request):
     today = libs.get_today()
-    all_orders = models.Order.objects.filter(user=request.user, archived=False, product__distribution_date__gte=today).prefetch_related('product').order_by('product__category__sort_order', 'product__name')
+    all_orders = models.Order.objects.filter(user=request.user, archived=False, product__distribution_date__gte=today).prefetch_related('product').order_by('product__category__sort_order', 'pk')
     next_dist_date = libs.get_next_distribution_date()
     totals = []
     orders = []

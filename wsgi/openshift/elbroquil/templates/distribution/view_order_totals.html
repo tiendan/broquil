@@ -22,17 +22,13 @@
 
 {% block content %}
 	{% if products %}
+	{% include "distribution/wizard.html" with step=1 current_product=0 total_products=0 %}
+	<br/>
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "Check that all the products has arrived. You can mark the products you have checked by clicking on them." %}</div>
 	{% endif %}
 	
     <div id="content-main" class="inner-two-columns">
-		{% if products %}
-		<div class="progress">
-		  <div class="progress-bar progress-bar-warning" style="width: 4%">
-		    <span class="sr-only">{% trans "Checking arrived products" %}</span>
-		  </div>
-		</div>
-		
+		{% if products %}		
         <form action="{% url 'elbroquil.views.view_order_totals' %}" method="POST" class="form-inline">
 	    	{% csrf_token %}
 			<div>
@@ -53,7 +49,7 @@
 							</tr>
 							<tr><th class="product_name_header">{% trans "Product" %}</th><th class="product_price_header">{% trans "Price" %}</th><th class="product_order_header">{% trans "Order" %}</th><th class="product_order_header">{% trans "Arrived" %}</th></tr>
 							{% endif %}
-							<tr class="selectablerow" id="selectablerow_{{ product.id }}">
+							<tr class="selectablerow {% if product.integer_demand and product.unit == 'kg' %}has-error{% endif %}" id="selectablerow_{{ product.id }}">
 								<td>{{ product.name }}</td>
 								<td class="price">{{ product.price }} <span style="width: 40px;">&euro;</span></td>
 								<td class="quantity"><p class="form-control-static"><strong>{{ product.total_quantity }}</strong> <span style="width: 40px;">{{ product.unit }}</span></p></td>

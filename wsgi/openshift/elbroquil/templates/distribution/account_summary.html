@@ -16,21 +16,19 @@
 
 
 {% block content %}
-	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "Count the final amount in the drawer and save it here. Make sure it more or less equals the expected amount." %}</div>
+	{% include "distribution/wizard.html" with step=4 current_product=0 total_products=0 %}
+	<br/>
+	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "<strong>Prepare the envelopes</strong> for each producer, placing the required amount of money inside.<br/>Count the <strong>final amount</strong> in the drawer and save it here. Make sure it more or less equals the expected amount." %}</div>
+	
+	{% if initial_amount == 0 %}
+	<div class="alert alert-danger"><span class="glyphicon glyphicon-info-sign"></span> {% trans "The initial cash has not been entered!" %}</div>
+	{% endif %}
+	
+	{% if order_count != payment_count %}
+	<div class="alert alert-danger"><span class="glyphicon glyphicon-info-sign"></span> {% blocktrans %}There are {{ order_count - payment_count }} members who were not charged yet! If you continue, remaining amount will be saved as debt.{% endblocktrans %}</div>
+	{% endif %}
 	
     <div id="content-main" class="inner-two-columns">
-		<div class="progress">
-		  <div class="progress-bar progress-bar-warning" style="width: 12%">
-		    <span class="sr-only">{% trans "Checked arrived products" %}</span>
-		  </div>
-		  <div class="progress-bar progress-bar-info" style="width: 76%">
-		    <span class="sr-only">{% trans "Distributed products" %}</span>
-		  </div>
-	      <div class="progress-bar progress-bar-success" style="width: {{ progress }}%">
-		    <span class="sr-only">{{ progress }}% {% trans "Closing account" %}</span>
-		  </div>
-		</div>
-		
 		<div>
 			<ul class="pager">	
 				<li class="previous"><a href="{% url 'elbroquil.views.member_payment' %}">&larr; {% trans "Payment" %}</a></li>
@@ -42,7 +40,7 @@
         <form id="account-form" role="form"  action="{% url 'elbroquil.views.account_summary' %}" method="POST"  class="form-horizontal col-md-offset-2 col-md-10">
             	{% csrf_token %}
 			<div class="col-md-10">
-				<div class="form-group">
+				<div class="form-group {% if initial_amount == 0 %}has-error{% endif %}">
 			    	<label for="initial-amount" class="control-label col-md-4">{% trans "Initial cash:" %}</label>
 			    	<div class="col-md-4">
 				    	<div class="input-group"> 
@@ -51,7 +49,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="form-group">
+				<div class="form-group {% if order_count != payment_count %}has-error{% endif %}">
 			    	<label for="collected-amount" class="control-label col-md-4">{% trans "Collected from members:" %}</label>
 			    	<div class="col-md-4">
 				    	<div class="input-group"> 
@@ -73,7 +71,7 @@
 				<div class="thumbnail producer-group">
 				<h3><span class="glyphicon glyphicon-envelope"></span> {% trans "Pay to Producers" %}</h3>
 				{% for producer, payment in producer_payments %}
-				<div class="form-group">
+				<div class="form-group has-success">
 			    	<label for="producer-payment-{{ producer.id }}" class="control-label col-md-4">{{ producer.company_name }}</label>
 			    	<div class="col-md-4">
 				    	<div class="input-group"> 

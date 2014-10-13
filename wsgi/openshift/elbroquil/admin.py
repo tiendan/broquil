@@ -57,13 +57,13 @@ class ExtraInfoInline(admin.StackedInline):
     verbose_name_plural = 'extra info'
 
 class CustomUserCreationForm(UserCreationForm):
-    username = forms.RegexField(label=_("Username"), max_length=30, regex=r'^[\w.@+-]+$',
+    username = forms.RegexField(label=_("Email"), max_length=30, regex=r'^[\w.@+-]+$',
         help_text = _("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
         error_messages = {'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")})
     password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
     password2 = forms.CharField(label=_("Password confirmation"), widget=forms.PasswordInput,
         help_text = _("Enter the same password as above, for verification."))
-    email = forms.EmailField(label = _(u"Email"))
+    #email = forms.EmailField(label = _(u"Email"))
     first_name = forms.CharField(label = _(u"First name"))
     last_name = forms.CharField(label = _(u"Last name"))
     
@@ -77,6 +77,12 @@ class CustomUserCreationForm(UserCreationForm):
         
     def clean_username(self):
         username = self.cleaned_data["username"]
+        
+        # First validate that phone number exists (was not easy to do it elsewhere)
+        phone_number = self.data.get("extrainfo-0-phone", "")
+        if phone_number == "":
+            raise forms.ValidationError(_("Phone number is required."))
+        
         try:
             User.objects.get(username=username)
         except User.DoesNotExist:
@@ -92,22 +98,73 @@ class CustomUserCreationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
+        user.set_password(self.data["extrainfo-0-phone"])
         user.first_name = self.cleaned_data["first_name"]
         user.last_name = self.cleaned_data["last_name"]
-        user.email = self.cleaned_data["email"]
+        user.email = self.cleaned_data["username"]
         #user.extrainfo.email = self.cleaned_data["secondary_email"]
         if commit:
             user.save()
         return user
-                  
+                
+class CustomUserCreationForm2(UserCreationForm):
+    username = forms.RegexField(label=_("Email"), max_length=30, regex=r'^[\w.@+-]+$',
+        help_text = _("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
+        error_messages = {'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")})
+    first_name = forms.CharField(label = _(u"First name"))
+    last_name = forms.CharField(label = _(u"Last name"))
+    phone = forms.CharField(label = _(u"Phone"), max_length=15)
+    secondary_email = forms.EmailField(label = _(u"Secondary email"), required=False)
+    secondary_phone = forms.CharField(label = _(u"Secondary phone"), max_length=15, required=False)
+
+    class Meta:
+        model = User
+        fields = ("username",)
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+
+        try:
+            User.objects.get(username=username)
+        except User.DoesNotExist:
+            return username
+        raise forms.ValidationError(_("A user with that username already exists."))
+    
+    def save(self, commit=True):
+        #user = User()
+        #raise Exception("Something's wrong.")
+        
+        user = super(UserCreationForm, self).save(commit=False)
+        
+        
+        #user.username = self.cleaned_data["username"]
+        user.set_password(self.cleaned_data["phone"])
+        user.first_name = self.cleaned_data["first_name"]
+        user.last_name = self.cleaned_data["last_name"]
+        user.email = self.cleaned_data["username"]
+        
+        #user.extrainfo.email = self.cleaned_data["secondary_email"]
+        if commit:
+            user.save()
+            
+            
+            # Create the record for extra user information
+            extrainfo = models.ExtraInfo()
+            extrainfo.user = user
+            extrainfo.secondary_email = self.cleaned_data["secondary_email"]
+            extrainfo.phone = self.cleaned_data["phone"]
+            extrainfo.secondary_phone = self.cleaned_data["secondary_phone"]
+            extrainfo.save()
+        
+        return user
+          
 # Define a new User admin
 class UserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'email', 'first_name', 'last_name')} #, 'phone', 'secondary_email', 'secondary_phone')}
+            'fields': ('username', 'first_name', 'last_name', 'password1', 'password2')} #, 'phone', 'secondary_email', 'secondary_phone')}
         ),
     )
     inlines = (ExtraInfoInline, )

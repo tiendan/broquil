@@ -122,18 +122,12 @@ if ON_OPENSHIFT:
          'default': {
              'ENGINE': 'django.db.backends.mysql',
              'NAME': 'ultim',
-             'USER': 'adminWEZLkW2',             # Not used with sqlite3.
-             'PASSWORD': 'lhi4Kc1tws2E',         # Not used with sqlite3.
+             'USER': os.environ['OPENSHIFT_MYSQL_DB_USERNAME'],             # Not used with sqlite3.
+             'PASSWORD': os.environ['OPENSHIFT_MYSQL_DB_PASSWORD'],         # Not used with sqlite3.
              'HOST': os.environ['OPENSHIFT_MYSQL_DB_HOST'],             # Set to empty string for localhost. Not used with sqlite3.
              'PORT': os.environ['OPENSHIFT_MYSQL_DB_PORT'],             # Set to empty string for default. Not used with sqlite3.
          }
      }
-     #     DATABASES = {
-     #         'default': {
-     #             'ENGINE': 'django.db.backends.sqlite3',
-     #             'NAME': os.path.join(os.environ['OPENSHIFT_DATA_DIR'], 'db.sqlite3'),
-     #         }
-     #     }
 else:
     DATABASES = {
         'default': {
@@ -205,33 +199,3 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
     'django.core.context_processors.i18n',
 )
-
-# Django Suit configuration example
-SUIT_CONFIG = {
-    # header
-    'ADMIN_NAME': 'El Broquil | Admin',
-    # 'HEADER_DATE_FORMAT': 'l, j. F Y',
-    # 'HEADER_TIME_FORMAT': 'H:i',
-
-    # forms
-    # 'SHOW_REQUIRED_ASTERISK': True,  # Default True
-    # 'CONFIRM_UNSAVED_CHANGES': True, # Default True
-
-    # menu
-    # 'SEARCH_URL': '/admin/auth/user/',
-    # 'MENU_ICONS': {
-    #    'sites': 'icon-leaf',
-    #    'auth': 'icon-lock',
-    # },
-    # 'MENU_OPEN_FIRST_CHILD': True, # Default True
-    # 'MENU_EXCLUDE': ('auth.group',),
-    'MENU': (
-      'sites',
-      {'app': 'auth', 'label': 'Users', 'icon':'icon-user', 'models': ('user', 'group')},
-      {'app': 'elbroquil', 'label': 'Shop', 'icon':'icon-shopping-cart', 'models': ('category', 'producer', 'product')},
-      {'label': 'Upload Product List', 'icon':'icon-upload', 'url': _('/products/')},
-    ),
-
-    # misc
-    # 'LIST_PER_PAGE': 15
-}

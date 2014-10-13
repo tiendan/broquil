@@ -31,7 +31,7 @@
 					Save
 				</button> -->
 				<div>
-					<div>
+					<div>						
 						<ul class="pager">
 							{% if prev_category_no %}	
 							  <li class="previous"><a href="{% url 'elbroquil.views.update_order' prev_category_no %}">&larr; {{ prev_category_name }}</a></li>
@@ -122,10 +122,13 @@
 			else
 				parent_row.addClass('success');
 				
-			// If text inputs are changed, enable the save button
+		});
+		
+		// If there is some new input, enable the save button
+		$('input.product-order').keydown(function( event ) {	
 			$('#save_button').removeAttr('disabled');
 		});
-			
+		
 		// If left and right arrow keys are pressed (outside input boxes), switch to next or previous
 		// category of products
 		$("body").keydown(function(e) {

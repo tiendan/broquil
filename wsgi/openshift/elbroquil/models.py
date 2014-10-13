@@ -258,12 +258,19 @@ class DistributionAccountDetail(models.Model):
     date = models.DateField(_(u'distribution date'), default=timezone.now)
     initial_amount = models.DecimalField(_(u'initial amount'), decimal_places=2, max_digits=5, default=0)
     member_consumed_amount = models.DecimalField(_(u'member consumed amount'), decimal_places=2, max_digits=5, default=0)
-    producer_paid_amount = models.DecimalField(_(u'producer paid amount'), decimal_places=2, max_digits=5, default=0)
+    total_member_payment_amount = models.DecimalField(_(u'total member payment amount'), decimal_places=2, max_digits=5, default=0)
+    #producer_paid_amount = models.DecimalField(_(u'producer paid amount'), decimal_places=2, max_digits=5, default=0)
     debt_balance_amount= models.DecimalField(_(u'debt balance amount'), decimal_places=2, max_digits=5, default=0)
     quarterly_fee_collected_amount = models.DecimalField(_(u'collected fee amount'), decimal_places=2, max_digits=5, default=0)
     final_amount = models.DecimalField(_(u'final amount'), decimal_places=2, max_digits=5, default=0)
     expected_final_amount = models.DecimalField(_(u'expected final amount'), decimal_places=2, max_digits=5, default=0)
 
+# Producer Paymnet model
+# Holds the information of a payment made to a producer
+class ProducerPayment(models.Model):
+    date = models.DateField(_(u'distribution date'), default=timezone.now)
+    producer = models.ForeignKey(Producer)
+    amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=5, default=0)
 
 # Email Template model
 # Contains editable email templates

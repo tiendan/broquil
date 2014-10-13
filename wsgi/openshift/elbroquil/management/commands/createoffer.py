@@ -61,7 +61,7 @@ class Command(BaseCommand):
             # Insert new products one by one
             for product in products:
                 category_text = product[0]
-                name_text = product[1]
+                name_text = product[1].strip()
                 price_text = str(product[2]).replace(',', '.')
                 unit_text = product[3]
                 origin_text = product[4]
@@ -172,7 +172,7 @@ class Command(BaseCommand):
         result = libs.send_email_to_active_users(email_subject, html_content)
         
         self.stdout.write('OFERTA CREADA email enviado a %d personas.' % result[0])
-        
+        os.remove(excel_file_path)
         
     def download_cal_rosset_excel(self):
         # Directory where to save attachments (default: current)
