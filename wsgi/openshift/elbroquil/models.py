@@ -162,7 +162,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category)
     origin = models.CharField(_(u'origin'), max_length=100, null=True, blank=True)
     comments = models.CharField(_(u'comments'), max_length=100, null=True, blank=True)
-    price = models.DecimalField(_(u'price'), decimal_places=4, max_digits=5)
+    price = models.DecimalField(_(u'price'), decimal_places=4, max_digits=7)
     unit = models.CharField(_(u'unit'), max_length=20)
     integer_demand = models.BooleanField(_(u'integer demand'), default=False)
     distribution_date = models.DateField(_(u'distribution date'), null=True, blank=True)
