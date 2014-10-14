@@ -159,12 +159,12 @@ def view_basket_counts(request):
             else:
                 order_summary.append([last_order_user, last_order_user_name, last_order_total, 2])
             
-        pickled_summary = pickle.dumps(order_summary)
-        request.session['baskets'] = pickled_summary
+        #pickled_summary = pickle.dumps(order_summary)
+        #request.session['baskets'] = pickled_summary
         
-    else:
-        '''If there is pickled data in the session, load it'''
-        order_summary = pickle.loads(request.session['baskets'])
+    #else:
+    #    '''If there is pickled data in the session, load it'''
+    #    order_summary = pickle.loads(request.session['baskets'])
         
     
     return render(request, 'distribution/view_basket_counts.html', {
