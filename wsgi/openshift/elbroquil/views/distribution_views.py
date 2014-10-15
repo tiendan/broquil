@@ -386,16 +386,13 @@ def member_payment(request):
                 else:
                     quarterly.payment = None
                     quarterly.save()
-                    
-            # TODO UPDATE CONSUMPTION TABLE
+            
+            # Update Consumption table
             consumption, created = models.Consumption.objects.get_or_create(user_id=member_id, payment=payment)
             
-            #consumption.user_id = member_id
             consumption.amount = total_price
             consumption.save()
 
-
-    #progress = 4
     payment_count = models.Payment.objects.filter(date__gte=today).count()
             
     return render(request, 'distribution/member_payment.html', {
@@ -418,8 +415,6 @@ def member_payment(request):
        'total_to_pay': total_to_pay,
        'paid_amount': paid_amount,
        'next_debt': next_debt,
-       
-       #'progress': progress
     })
 
 @login_required
