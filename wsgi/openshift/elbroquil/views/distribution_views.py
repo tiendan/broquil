@@ -434,168 +434,173 @@ def member_payment(request):
 @login_required
 @permission_required('elbroquil.prepare_baskets')
 def account_summary(request):
-    today = libs.get_today()
-    initial_cash = 0
-    collected_amount = 0
-    debt_balance = 0
-    final_amount = 0
-    expected_final_amount = 0
+    try:
+        today = libs.get_today()
+        initial_cash = 0
+        collected_amount = 0
+        debt_balance = 0
+        final_amount = 0
+        expected_final_amount = 0
     
-    # Read initial cash from session
-    if request.session.get('initial_cash'):
-        initial_cash = Decimal(request.session['initial_cash'])
+        # Read initial cash from session
+        if request.session.get('initial_cash'):
+            initial_cash = Decimal(request.session['initial_cash'])
     
 
-    # If form was posted, check if there are any members that have not paid yet
-    if request.method == 'POST':
-        members_with_order = models.User.objects.filter(order__product__distribution_date=libs.get_today()).distinct()
+        # If form was posted, check if there are any members that have not paid yet
+        if request.method == 'POST':
+            members_with_order = models.User.objects.filter(order__product__distribution_date=libs.get_today()).distinct()
         
-        for member in members_with_order:
-            # If there is no payment for this member, calculate the debt and save it for next week
-            if models.Payment.objects.filter(date__gte=today, user=member).count() == 0:
-                # Get debt from last weeks
-                member_debt_amount = 0
-                member_debt_from_last_weeks = models.Debt.objects.filter(user=member, payment__date__lt=today).order_by('-payment__date').first()
+            for member in members_with_order:
+                # If there is no payment for this member, calculate the debt and save it for next week
+                if models.Payment.objects.filter(date__gte=today, user=member).count() == 0:
+                    # Get debt from last weeks
+                    member_debt_amount = 0
+                    member_debt_from_last_weeks = models.Debt.objects.filter(user=member, payment__date__lt=today).order_by('-payment__date').first()
 
-                if member_debt_from_last_weeks:
-                    member_debt_amount = member_debt_from_last_weeks.amount
+                    if member_debt_from_last_weeks:
+                        member_debt_amount = member_debt_from_last_weeks.amount
                 
                 
-                # Calculate order total for this week
-                member_total_order = 0
-                member_orders = models.Order.objects.filter(user=member, archived=False, product__distribution_date=today, status=models.STATUS_NORMAL).prefetch_related('product')
+                    # Calculate order total for this week
+                    member_total_order = 0
+                    member_orders = models.Order.objects.filter(user=member, archived=False, product__distribution_date=today, status=models.STATUS_NORMAL).prefetch_related('product')
 
-                for order in member_orders:
-                    member_total_order += (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
+                    for order in member_orders:
+                        member_total_order += (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
                 
-                member_next_debt = member_total_order + member_debt_amount
+                    member_next_debt = member_total_order + member_debt_amount
                 
-                # Create a dummy payment object for today (with 0 euros paid)
-                payment = models.Payment()
-                payment.user = member
+                    # Create a dummy payment object for today (with 0 euros paid)
+                    payment = models.Payment()
+                    payment.user = member
+                    payment.date = today
+                    payment.amount = 0
+                    payment.save()
+
+                    # Create the debt for the following weeks
+                    next_debt_object, created = models.Debt.objects.get_or_create(user=member, payment=payment)
+
+                    next_debt_object.amount = member_next_debt
+                    next_debt_object.save()
+    
+    
+        # Calculate collected amount from Payment table
+        collected_amount = models.Payment.objects.filter(date__gte=today).aggregate(Sum('amount'))['amount__sum'] or 0
+        member_consumed_amount = models.Consumption.objects.filter(payment__date__gte=today).aggregate(Sum('amount'))['amount__sum'] or 0
+        quarterly_fee_collected_amount = models.Quarterly.objects.filter(payment__date__gte=today).aggregate(Sum('amount'))['amount__sum'] or 0
+    
+        # Calculate debt balance from Debt table (for each user, check for debt before today and debt today)
+        previous_debt_total = 0
+        current_debt_total = 0
+    
+        all_users = User.objects.filter(is_superuser=False)
+        for user in all_users:
+            # Get today's debt for this user
+            debt = models.Debt.objects.filter(user=user, payment__date__gte=today).first()
+        
+            # If there is a debt, find the previous debt too and add them to the totals
+            if debt:
+                current_debt_total += debt.amount
+            
+                prev_debt = models.Debt.objects.filter(user=user, payment__date__lt=today).order_by('-payment__date').first()
+            
+                if prev_debt:
+                    previous_debt_total += prev_debt.amount
+            
+            # Else if there is no debt from today, find the last debt for the user and add it to both amounts
+            # so that it is reflected in the totals
+            else:
+                prev_debt = models.Debt.objects.filter(user=user, payment__date__lt=today).order_by('-payment__date').first()
+            
+                if prev_debt:
+                    previous_debt_total += prev_debt.amount
+                    current_debt_total += prev_debt.amount
+    
+        # Debt balance is: the net debt change of the users (the extra amount that the cooperative should receive later on) 
+        debt_balance = current_debt_total - previous_debt_total
+    
+        # Read final amount from DistributionAccountDetail table (if record exists for today)
+        account_detail = models.DistributionAccountDetail.objects.filter(date__gte=today).first()
+        
+        if account_detail:
+            final_amount = account_detail.final_amount
+        
+    
+        # Calculate producer-required payment amount pairs
+        producers_with_order = []
+        producer_totals = []
+        overall_producer_payment = 0
+    
+        all_producers = models.Producer.objects.all().order_by('company_name')
+        for producer in all_producers:
+            products = models.Product.objects.filter(category__producer=producer, distribution_date=today, total_quantity__gt=0)
+            producer_sum = 0
+        
+            for product in products:
+                producer_sum += product.arrived_quantity * product.price
+            
+            if producer_sum > 0:
+                producer_sum += producer.transportation_cost
+                producers_with_order.append(producer)
+                producer_totals.append(producer_sum)
+                overall_producer_payment += producer_sum
+        
+    
+        producer_payments = zip(producers_with_order, producer_totals)
+    
+        expected_final_amount = (initial_cash + collected_amount - overall_producer_payment).quantize(Decimal('.01'))
+    
+        # Get the number of people who made an order and the number of people who paid until now
+        order_count = models.User.objects.filter(order__product__distribution_date=today).distinct().count()
+        payment_count = models.Payment.objects.filter(date__gte=today).count()
+    
+        # If form was posted (final amount updated)
+        if request.method == 'POST':
+            # Get posted final amount
+            final_amount = Decimal(request.POST.get("final-amount").strip())
+        
+            # Write the calculated values and create/update the DB record
+            if not account_detail:
+                account_detail = models.DistributionAccountDetail()
+        
+            account_detail.initial_amount = initial_cash
+            account_detail.member_consumed_amount = member_consumed_amount
+            account_detail.total_member_payment_amount = collected_amount
+            #account_detail.producer_paid_amount = overall_producer_payment
+            account_detail.debt_balance_amount = current_debt_total
+            account_detail.quarterly_fee_collected_amount = quarterly_fee_collected_amount
+            account_detail.expected_final_amount = expected_final_amount    
+        
+            account_detail.final_amount = final_amount
+        
+            account_detail.save()
+        
+            # Delete old Producer Payment records and insert new ones
+            models.ProducerPayment.objects.filter(date=today).delete()
+            for producer, total in producer_payments:
+                payment = models.ProducerPayment()
                 payment.date = today
-                payment.amount = 0
+                payment.producer = producer
+                payment.amount = total
                 payment.save()
-
-                # Create the debt for the following weeks
-                next_debt_object, created = models.Debt.objects.get_or_create(user=member, payment=payment)
-
-                next_debt_object.amount = member_next_debt
-                next_debt_object.save()
     
+        #progress = 8
     
-    # Calculate collected amount from Payment table
-    collected_amount = models.Payment.objects.filter(date__gte=today).aggregate(Sum('amount'))['amount__sum'] or 0
-    member_consumed_amount = models.Consumption.objects.filter(payment__date__gte=today).aggregate(Sum('amount'))['amount__sum'] or 0
-    quarterly_fee_collected_amount = models.Quarterly.objects.filter(payment__date__gte=today).aggregate(Sum('amount'))['amount__sum'] or 0
-    
-    # Calculate debt balance from Debt table (for each user, check for debt before today and debt today)
-    previous_debt_total = 0
-    current_debt_total = 0
-    
-    all_users = User.objects.filter(is_superuser=False)
-    for user in all_users:
-        # Get today's debt for this user
-        debt = models.Debt.objects.filter(user=user, payment__date__gte=today).first()
-        
-        # If there is a debt, find the previous debt too and add them to the totals
-        if debt:
-            current_debt_total += debt.amount
-            
-            prev_debt = models.Debt.objects.filter(user=user, payment__date__lt=today).order_by('-payment__date').first()
-            
-            if prev_debt:
-                previous_debt_total += prev_debt.amount
-            
-        # Else if there is no debt from today, find the last debt for the user and add it to both amounts
-        # so that it is reflected in the totals
-        else:
-            prev_debt = models.Debt.objects.filter(user=user, payment__date__lt=today).order_by('-payment__date').first()
-            
-            if prev_debt:
-                previous_debt_total += prev_debt.amount
-                current_debt_total += prev_debt.amount
-    
-    # Debt balance is: the net debt change of the users (the extra amount that the cooperative should receive later on) 
-    debt_balance = current_debt_total - previous_debt_total
-    
-    # Read final amount from DistributionAccountDetail table (if record exists for today)
-    account_detail = models.DistributionAccountDetail.objects.filter(date__gte=today).first()
-        
-    if account_detail:
-        final_amount = account_detail.final_amount
-        
-    
-    # Calculate producer-required payment amount pairs
-    producers_with_order = []
-    producer_totals = []
-    overall_producer_payment = 0
-    
-    all_producers = models.Producer.objects.all().order_by('company_name')
-    for producer in all_producers:
-        products = models.Product.objects.filter(category__producer=producer, distribution_date=today, total_quantity__gt=0)
-        producer_sum = 0
-        
-        for product in products:
-            producer_sum += product.arrived_quantity * product.price
-            
-        if producer_sum > 0:
-            producer_sum += producer.transportation_cost
-            producers_with_order.append(producer)
-            producer_totals.append(producer_sum)
-            overall_producer_payment += producer_sum
-        
-    
-    producer_payments = zip(producers_with_order, producer_totals)
-    
-    expected_final_amount = (initial_cash + collected_amount - overall_producer_payment).quantize(Decimal('.01'))
-    
-    # Get the number of people who made an order and the number of people who paid until now
-    order_count = models.User.objects.filter(order__product__distribution_date=today).distinct().count()
-    payment_count = models.Payment.objects.filter(date__gte=today).count()
-    
-    # If form was posted (final amount updated)
-    if request.method == 'POST':
-        # Get posted final amount
-        final_amount = Decimal(request.POST.get("final-amount").strip())
-        
-        # Write the calculated values and create/update the DB record
-        if not account_detail:
-            account_detail = models.DistributionAccountDetail()
-        
-        account_detail.initial_amount = initial_cash
-        account_detail.member_consumed_amount = member_consumed_amount
-        account_detail.total_member_payment_amount = collected_amount
-        #account_detail.producer_paid_amount = overall_producer_payment
-        account_detail.debt_balance_amount = current_debt_total
-        account_detail.quarterly_fee_collected_amount = quarterly_fee_collected_amount
-        account_detail.expected_final_amount = expected_final_amount    
-        
-        account_detail.final_amount = final_amount
-        
-        account_detail.save()
-        
-        # Delete old Producer Payment records and insert new ones
-        models.ProducerPayment.objects.filter(date=today).delete()
-        for producer, total in producer_payments:
-            payment = models.ProducerPayment()
-            payment.date = today
-            payment.producer = producer
-            payment.amount = total
-            payment.save()
-    
-    #progress = 8
-    
-    return render(request, 'distribution/account_summary.html', {
-       'initial_amount': initial_cash,
-       'collected_amount': collected_amount,
-       'debt_balance': debt_balance,
-       'producer_payments': producer_payments,
-       'final_amount': final_amount,
-       'expected_final_amount': expected_final_amount,
+        return render(request, 'distribution/account_summary.html', {
+           'initial_amount': initial_cash,
+           'collected_amount': collected_amount,
+           'debt_balance': debt_balance,
+           'producer_payments': producer_payments,
+           'final_amount': final_amount,
+           'expected_final_amount': expected_final_amount,
        
-       'order_count': order_count,
-       'payment_count': payment_count,
+           'order_count': order_count,
+           'payment_count': payment_count,
        
-       #'progress': progress
-    })
+           #'progress': progress
+        })
+    
+    except Exception as e:
+        logger.error('%s (%s)' % (e.message, type(e)))
+        return '%s (%s)' % (e.message, type(e))
