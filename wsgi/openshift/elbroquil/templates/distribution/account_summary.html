@@ -126,6 +126,11 @@
 		  }
 		});
 		
+		// Click an item when list item is clicked
+		$(".wizard > .steps > li").click(function(e){
+			e.target.children[0].click();
+		});
+		
 		/*
 		// If text inputs are changed, enable the save button
 		$('#initial-cash').keyup(function( event ) {

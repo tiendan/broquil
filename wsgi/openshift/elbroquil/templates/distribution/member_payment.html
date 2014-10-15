@@ -291,6 +291,11 @@
 				updateNextDebt();
 			});
 		}
+
+		// Click an item when list item is clicked
+		$(".wizard > .steps > li").click(function(e){
+			e.target.children[0].click();
+		});
 		
 		
 		$("#amount-paid").change(updateNextDebt);

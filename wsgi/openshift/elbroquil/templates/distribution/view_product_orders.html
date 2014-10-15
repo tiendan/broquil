@@ -141,6 +141,11 @@
 				}
 			}
 		}
+
+		// Click an item when list item is clicked
+		$(".wizard > .steps > li").click(function(e){
+			e.target.children[0].click();
+		});
 		
 		// Activate the save button's form submit
 		$("#save_button").click(function(e) {
