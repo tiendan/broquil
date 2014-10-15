@@ -44,7 +44,7 @@ else:
 TEMPLATE_DEBUG = DEBUG
 
 if DEBUG:
-     ALLOWED_HOSTS = []
+     ALLOWED_HOSTS = ['ultim-broquil.rhcloud.com']
 else:
      ALLOWED_HOSTS = ['*']
 
