@@ -199,3 +199,23 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'django.core.context_processors.request',
     'django.core.context_processors.i18n',
 )
+
+if ON_OPENSHIFT:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': '/var/lib/openshift/53bbb033e0b8cd12dd000075/app-root/logs/broquil.log',
+            },
+        },
+        'loggers': {
+            'django.request': {
+                'handlers': ['file'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+        },
+    }
