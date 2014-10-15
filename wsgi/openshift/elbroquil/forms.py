@@ -24,12 +24,3 @@ class CheckProductsForm(forms.Form):
     table_data = forms.CharField()
     producer_id = forms.IntegerField()
 
-# TODO REMOVE
-#class UpdateOrderForm(forms.Form):
-#    def __init__(self, product_list, *args, **kwargs):
-#        super(UpdateOrderForm, self).__init__(*args, **kwargs)
-#        
-#        for prods in product_list:
-#            for prod in prods:
-#                self.fields['product_%i' % prod.id] = forms.DecimalField()
-

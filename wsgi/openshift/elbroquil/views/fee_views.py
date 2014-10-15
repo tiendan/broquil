@@ -118,11 +118,7 @@ def create_fees(request):
     if quarter > 5:
         quarter = 1
         year = year+1
-    
-    # TODO REMOVE
-    year = 2014
-    quarter = 2
-    
+        
     if request.method == 'POST':
         # Search for already paid fees for this year&quarter
         paid_fees = models.Quarterly.objects.filter(year=year, quarter=quarter, payment__isnull=False)

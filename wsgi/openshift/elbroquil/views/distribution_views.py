@@ -30,59 +30,56 @@ import elbroquil.models as models
 import elbroquil.parse as parser
 import elbroquil.libraries as libs
 
-'''Get an instance of a logger'''
+# Get an instance of a logger
 logger = logging.getLogger("MYAPP")
 
-def arrange_order_tables():
-    today = libs.get_today()
-    nextweek = today + timedelta(days=7)
-    calrosset_products = models.Product.objects.filter(archived=False, distribution_date__isnull=False, category__producer_id=1)
-    
-    for product in calrosset_products:
-        quantity = models.Order.objects.filter(product=product).aggregate(Sum('quantity'))['quantity__sum']
-        
-        if quantity is None:
-            quantity = Decimal(0)
-        
-        product.total_quantity = quantity
-        
-        if product.arrived_quantity == 0:
-            product.arrived_quantity = product.total_quantity
-            
-        #product.distribution_date = date(nextweek.year, 8, 20)
-        #product.order_limit_date = datetime(today.year, 8, 18, 5, 0)
-        product.save()
-
-    canpipi_products = models.Product.objects.filter(archived=False, distribution_date__isnull=False, category__producer_id=2)
-    for product in canpipi_products:
-        quantity = models.Order.objects.filter(product=product).aggregate(Sum('quantity'))['quantity__sum']
-        
-        if quantity is None:
-            quantity = Decimal(0)
-        
-        product.total_quantity = quantity
-
-        if product.arrived_quantity == 0:
-            product.arrived_quantity = product.total_quantity
-
-        #product.distribution_date = nextweek
-        #product.distribution_date = date(nextweek.year, 8, 20)
-        #product.order_limit_date = datetime(nextweek.year, 8, 17, 22, 0)
-        product.save()
+#def arrange_order_tables():
+#    today = libs.get_today()
+#    nextweek = today + timedelta(days=7)
+#    calrosset_products = models.Product.objects.filter(archived=False, distribution_date__isnull=False, category__producer_id=1)
+#    
+#    for product in calrosset_products:
+#        quantity = models.Order.objects.filter(product=product).aggregate(Sum('quantity'))['quantity__sum']
+#        
+#        if quantity is None:
+#            quantity = Decimal(0)
+#        
+#        product.total_quantity = quantity
+#        
+#        if product.arrived_quantity == 0:
+#            product.arrived_quantity = product.total_quantity
+#            
+#        #product.distribution_date = date(nextweek.year, 8, 20)
+#        #product.order_limit_date = datetime(today.year, 8, 18, 5, 0)
+#        product.save()
+#
+#    canpipi_products = models.Product.objects.filter(archived=False, distribution_date__isnull=False, category__producer_id=2)
+#    for product in canpipi_products:
+#        quantity = models.Order.objects.filter(product=product).aggregate(Sum('quantity'))['quantity__sum']
+#        
+#        if quantity is None:
+#            quantity = Decimal(0)
+#        
+#        product.total_quantity = quantity
+#
+#        if product.arrived_quantity == 0:
+#            product.arrived_quantity = product.total_quantity
+#
+#        #product.distribution_date = nextweek
+#        #product.distribution_date = date(nextweek.year, 8, 20)
+#        #product.order_limit_date = datetime(nextweek.year, 8, 17, 22, 0)
+#        product.save()
 
 @login_required
 @permission_required('elbroquil.prepare_baskets')
 def view_order_totals(request):
-    # TODO REMOVE
-    # arrange_order_tables()
-    
     products = models.Product.objects.filter(archived=False, distribution_date=libs.get_today(),total_quantity__gt=0).order_by('category__sort_order', 'id')
 
     add_category_row = []
     prev_category = ''
 
 
-    '''If the form was submitted'''
+    # If the form was submitted
     if request.method == 'POST':
         with transaction.atomic():
             for product in products:
@@ -90,11 +87,11 @@ def view_order_totals(request):
                 item = request.POST.get(key).strip()
             
                 if len(item) > 0:
-                    '''Update the arrived quantity and status'''
+                    # Update the arrived quantity and status
                     product.arrived_quantity = Decimal(item.replace(',', '.'))
                     product.save()
                 
-                    '''If product arrived quantity is marked as 0, mark the product orders too. Also do the reverse'''
+                    # If product arrived quantity is marked as 0, mark the product orders too. Also do the reverse
                     if product.arrived_quantity == 0:
                         models.Order.objects.filter(product_id=product.id).update(arrived_quantity=0, status=models.STATUS_DID_NOT_ARRIVE)
                     else:
@@ -130,42 +127,33 @@ def count_initial_cash(request):
 @login_required
 @permission_required('elbroquil.prepare_baskets')
 def view_basket_counts(request):
-    '''If basket counts are not already calculated and stored in session, calculate them'''
-    if True: #not request.session.get('baskets'):   # TODO ALWAYS GENERATING THE SUMMARY
-        orders = models.Order.objects.filter(product__distribution_date=libs.get_today()).prefetch_related('product', 'user').order_by('user__first_name', 'user__last_name')
+    # If basket counts are not already calculated and stored in session, calculate them
+    orders = models.Order.objects.filter(product__distribution_date=libs.get_today()).prefetch_related('product', 'user').order_by('user__first_name', 'user__last_name')
 
-        order_summary = []
-        last_order_total = 0
-        last_order_user = -1
-        last_order_user_name = ''
+    order_summary = []
+    last_order_total = 0
+    last_order_user = -1
+    last_order_user_name = ''
 
-        for order in orders:
-            if order.user.id != last_order_user:
-                if last_order_total > 0:
-                    if last_order_total < 20:
-                        order_summary.append([last_order_user, last_order_user_name, last_order_total, 1])
-                    else:
-                        order_summary.append([last_order_user, last_order_user_name, last_order_total, 2])
+    for order in orders:
+        if order.user.id != last_order_user:
+            if last_order_total > 0:
+                if last_order_total < 20:
+                    order_summary.append([last_order_user, last_order_user_name, last_order_total, 1])
+                else:
+                    order_summary.append([last_order_user, last_order_user_name, last_order_total, 2])
 
-                last_order_total = 0
-                last_order_user = order.user.id
-                last_order_user_name = order.user.get_full_name()
+            last_order_total = 0
+            last_order_user = order.user.id
+            last_order_user_name = order.user.get_full_name()
 
-            last_order_total += order.quantity * order.product.price
+        last_order_total += order.quantity * order.product.price
 
-        if last_order_total > 0:
-            if last_order_total < 20:
-                order_summary.append([last_order_user, last_order_user_name, last_order_total, 1])
-            else:
-                order_summary.append([last_order_user, last_order_user_name, last_order_total, 2])
-            
-        #pickled_summary = pickle.dumps(order_summary)
-        #request.session['baskets'] = pickled_summary
-        
-    #else:
-    #    '''If there is pickled data in the session, load it'''
-    #    order_summary = pickle.loads(request.session['baskets'])
-        
+    if last_order_total > 0:
+        if last_order_total < 20:
+            order_summary.append([last_order_user, last_order_user_name, last_order_total, 1])
+        else:
+            order_summary.append([last_order_user, last_order_user_name, last_order_total, 2])
     
     return render(request, 'distribution/view_basket_counts.html', {
             'order_summary': order_summary,
@@ -220,7 +208,7 @@ def view_product_orders(request, product_no=''):
                 item = request.POST.get(key).strip()
                 
                 if len(item) > 0:
-                    '''Update the arrived quantity and status'''
+                    # Update the arrived quantity and status
                     o.arrived_quantity = Decimal(item.replace(',', '.'))
                     
                     if o.arrived_quantity == 0:
@@ -326,6 +314,9 @@ def member_payment(request):
                 not_arrived_product_list.append(order)
             elif order.status == models.STATUS_MIN_ORDER_NOT_MET:
                 not_ordered_product_list.append(order)
+        
+        # Round to 2 decimals
+        total_price = total_price.quantize(Decimal('0.01'))
         
         # Get debt from last weeks (if exists)
         debt = models.Debt.objects.filter(user_id=member_id, payment__date__lt=today).order_by('-payment__date').first()

@@ -142,8 +142,6 @@ class Category(models.Model):
     producer = models.ForeignKey(Producer)
     sort_order = models.PositiveIntegerField(_(u'sort order'), default=0, blank=False, null=False)
     archived = models.BooleanField(_(u'archived'), default=False)
-    
-    # TODO ADD EXPLANATION TO BE SEEN IN THE EMAILS & MAYBE IN HTML
         
     def __unicode__(self):
         if self.visible_name and len(self.visible_name.strip()) > 0:
@@ -300,7 +298,3 @@ class EmailTemplate(models.Model):
     def __unicode__(self):
         return self.get_email_type() + " (" + self.get_language_name() + ")"
 
-    '''   
-class AccountBook:
-    date
-    '''

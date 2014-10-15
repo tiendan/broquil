@@ -27,7 +27,7 @@
 					{% for order, total in orders_with_totals %}
 					<tr>
 						<td>{% if not order.arrived_quantity %}<s>{{ order.product.name }}</s>{% else %}{{ order.product.name }}{% endif%}</td>
-						<td class="price">{{ order.product.price }}</td>
+						<td class="price">{{ order.product.price|floatformat:2 }}</td>
 						<td class="quantity">{{ order.arrived_quantity }}</td>
 						<td>{{ order.product.unit }}</td>
 						<td class="total success">{{ total }}</td>
@@ -50,7 +50,7 @@
 					<tr>
 						<td colspan="2"></td>
 						<td colspan="2" class="total-info success">{% trans "TOTAL TO PAY:" %}</td>
-						<td class="success total-lg" style="border: 2px solid green;">{{ overall_sum }} &euro;</td>
+						<td class="success total-lg" style="border: 2px solid green;">{{ overall_sum|floatformat:2 }} &euro;</td>
 					</tr>
 				</tbody>
 				</table>
@@ -71,7 +71,7 @@
 					<tr>
 						<td>{{ order.product.distribution_date }}</td>
 						<td>{% if not order.arrived_quantity %}<s>{{ order.product.name }}</s>{% else %}{{ order.product.name }}{% endif%}</td>
-						<td class="price">{{ order.product.price }}</td>
+						<td class="price">{{ order.product.price|floatformat:2 }}</td>
 						<td class="quantity">{{ order.arrived_quantity }}</td>
 						<td>{{ order.product.unit }}</td>
 					</tr>

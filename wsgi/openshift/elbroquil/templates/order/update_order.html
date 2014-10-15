@@ -76,7 +76,7 @@
 									{% endif %}
 									</td>
 								<td>{{ product.name }}{% if product.comments %} <span class="glyphicon glyphicon-comment right-tooltip larger-text" data-toggle="tooltip" data-placement="right" title="{{ product.comments }}"></span>{% endif %}{% if product.new_product %} <span class="label label-success">{% trans "NEW!"%}</span>{% endif %}</td>
-								<td class="price">{{ product.price }}</td>
+								<td class="price">{{ product.price|floatformat:2 }}</td>
 								<td>&euro;/{{ product.unit }}</td>
 								<td>{{ product.origin }}</td>
 								<td>{% if product.average_rating > 0 %}<input class="rating" data-readonly="true" value="{{ product.average_rating|unlocalize }}" data-size="xs" data-show-clear="false" data-show-caption="false">{% endif %}</td>

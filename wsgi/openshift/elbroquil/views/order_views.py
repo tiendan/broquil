@@ -2,7 +2,6 @@
 from decimal import Decimal
 import ast
 import xlrd
-import logging      # import the logging library
 from datetime import date, datetime, timedelta
 
 from django.contrib import admin
@@ -28,19 +27,15 @@ import elbroquil.parse as parser
 
 import elbroquil.libraries as libs
 
-'''Get an instance of a logger'''
-logger = logging.getLogger("MYAPP")
-
 '''Page to enable users update/place their orders'''
 @login_required
 def update_order(request, category_no=''):
-    '''Choose the available categories:
-        - having products with order limit date in the future
-        - not archived
-    '''
+    # Choose the available categories:
+    #    - having products with order limit date in the future
+    #    - not archived
     categories = models.Category.objects.filter(product__archived=False, product__order_limit_date__gt=libs.get_now()).distinct()
 
-    '''Choose the indices for the current, previous and next categories'''
+    # Choose the indices for the current, previous and next categories
     previous_category = None
     current_category = None
     next_category = None
@@ -69,14 +64,13 @@ def update_order(request, category_no=''):
     if request.method == 'POST': # If the form has been submitted...
         # Delete old orders and insert new ones
         with transaction.atomic():
-            products = models.Product.objects.filter(distribution_date__gt=libs.get_today(), archived=False, category_id=current_category_id)
+            products = models.Product.objects.filter(order_limit_date__gt=libs.get_now(), archived=False, category_id=current_category_id)
             models.Order.objects.filter(user=request.user, archived=False, product__category=current_category_id).delete()
     
             for p in products:
                 key = "product_"+str(p.id)
                 item = request.POST.get(key).strip()
                 if len(item) > 0:
-                    logger.error("ITEM: " + key)
                     order = models.Order()
                     order.product = p
                     order.user = request.user
