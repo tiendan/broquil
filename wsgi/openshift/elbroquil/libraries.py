@@ -78,7 +78,7 @@ def calculate_order_summary(request):
     # Add the extra payments to the total and save results to the session
     order_total = order_total + debt + quarterly_fee
     
-    request.session['order_total'] = str(order_total)
+    request.session['order_total'] = str(order_total.quantize(Decimal('.01')))
     request.session['order_summary'] = order_summary
 
 def calculate_user_orders(member, dist_date):

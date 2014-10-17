@@ -46,7 +46,7 @@
 					{% endif %}
 					<tr id="selectablerow_{{ product.id }}">
 						<td><a href="{% url 'admin:elbroquil_product_change' product.pk %}">{{ product.name }}</a></td>
-						<td class="price">{{ product.price }}</td>
+						<td class="price">{{ product.price|floatformat:2 }}</td>
 						<td>{{ product.unit }}</td>
 						<td>{{ product.origin }}</td>
 						<td>{{ product.comments }}</td>

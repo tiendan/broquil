@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 from decimal import Decimal
 from django.utils import timezone
@@ -297,4 +297,8 @@ class EmailTemplate(models.Model):
     
     def __unicode__(self):
         return self.get_email_type() + " (" + self.get_language_name() + ")"
+
+    class Meta:
+        verbose_name = _('email template')
+        verbose_name_plural = _('email templates')
 

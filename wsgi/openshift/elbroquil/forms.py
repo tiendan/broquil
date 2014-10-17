@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 class UploadProductsForm(forms.Form):
     producer = forms.ModelChoiceField(queryset=models.Producer.objects.all(),
                                            label=_('Producer'))
-    excel_file = forms.FileField()
+    excel_file = forms.FileField(label=_('Excel file'))
     
     def __unicode__(self):
             from formadmin.forms import as_django_admin
