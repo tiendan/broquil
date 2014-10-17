@@ -40,7 +40,7 @@ def calculate_order_summary(request):
     order_summary = '<table class="table table-condensed summary-table">'
     debt = 0
     quarterly_fee = 0
-    order_total = 0
+    order_total = Decimal(0)
     i = 1
     
     if len(orders) > 0:
