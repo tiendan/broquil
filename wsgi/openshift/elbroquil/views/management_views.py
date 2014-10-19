@@ -21,6 +21,8 @@ from django.views.generic import FormView
 import elbroquil.models as models
 
 
+@login_required
+@permission_required('elbroquil.accounting')
 def view_distribution_detail(request):
     # Form fields
     only_latest_dates = True

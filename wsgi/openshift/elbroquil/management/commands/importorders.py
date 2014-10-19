@@ -62,7 +62,7 @@ class Command(BaseCommand):
                     member.last_name = ""
                     
                     # Calculate a valid email address
-                    valid_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    valid_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
                     member.email = 'tiendan+' + ''.join(c for c in member.username.lower() if c in valid_chars) + "@gmail.com"
                     
                     member.set_password("1111")
