@@ -106,7 +106,7 @@ def get_next_wednesday(allow_today=True):
         day += timedelta(days=1)
     
     # While day of week is not Wednesday, add one 
-    days_till_next_wednesday = (models.WEDNESDAY - day.weekday()) % 7
+    days_till_next_wednesday = (models.THURSDAY - day.weekday()) % 7    ## TODO CHANGE TO WEDNESDAY!!!!!
     day += timedelta(days=days_till_next_wednesday)
     
     return day
