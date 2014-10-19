@@ -296,7 +296,7 @@ class EmailTemplate(models.Model):
         return ""
     
     def __unicode__(self):
-        return self.get_email_type() + " (" + self.get_language_name() + ")"
+        return unicode(self.get_email_type()) + " (" + unicode(self.get_language_name()) + ")"
 
     class Meta:
         verbose_name = _('email template')
