@@ -28,6 +28,7 @@ BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 default_keys = { 'SECRET_KEY': 'vm4rl5*ymb@2&d_(gc$gb-^twq9w(u69hi--%$5xrh!xk(t%hw' }
 use_keys = default_keys
+
 if ON_OPENSHIFT:
      imp.find_module('openshiftlibs')
      import openshiftlibs
