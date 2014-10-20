@@ -209,7 +209,7 @@ if ON_OPENSHIFT:
             'file': {
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
-                'filename': '/var/lib/openshift/53bbb033e0b8cd12dd000075/app-root/logs/broquil.log',
+                'filename': os.environ['OPENSHIFT_HOMEDIR']+'/app-root/logs/broquil.log',
             },
         },
         'loggers': {
