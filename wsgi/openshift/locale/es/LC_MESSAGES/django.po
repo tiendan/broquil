@@ -2,35 +2,35 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-19 22:58+0200\n"
-"PO-Revision-Date: 2014-10-17 23:58+0000\n"
+"POT-Creation-Date: 2014-10-22 00:37+0200\n"
+"PO-Revision-Date: 2014-10-22 00:43+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Translated-Using: django-rosetta 0.7.4\n"
 
-#: settings.py:172 elbroquil/models.py:56
+#: settings.py:173 elbroquil/models.py:56
 msgid "Turkish"
 msgstr "Turco"
 
-#: settings.py:173 elbroquil/models.py:57
+#: settings.py:174 elbroquil/models.py:57
 msgid "Catala"
 msgstr "Catalán"
 
-#: settings.py:174 elbroquil/models.py:58
+#: settings.py:175 elbroquil/models.py:58
 msgid "Castellano"
 msgstr "Castellano"
 
-#: settings.py:175 elbroquil/models.py:59
+#: settings.py:176 elbroquil/models.py:59
 msgid "English"
 msgstr "Inglés"
 
@@ -134,64 +134,64 @@ msgstr "Información Técnica"
 msgid "Categories"
 msgstr "Categorias"
 
-#: elbroquil/admin.py:60 elbroquil/admin.py:111 elbroquil/admin.py:182
+#: elbroquil/admin.py:79 elbroquil/admin.py:130 elbroquil/admin.py:201
 msgid "Email"
 msgstr "Email"
 
-#: elbroquil/admin.py:61 elbroquil/admin.py:112
+#: elbroquil/admin.py:80 elbroquil/admin.py:131
 msgid "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
 msgstr "Obligatorio. 30 carácteres o menos. Solo letras, dígitos y @/./+/-/_."
 
-#: elbroquil/admin.py:62 elbroquil/admin.py:113
+#: elbroquil/admin.py:81 elbroquil/admin.py:132
 msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
 msgstr ""
 "Este valor solo puede contener letras, numeros y carácteres de @/./+/-/_."
 
-#: elbroquil/admin.py:63 templates/base.html:137 templates/login.html:19
+#: elbroquil/admin.py:82 templates/base.html:137 templates/login.html:19
 msgid "Password"
 msgstr "Contraseña"
 
-#: elbroquil/admin.py:64
+#: elbroquil/admin.py:83
 msgid "Password confirmation"
 msgstr "Confirmación de contraseña"
 
-#: elbroquil/admin.py:65
+#: elbroquil/admin.py:84
 msgid "Enter the same password as above, for verification."
 msgstr "Para verificación, entra la misma contraseña como arriba."
 
-#: elbroquil/admin.py:67 elbroquil/admin.py:114
+#: elbroquil/admin.py:86 elbroquil/admin.py:133
 msgid "First name"
 msgstr "Nombre"
 
-#: elbroquil/admin.py:68 elbroquil/admin.py:115
+#: elbroquil/admin.py:87 elbroquil/admin.py:134
 msgid "Last name"
 msgstr "Apellido"
 
-#: elbroquil/admin.py:84
+#: elbroquil/admin.py:103
 msgid "Phone number is required."
 msgstr "Número de telefono es necesario."
 
-#: elbroquil/admin.py:90 elbroquil/admin.py:131
+#: elbroquil/admin.py:109 elbroquil/admin.py:150
 msgid "A user with that username already exists."
 msgstr "Este nombre de usuario ya existe."
 
-#: elbroquil/admin.py:96
+#: elbroquil/admin.py:115
 msgid "The two password fields didn't match."
 msgstr "Las dos contraseñas no coinciden."
 
-#: elbroquil/admin.py:116
+#: elbroquil/admin.py:135
 msgid "Phone"
 msgstr "Teléfono"
 
-#: elbroquil/admin.py:117
+#: elbroquil/admin.py:136
 msgid "Secondary email"
 msgstr "Email secundario"
 
-#: elbroquil/admin.py:118
+#: elbroquil/admin.py:137
 msgid "Secondary phone"
 msgstr "Teléfono secundario"
 
-#: elbroquil/admin.py:181
+#: elbroquil/admin.py:200
 msgid "Information"
 msgstr "Información"
 
@@ -341,6 +341,10 @@ msgstr "nombre de categoria por defecto"
 msgid "active"
 msgstr "activo"
 
+#: elbroquil/models.py:99
+msgid "<em>(Disable the producer by clearing this option.)</em>"
+msgstr "<em>(Desactivar el productor, limpiando esta opción.)</em>"
+
 #: elbroquil/models.py:100
 msgid "transportation cost"
 msgstr "coste de transportación"
@@ -348,6 +352,10 @@ msgstr "coste de transportación"
 #: elbroquil/models.py:102
 msgid "short product explanation"
 msgstr "breve explicación del producto"
+
+#: elbroquil/models.py:102
+msgid "<em>(Will be shown on the 'offer created' emails.)</em>"
+msgstr "<em>(Mostrado en los correos de 'oferta creada')</em>"
 
 #: elbroquil/models.py:108
 msgid "producer"
@@ -381,9 +389,17 @@ msgstr "nombre"
 msgid "visible name"
 msgstr "nombre visible"
 
+#: elbroquil/models.py:141
+msgid "<em>(To display shorter/better names for producer categories.)</em>"
+msgstr "<em>(Para mostrar nombres de categorías mas cortos/bonitos.)</em>"
+
 #: elbroquil/models.py:143
 msgid "sort order"
 msgstr "orden de clasificación"
+
+#: elbroquil/models.py:143
+msgid "<em>(To change the order of appearance of categories.)</em>"
+msgstr "<em>(Para cambiar el orden de apariencia de las categorías.)</em>"
 
 #: elbroquil/models.py:144 elbroquil/models.py:167 elbroquil/models.py:198
 msgid "archived"
@@ -417,6 +433,10 @@ msgstr "precio"
 msgid "unit"
 msgstr "unidad"
 
+#: elbroquil/models.py:164
+msgid "<em>(without the &euro; sign or / character.)</em>"
+msgstr "<em>(sin el símbolo de &euro; o el carácter de /)</em>"
+
 #: elbroquil/models.py:165
 msgid "integer demand"
 msgstr "pedir unidades"
@@ -424,6 +444,10 @@ msgstr "pedir unidades"
 #: elbroquil/models.py:166 elbroquil/models.py:256 elbroquil/models.py:269
 msgid "distribution date"
 msgstr "fecha de distribución"
+
+#: elbroquil/models.py:166 elbroquil/models.py:171
+msgid "<em>(Only fill for products that are offered just once.)</em>"
+msgstr "<em>(Solo rellenar para productos que están ofrecidos una vez.)</em>"
 
 #: elbroquil/models.py:169
 msgid "total quantity"
@@ -444,6 +468,11 @@ msgstr "valoración promedia"
 #: elbroquil/models.py:174
 msgid "new product"
 msgstr "producto nuevo"
+
+#: elbroquil/models.py:174
+msgid "<em>(To highlight this product as NEW in the order pages.)</em>"
+msgstr ""
+"<em>(Para poner la etiqueta de ¡NUEVO! en las páginas de pedido.)</em>"
 
 #: elbroquil/models.py:175
 msgid "sent to producer"
@@ -546,9 +575,17 @@ msgstr "código de idioma"
 msgid "subject"
 msgstr "tema"
 
+#: elbroquil/models.py:278
+msgid "<em>(Without [BroquilGotic])</em>"
+msgstr "<em>(Sin [BroquilGotic])</em>"
+
 #: elbroquil/models.py:279
 msgid "body"
 msgstr "correo"
+
+#: elbroquil/models.py:279
+msgid "<em>(Do not remove the [[CONTENT]] parts.)</em>"
+msgstr "<em>(No quitar las etiquetas de [[CONTENT]])</em>"
 
 #: elbroquil/models.py:302
 msgid "email template"
@@ -573,13 +610,14 @@ msgstr "Resumen de contabilidad"
 #: elbroquil/templates/distribution/account_summary.html:21
 msgid ""
 "<strong>Prepare the envelopes</strong> for each producer, placing the "
-"required amount of money inside.<br/>Count the <strong>final amount</strong> "
-"in the drawer and save it here. Make sure it more or less equals the "
+"required amount of money inside.<br/>Count the <strong>final amount</strong>"
+" in the drawer and save it here. Make sure it more or less equals the "
 "expected amount."
 msgstr ""
-"<strong>Prepara los sobres</strong> para cada productor, poniendo el importe "
-"de dinero requerido.<br/>Cuenta el <strong>importe final</strong> en la caja "
-"y guardalo aquí. Asegúrate de que sea mas o menos igual a la expectativa."
+"<strong>Prepara los sobres</strong> para cada productor, poniendo el importe"
+" de dinero requerido.<br/>Cuenta el <strong>importe final</strong> en la "
+"caja y guardalo aquí. Asegúrate de que sea mas o menos igual a la "
+"expectativa."
 
 #: elbroquil/templates/distribution/account_summary.html:24
 msgid "The initial cash has not been entered!"
@@ -663,10 +701,10 @@ msgstr "Pagos de miembros"
 
 #: elbroquil/templates/distribution/member_payment.html:22
 msgid ""
-"Choose the member and charge him the required amount. In case the user wants "
-"to pay the quarterly fee, mark the box to add it to the total amount. If you "
-"or the member does not have change, just enter the paid amount and the rest "
-"will be saved as debt."
+"Choose the member and charge him the required amount. In case the user wants"
+" to pay the quarterly fee, mark the box to add it to the total amount. If "
+"you or the member does not have change, just enter the paid amount and the "
+"rest will be saved as debt."
 msgstr ""
 "Elige el miembro y cóbrale el importe necesario. En el caso de que el "
 "miembro quiera pagar la cuota trimestral, marca la casilla para sumarlo al "
@@ -754,8 +792,8 @@ msgstr "Final"
 
 #: elbroquil/templates/distribution/view_basket_counts.html:22
 msgid ""
-"Prepare the baskets for each member. Place an extra basket for the indicated "
-"members (with more products)."
+"Prepare the baskets for each member. Place an extra basket for the indicated"
+" members (with more products)."
 msgstr ""
 "Prepara las cestas para cada miembro. Pon una extra para los miembros "
 "indicados (con más productos)."
@@ -1061,8 +1099,8 @@ msgid ""
 "the administrator."
 msgstr ""
 "Verifica que la información de los productos se hayan procesado "
-"correctamente. Si todo está correcto, <strong>guarda los productos</strong>. "
-"Si hay algún error, informe el administrador."
+"correctamente. Si todo está correcto, <strong>guarda los productos</strong>."
+" Si hay algún error, informe el administrador."
 
 #: elbroquil/templates/product/check_product_info.html:23
 msgid "Category"
@@ -1135,9 +1173,8 @@ msgid "View products"
 msgstr "Ver productos"
 
 #: templates/base.html:83
-#, fuzzy
 msgid "Accounting"
-msgstr "Resumen de contabilidad"
+msgstr "Contabilidad"
 
 #: templates/base.html:85
 msgid "Quarterly Fees"
@@ -1178,7 +1215,8 @@ msgstr "He olvidado la contraseña"
 #: templates/login.html:11
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
-"Tu nombre de usuario y contraseña no coinciden. Por favor intentalo otra vez."
+"Tu nombre de usuario y contraseña no coinciden. Por favor intentalo otra "
+"vez."
 
 #: templates/login.html:17
 msgid "Please sign in"

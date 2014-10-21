@@ -96,13 +96,13 @@ class Producer(models.Model):
     limited_availability = models.BooleanField(_(u'limited availability'), default=False)
     excel_format = models.SmallIntegerField(_(u'excel format'), choices=EXCEL_FORMAT_CHOICES, default=STANDARD)
     default_category_name = models.CharField(_(u'default category name'), max_length=50, null=True, blank=True)
-    active = models.BooleanField(_(u'active'), default=True)
+    active = models.BooleanField(_(u'active'), default=True, help_text=_(u"<em>(Disable the producer by clearing this option.)</em>"))
     transportation_cost = models.DecimalField(_(u'transportation cost'), decimal_places=2, max_digits=5, default=0)
     
-    short_product_explanation = models.CharField(_(u'short product explanation'), max_length=80, null=False, blank=False, default="")
+    short_product_explanation = models.CharField(_(u'short product explanation'), max_length=80, null=False, blank=False, default="", help_text=_(u"<em>(Will be shown on the 'offer created' emails.)</em>"))
     
     def __unicode__(self):
-        return self.first_name + " " + self.last_name + " (" + self.company_name + ")"
+        return self.company_name
 
     class Meta:
         verbose_name = _('producer')
@@ -138,9 +138,9 @@ class SkippedDistributionDate(models.Model):
 # Holds the information about product categories and contains the relation between products and producers
 class Category(models.Model):
     name = models.CharField(_(u'name'), max_length=100)
-    visible_name = models.CharField(_(u'visible name'), max_length=100, null=True, blank=True)
+    visible_name = models.CharField(_(u'visible name'), max_length=100, null=True, blank=True, help_text=_(u"<em>(To display shorter/better names for producer categories.)</em>"))
     producer = models.ForeignKey(Producer)
-    sort_order = models.PositiveIntegerField(_(u'sort order'), default=0, blank=False, null=False)
+    sort_order = models.PositiveIntegerField(_(u'sort order'), default=0, blank=False, null=False, help_text=_(u"<em>(To change the order of appearance of categories.)</em>"))
     archived = models.BooleanField(_(u'archived'), default=False)
         
     def __unicode__(self):
@@ -161,17 +161,17 @@ class Product(models.Model):
     origin = models.CharField(_(u'origin'), max_length=100, null=True, blank=True)
     comments = models.CharField(_(u'comments'), max_length=100, null=True, blank=True)
     price = models.DecimalField(_(u'price'), decimal_places=4, max_digits=7)
-    unit = models.CharField(_(u'unit'), max_length=20)
+    unit = models.CharField(_(u'unit'), max_length=20, help_text=_(u"<em>(without the &euro; sign or / character.)</em>"))
     integer_demand = models.BooleanField(_(u'integer demand'), default=False)
-    distribution_date = models.DateField(_(u'distribution date'), null=True, blank=True)
+    distribution_date = models.DateField(_(u'distribution date'), null=True, blank=True, help_text=_(u"<em>(Only fill for products that are offered just once.)</em>"))
     archived = models.BooleanField(_(u'archived'), default=False)
     
     total_quantity = models.DecimalField(_(u'total quantity'), decimal_places=2, max_digits=5, default=0)
     arrived_quantity = models.DecimalField(_(u'arrived quantity'), decimal_places=2, max_digits=5, default=0)
-    order_limit_date = models.DateTimeField(_(u'order limit date'), null=True, blank=True)  # TODO DATETIME
+    order_limit_date = models.DateTimeField(_(u'order limit date'), null=True, blank=True, help_text=_(u"<em>(Only fill for products that are offered just once.)</em>"))  # TODO DATETIME
     average_rating = models.DecimalField(_(u'average rating'), decimal_places=1, max_digits=5, default=0)
     
-    new_product = models.BooleanField(_(u'new product'), default=False)
+    new_product = models.BooleanField(_(u'new product'), default=False, help_text=_(u"<em>(To highlight this product as NEW in the order pages.)</em>"))
     sent_to_producer = models.BooleanField(_(u'sent to producer'), default=False)
     
     def active(self):
@@ -275,8 +275,8 @@ class ProducerPayment(models.Model):
 class EmailTemplate(models.Model):
     email_code = models.SmallIntegerField(_(u'email code'), choices=EMAIL_CODE_CHOICES, default='ca', max_length=2)
     language = models.CharField(_(u'language code'), choices=LANGUAGE_CHOICES, default='ca', max_length=2)
-    subject = models.CharField(_(u'subject'), max_length=70, blank=True, default='')
-    body = models.TextField(_(u'body'), blank=True, default='')
+    subject = models.CharField(_(u'subject'), max_length=70, blank=True, default='', help_text=_(u"<em>(Without [BroquilGotic])</em>"))
+    body = models.TextField(_(u'body'), blank=True, default='', help_text=_(u"<em>(Do not remove the [[CONTENT]] parts.)</em>"))
     
     def full_subject(self):
         return "[BroquilGotic]" + self.subject

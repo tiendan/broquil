@@ -104,7 +104,7 @@ class Command(BaseCommand):
             limit_date = libs.get_producer_order_limit_date(producer, next_dist_date)
             
             # Choose the products with empty distribution dates
-            products = models.Product.objects.filter(category__producer=producer, distribution_date__isnull=True)
+            products = models.Product.objects.filter(category__producer=producer, distribution_date__isnull=True, archived=False)
             
             if products:
                 self.stdout.write('El productor tiene ' + str(len(products)) + ' productos...')

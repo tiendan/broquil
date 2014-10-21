@@ -24,20 +24,39 @@ class AvailabilityInline(admin.TabularInline):
 class ProducerAdmin(admin.ModelAdmin):
     fieldsets = [
       (_(u'General Info'), {'fields': ['first_name', 'last_name', 'company_name', 'email']}),
-      (_(u'Order Info'), {'fields': ['send_ratings', 'order_day', 'order_hour', 'minimum_order', 'transportation_cost', 'fixed_products', 'limited_availability']}),
-      (_(u'Technical Info'), {'fields': ['short_product_explanation', 'excel_format', 'default_category_name', 'active']}),
+      (_(u'Order Info'), {'fields': ['order_day', 'order_hour', 'minimum_order', 'transportation_cost', 'fixed_products', 'limited_availability']}),
+      (_(u'Technical Info'), {'fields': ['short_product_explanation', 'excel_format', 'active']}),
     ]
     inlines = [AvailabilityInline]
-    list_display = ('first_name', 'last_name', 'company_name', 'email', 'active')
+    list_display = ('company_name', 'email', 'active')
 
 # Category admin pages
 class CategoryAdmin(admin.ModelAdmin):
     verbose_name_plural = _(u"Categories")
     list_display = ('sort_order', 'name', 'producer')
+    list_display_links = ('name',)
+    fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('name', 'visible_name', 'producer', 'sort_order')}
+        ),
+    )
+
+    # Override default queryset so that only relevant products are shown
+    def queryset(self, request):
+        qs = super(CategoryAdmin, self).queryset(request).order_by('sort_order', 'pk')
+
+        return qs
 
 # Product admin pages
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'price', 'unit', 'distribution_date')
+    fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('name', 'category', 'origin', 'comments', 'price', 'unit', 'integer_demand', 'new_product', 'distribution_date', 'order_limit_date')}
+        ),
+    )
 
     # Override default queryset so that only relevant products are shown
     def queryset(self, request):
