@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-17 23:55+0200\n"
+"POT-Creation-Date: 2014-10-28 18:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings.py:172 elbroquil/models.py:56
+#: settings.py:173 elbroquil/models.py:56
 msgid "Turkish"
 msgstr ""
 
-#: settings.py:173 elbroquil/models.py:57
+#: settings.py:174 elbroquil/models.py:57
 msgid "Catala"
 msgstr ""
 
-#: settings.py:174 elbroquil/models.py:58
+#: settings.py:175 elbroquil/models.py:58
 msgid "Castellano"
 msgstr ""
 
-#: settings.py:175 elbroquil/models.py:59
+#: settings.py:176 elbroquil/models.py:59
 msgid "English"
 msgstr ""
 
@@ -133,63 +133,43 @@ msgstr ""
 msgid "Categories"
 msgstr ""
 
-#: elbroquil/admin.py:60 elbroquil/admin.py:111 elbroquil/admin.py:182
+#: elbroquil/admin.py:79 elbroquil/admin.py:135 elbroquil/admin.py:206
 msgid "Email"
 msgstr ""
 
-#: elbroquil/admin.py:61 elbroquil/admin.py:112
+#: elbroquil/admin.py:80 elbroquil/admin.py:136
 msgid "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
 msgstr ""
 
-#: elbroquil/admin.py:62 elbroquil/admin.py:113
+#: elbroquil/admin.py:81 elbroquil/admin.py:137
 msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
 msgstr ""
 
-#: elbroquil/admin.py:63 templates/base.html:136 templates/login.html:19
-msgid "Password"
-msgstr ""
-
-#: elbroquil/admin.py:64
-msgid "Password confirmation"
-msgstr ""
-
-#: elbroquil/admin.py:65
-msgid "Enter the same password as above, for verification."
-msgstr ""
-
-#: elbroquil/admin.py:67 elbroquil/admin.py:114
+#: elbroquil/admin.py:86 elbroquil/admin.py:138
 msgid "First name"
 msgstr ""
 
-#: elbroquil/admin.py:68 elbroquil/admin.py:115
+#: elbroquil/admin.py:87 elbroquil/admin.py:139
 msgid "Last name"
 msgstr ""
 
-#: elbroquil/admin.py:84
-msgid "Phone number is required."
-msgstr ""
-
-#: elbroquil/admin.py:90 elbroquil/admin.py:131
+#: elbroquil/admin.py:109 elbroquil/admin.py:155
 msgid "A user with that username already exists."
 msgstr ""
 
-#: elbroquil/admin.py:96
-msgid "The two password fields didn't match."
-msgstr ""
-
-#: elbroquil/admin.py:116
+#: elbroquil/admin.py:140
 msgid "Phone"
 msgstr ""
 
-#: elbroquil/admin.py:117
+#: elbroquil/admin.py:141
 msgid "Secondary email"
 msgstr ""
 
-#: elbroquil/admin.py:118
+#: elbroquil/admin.py:142
 msgid "Secondary phone"
 msgstr ""
 
-#: elbroquil/admin.py:181
+#: elbroquil/admin.py:205
 msgid "Information"
 msgstr ""
 
@@ -339,12 +319,20 @@ msgstr ""
 msgid "active"
 msgstr ""
 
+#: elbroquil/models.py:99
+msgid "<em>(Disable the producer by clearing this option.)</em>"
+msgstr ""
+
 #: elbroquil/models.py:100
 msgid "transportation cost"
 msgstr ""
 
 #: elbroquil/models.py:102
 msgid "short product explanation"
+msgstr ""
+
+#: elbroquil/models.py:102
+msgid "<em>(Will be shown on the 'offer created' emails.)</em>"
 msgstr ""
 
 #: elbroquil/models.py:108
@@ -379,8 +367,16 @@ msgstr ""
 msgid "visible name"
 msgstr ""
 
+#: elbroquil/models.py:141
+msgid "<em>(To display shorter/better names for producer categories.)</em>"
+msgstr ""
+
 #: elbroquil/models.py:143
 msgid "sort order"
+msgstr ""
+
+#: elbroquil/models.py:143
+msgid "<em>(To change the order of appearance of categories.)</em>"
 msgstr ""
 
 #: elbroquil/models.py:144 elbroquil/models.py:167 elbroquil/models.py:198
@@ -415,12 +411,20 @@ msgstr ""
 msgid "unit"
 msgstr ""
 
+#: elbroquil/models.py:164
+msgid "<em>(without the &euro; sign or / character.)</em>"
+msgstr ""
+
 #: elbroquil/models.py:165
 msgid "integer demand"
 msgstr ""
 
 #: elbroquil/models.py:166 elbroquil/models.py:256 elbroquil/models.py:269
 msgid "distribution date"
+msgstr ""
+
+#: elbroquil/models.py:166 elbroquil/models.py:171
+msgid "<em>(Only fill for products that are offered just once.)</em>"
 msgstr ""
 
 #: elbroquil/models.py:169
@@ -441,6 +445,10 @@ msgstr ""
 
 #: elbroquil/models.py:174
 msgid "new product"
+msgstr ""
+
+#: elbroquil/models.py:174
+msgid "<em>(To highlight this product as NEW in the order pages.)</em>"
 msgstr ""
 
 #: elbroquil/models.py:175
@@ -544,8 +552,16 @@ msgstr ""
 msgid "subject"
 msgstr ""
 
+#: elbroquil/models.py:278
+msgid "<em>(Without [BroquilGotic])</em>"
+msgstr ""
+
 #: elbroquil/models.py:279
 msgid "body"
+msgstr ""
+
+#: elbroquil/models.py:279
+msgid "<em>(Do not remove the [[CONTENT]] parts.)</em>"
 msgstr ""
 
 #: elbroquil/models.py:302
@@ -971,6 +987,11 @@ msgstr ""
 msgid "Complete"
 msgstr ""
 
+#: elbroquil/templates/order/update_order.html:39
+#: elbroquil/templates/order/update_order.html:56 templates/base.html:66
+msgid "View order"
+msgstr ""
+
 #: elbroquil/templates/order/update_order.html:41
 msgid "Available until:"
 msgstr ""
@@ -995,6 +1016,10 @@ msgstr ""
 
 #: elbroquil/templates/order/update_order.html:96
 msgid "No products offered this week!"
+msgstr ""
+
+#: elbroquil/templates/order/update_order.html:135
+msgid "You haven't saved your order. Do you want to close the page?"
 msgstr ""
 
 #: elbroquil/templates/order/view_order.html:5
@@ -1094,10 +1119,6 @@ msgstr ""
 msgid "Please enter fee amount"
 msgstr ""
 
-#: templates/base.html:66
-msgid "View order"
-msgstr ""
-
 #: templates/base.html:71
 msgid "Prepare Baskets"
 msgstr ""
@@ -1114,39 +1135,47 @@ msgstr ""
 msgid "View products"
 msgstr ""
 
-#: templates/base.html:84
+#: templates/base.html:82
+msgid "Accounting"
+msgstr ""
+
+#: templates/base.html:85
 msgid "Quarterly Fees"
 msgstr ""
 
-#: templates/base.html:86
+#: templates/base.html:87
 msgid "View Fee Status"
 msgstr ""
 
-#: templates/base.html:87
+#: templates/base.html:88
 msgid "Create Fees"
 msgstr ""
 
-#: templates/base.html:95
+#: templates/base.html:96
 msgid "Admin"
 msgstr ""
 
-#: templates/base.html:122
+#: templates/base.html:123
 msgid "Change password"
 msgstr ""
 
-#: templates/base.html:124
+#: templates/base.html:125
 msgid "Log out"
 msgstr ""
 
-#: templates/base.html:133 templates/login.html:18
+#: templates/base.html:134 templates/login.html:18
 msgid "Username"
 msgstr ""
 
-#: templates/base.html:138 templates/login.html:24
+#: templates/base.html:137 templates/login.html:19
+msgid "Password"
+msgstr ""
+
+#: templates/base.html:139 templates/login.html:24
 msgid "Sign in"
 msgstr ""
 
-#: templates/base.html:140 templates/login.html:26
+#: templates/base.html:141 templates/login.html:26
 msgid "Forgot password"
 msgstr ""
 

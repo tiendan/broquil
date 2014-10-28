@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-22 00:37+0200\n"
+"POT-Creation-Date: 2014-10-28 18:14+0100\n"
 "PO-Revision-Date: 2014-10-22 00:50+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Translated-Using: django-rosetta 0.7.4\n"
 
 #: settings.py:173 elbroquil/models.py:56
@@ -134,64 +134,44 @@ msgstr "Informació Tècnica"
 msgid "Categories"
 msgstr "Categories"
 
-#: elbroquil/admin.py:79 elbroquil/admin.py:130 elbroquil/admin.py:201
+#: elbroquil/admin.py:79 elbroquil/admin.py:135 elbroquil/admin.py:206
 msgid "Email"
 msgstr "Email"
 
-#: elbroquil/admin.py:80 elbroquil/admin.py:131
+#: elbroquil/admin.py:80 elbroquil/admin.py:136
 msgid "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
 msgstr "Obligatori. 30 caràcters o menys. Només lletres, digits i @/./+/-/_."
 
-#: elbroquil/admin.py:81 elbroquil/admin.py:132
+#: elbroquil/admin.py:81 elbroquil/admin.py:137
 msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
 msgstr ""
 "Aquest valor només pot contenir lletres, numeros i caràcters de @/./+/-/_."
 
-#: elbroquil/admin.py:82 templates/base.html:137 templates/login.html:19
-msgid "Password"
-msgstr "Contrasenya"
-
-#: elbroquil/admin.py:83
-msgid "Password confirmation"
-msgstr "Confirmació de contrasenya"
-
-#: elbroquil/admin.py:84
-msgid "Enter the same password as above, for verification."
-msgstr "Para verificació, entra la mateixa contrasenya."
-
-#: elbroquil/admin.py:86 elbroquil/admin.py:133
+#: elbroquil/admin.py:86 elbroquil/admin.py:138
 msgid "First name"
 msgstr "Nom"
 
-#: elbroquil/admin.py:87 elbroquil/admin.py:134
+#: elbroquil/admin.py:87 elbroquil/admin.py:139
 msgid "Last name"
 msgstr "Cognom"
 
-#: elbroquil/admin.py:103
-msgid "Phone number is required."
-msgstr "Numero de telèfon es obligatori."
-
-#: elbroquil/admin.py:109 elbroquil/admin.py:150
+#: elbroquil/admin.py:109 elbroquil/admin.py:155
 msgid "A user with that username already exists."
 msgstr "Ja existeix algú amb el mateix nombre de usuari."
 
-#: elbroquil/admin.py:115
-msgid "The two password fields didn't match."
-msgstr "Les dues contrasenyes no corresponen."
-
-#: elbroquil/admin.py:135
+#: elbroquil/admin.py:140
 msgid "Phone"
 msgstr "Telèfon"
 
-#: elbroquil/admin.py:136
+#: elbroquil/admin.py:141
 msgid "Secondary email"
 msgstr "Email secundari"
 
-#: elbroquil/admin.py:137
+#: elbroquil/admin.py:142
 msgid "Secondary phone"
 msgstr "Telèfon secundari"
 
-#: elbroquil/admin.py:200
+#: elbroquil/admin.py:205
 msgid "Information"
 msgstr "Informació"
 
@@ -609,12 +589,12 @@ msgstr "Resum de comptabilitat"
 #: elbroquil/templates/distribution/account_summary.html:21
 msgid ""
 "<strong>Prepare the envelopes</strong> for each producer, placing the "
-"required amount of money inside.<br/>Count the <strong>final amount</strong>"
-" in the drawer and save it here. Make sure it more or less equals the "
+"required amount of money inside.<br/>Count the <strong>final amount</strong> "
+"in the drawer and save it here. Make sure it more or less equals the "
 "expected amount."
 msgstr ""
-"<strong>Prepara els sobres</strong> per a cada productor, posant l'import de"
-" diners requerit.<br/>Compta el <strong>import final</strong> a la caixa i "
+"<strong>Prepara els sobres</strong> per a cada productor, posant l'import de "
+"diners requerit.<br/>Compta el <strong>import final</strong> a la caixa i "
 "guardalo aquí. Assegura't de que sigui més o menys igual a l'expectativa."
 
 #: elbroquil/templates/distribution/account_summary.html:24
@@ -699,14 +679,14 @@ msgstr "Pagaments dels members"
 
 #: elbroquil/templates/distribution/member_payment.html:22
 msgid ""
-"Choose the member and charge him the required amount. In case the user wants"
-" to pay the quarterly fee, mark the box to add it to the total amount. If "
-"you or the member does not have change, just enter the paid amount and the "
-"rest will be saved as debt."
+"Choose the member and charge him the required amount. In case the user wants "
+"to pay the quarterly fee, mark the box to add it to the total amount. If you "
+"or the member does not have change, just enter the paid amount and the rest "
+"will be saved as debt."
 msgstr ""
 "Tria el membre y cóbra-li l'import necessari. En el cas de que el membre "
-"vulgui pagar la quota trimestral, marca la casella per a sumar-lo a l'import"
-" total. Si tu o el membre no teniu canvi, només introdueix l'import pagat i "
+"vulgui pagar la quota trimestral, marca la casella per a sumar-lo a l'import "
+"total. Si tu o el membre no teniu canvi, només introdueix l'import pagat i "
 "la resta será guardada com a deute."
 
 #: elbroquil/templates/distribution/member_payment.html:28
@@ -790,8 +770,8 @@ msgstr "Final"
 
 #: elbroquil/templates/distribution/view_basket_counts.html:22
 msgid ""
-"Prepare the baskets for each member. Place an extra basket for the indicated"
-" members (with more products)."
+"Prepare the baskets for each member. Place an extra basket for the indicated "
+"members (with more products)."
 msgstr ""
 "Prepara les cistelles per a cada membre. Posa-li una extra pels membres "
 "indicats (amb més productes)."
@@ -1024,6 +1004,11 @@ msgstr "Modificar comanda"
 msgid "Complete"
 msgstr "Complet"
 
+#: elbroquil/templates/order/update_order.html:39
+#: elbroquil/templates/order/update_order.html:56 templates/base.html:66
+msgid "View order"
+msgstr "Veure comanda"
+
 #: elbroquil/templates/order/update_order.html:41
 msgid "Available until:"
 msgstr "Disponible fins:"
@@ -1049,6 +1034,10 @@ msgstr "NOU!"
 #: elbroquil/templates/order/update_order.html:96
 msgid "No products offered this week!"
 msgstr "(Encara) No hi ha oferta aquesta setmana!"
+
+#: elbroquil/templates/order/update_order.html:135
+msgid "You haven't saved your order. Do you want to close the page?"
+msgstr ""
 
 #: elbroquil/templates/order/view_order.html:5
 msgid "Your order for this week"
@@ -1096,8 +1085,8 @@ msgid ""
 "correct, <strong>save the products</strong>. If there is an error, inform "
 "the administrator."
 msgstr ""
-"Verifica que la informació dels productes se hagin procesat correctament. Si"
-" tot está correcte, <strong>guarda els productes</strong>. Si hi ha algun "
+"Verifica que la informació dels productes se hagin procesat correctament. Si "
+"tot está correcte, <strong>guarda els productes</strong>. Si hi ha algun "
 "error, informa l'administrador."
 
 #: elbroquil/templates/product/check_product_info.html:23
@@ -1140,8 +1129,7 @@ msgstr "No hi ha productes definits per al productor!"
 #: elbroquil/views/fee_views.py:128
 msgid ""
 "Someone has alread paid the fee for this quarter! You cannot delete them!"
-msgstr ""
-"Algú ja ha pagar la quota per a aquest trimestre! No pots esborrar-lo."
+msgstr "Algú ja ha pagar la quota per a aquest trimestre! No pots esborrar-lo."
 
 #: elbroquil/views/fee_views.py:135
 msgid "Please choose members"
@@ -1150,10 +1138,6 @@ msgstr "Sisplau tria membres"
 #: elbroquil/views/fee_views.py:137
 msgid "Please enter fee amount"
 msgstr "Sisplau entra import de quota"
-
-#: templates/base.html:66
-msgid "View order"
-msgstr "Veure comanda"
 
 #: templates/base.html:71
 msgid "Prepare Baskets"
@@ -1171,7 +1155,7 @@ msgstr "Pujar excel de productes"
 msgid "View products"
 msgstr "Veure productes"
 
-#: templates/base.html:83
+#: templates/base.html:82
 msgid "Accounting"
 msgstr "Comptabilitat"
 
@@ -1203,6 +1187,10 @@ msgstr "Finalitzar sessió"
 msgid "Username"
 msgstr "Nom d'usuari"
 
+#: templates/base.html:137 templates/login.html:19
+msgid "Password"
+msgstr "Contrasenya"
+
 #: templates/base.html:139 templates/login.html:24
 msgid "Sign in"
 msgstr "Entra"
@@ -1220,6 +1208,18 @@ msgstr ""
 #: templates/login.html:17
 msgid "Please sign in"
 msgstr "Sisplau entra"
+
+#~ msgid "Password confirmation"
+#~ msgstr "Confirmació de contrasenya"
+
+#~ msgid "Enter the same password as above, for verification."
+#~ msgstr "Para verificació, entra la mateixa contrasenya."
+
+#~ msgid "Phone number is required."
+#~ msgstr "Numero de telèfon es obligatori."
+
+#~ msgid "The two password fields didn't match."
+#~ msgstr "Les dues contrasenyes no corresponen."
 
 #~ msgid "/products/"
 #~ msgstr "/productes/"

@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-22 00:37+0200\n"
+"POT-Creation-Date: 2014-10-28 18:14+0100\n"
 "PO-Revision-Date: 2014-10-22 00:43+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Translated-Using: django-rosetta 0.7.4\n"
 
 #: settings.py:173 elbroquil/models.py:56
@@ -134,64 +134,44 @@ msgstr "Información Técnica"
 msgid "Categories"
 msgstr "Categorias"
 
-#: elbroquil/admin.py:79 elbroquil/admin.py:130 elbroquil/admin.py:201
+#: elbroquil/admin.py:79 elbroquil/admin.py:135 elbroquil/admin.py:206
 msgid "Email"
 msgstr "Email"
 
-#: elbroquil/admin.py:80 elbroquil/admin.py:131
+#: elbroquil/admin.py:80 elbroquil/admin.py:136
 msgid "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
 msgstr "Obligatorio. 30 carácteres o menos. Solo letras, dígitos y @/./+/-/_."
 
-#: elbroquil/admin.py:81 elbroquil/admin.py:132
+#: elbroquil/admin.py:81 elbroquil/admin.py:137
 msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
 msgstr ""
 "Este valor solo puede contener letras, numeros y carácteres de @/./+/-/_."
 
-#: elbroquil/admin.py:82 templates/base.html:137 templates/login.html:19
-msgid "Password"
-msgstr "Contraseña"
-
-#: elbroquil/admin.py:83
-msgid "Password confirmation"
-msgstr "Confirmación de contraseña"
-
-#: elbroquil/admin.py:84
-msgid "Enter the same password as above, for verification."
-msgstr "Para verificación, entra la misma contraseña como arriba."
-
-#: elbroquil/admin.py:86 elbroquil/admin.py:133
+#: elbroquil/admin.py:86 elbroquil/admin.py:138
 msgid "First name"
 msgstr "Nombre"
 
-#: elbroquil/admin.py:87 elbroquil/admin.py:134
+#: elbroquil/admin.py:87 elbroquil/admin.py:139
 msgid "Last name"
 msgstr "Apellido"
 
-#: elbroquil/admin.py:103
-msgid "Phone number is required."
-msgstr "Número de telefono es necesario."
-
-#: elbroquil/admin.py:109 elbroquil/admin.py:150
+#: elbroquil/admin.py:109 elbroquil/admin.py:155
 msgid "A user with that username already exists."
 msgstr "Este nombre de usuario ya existe."
 
-#: elbroquil/admin.py:115
-msgid "The two password fields didn't match."
-msgstr "Las dos contraseñas no coinciden."
-
-#: elbroquil/admin.py:135
+#: elbroquil/admin.py:140
 msgid "Phone"
 msgstr "Teléfono"
 
-#: elbroquil/admin.py:136
+#: elbroquil/admin.py:141
 msgid "Secondary email"
 msgstr "Email secundario"
 
-#: elbroquil/admin.py:137
+#: elbroquil/admin.py:142
 msgid "Secondary phone"
 msgstr "Teléfono secundario"
 
-#: elbroquil/admin.py:200
+#: elbroquil/admin.py:205
 msgid "Information"
 msgstr "Información"
 
@@ -471,8 +451,7 @@ msgstr "producto nuevo"
 
 #: elbroquil/models.py:174
 msgid "<em>(To highlight this product as NEW in the order pages.)</em>"
-msgstr ""
-"<em>(Para poner la etiqueta de ¡NUEVO! en las páginas de pedido.)</em>"
+msgstr "<em>(Para poner la etiqueta de ¡NUEVO! en las páginas de pedido.)</em>"
 
 #: elbroquil/models.py:175
 msgid "sent to producer"
@@ -610,14 +589,13 @@ msgstr "Resumen de contabilidad"
 #: elbroquil/templates/distribution/account_summary.html:21
 msgid ""
 "<strong>Prepare the envelopes</strong> for each producer, placing the "
-"required amount of money inside.<br/>Count the <strong>final amount</strong>"
-" in the drawer and save it here. Make sure it more or less equals the "
+"required amount of money inside.<br/>Count the <strong>final amount</strong> "
+"in the drawer and save it here. Make sure it more or less equals the "
 "expected amount."
 msgstr ""
-"<strong>Prepara los sobres</strong> para cada productor, poniendo el importe"
-" de dinero requerido.<br/>Cuenta el <strong>importe final</strong> en la "
-"caja y guardalo aquí. Asegúrate de que sea mas o menos igual a la "
-"expectativa."
+"<strong>Prepara los sobres</strong> para cada productor, poniendo el importe "
+"de dinero requerido.<br/>Cuenta el <strong>importe final</strong> en la caja "
+"y guardalo aquí. Asegúrate de que sea mas o menos igual a la expectativa."
 
 #: elbroquil/templates/distribution/account_summary.html:24
 msgid "The initial cash has not been entered!"
@@ -701,10 +679,10 @@ msgstr "Pagos de miembros"
 
 #: elbroquil/templates/distribution/member_payment.html:22
 msgid ""
-"Choose the member and charge him the required amount. In case the user wants"
-" to pay the quarterly fee, mark the box to add it to the total amount. If "
-"you or the member does not have change, just enter the paid amount and the "
-"rest will be saved as debt."
+"Choose the member and charge him the required amount. In case the user wants "
+"to pay the quarterly fee, mark the box to add it to the total amount. If you "
+"or the member does not have change, just enter the paid amount and the rest "
+"will be saved as debt."
 msgstr ""
 "Elige el miembro y cóbrale el importe necesario. En el caso de que el "
 "miembro quiera pagar la cuota trimestral, marca la casilla para sumarlo al "
@@ -792,8 +770,8 @@ msgstr "Final"
 
 #: elbroquil/templates/distribution/view_basket_counts.html:22
 msgid ""
-"Prepare the baskets for each member. Place an extra basket for the indicated"
-" members (with more products)."
+"Prepare the baskets for each member. Place an extra basket for the indicated "
+"members (with more products)."
 msgstr ""
 "Prepara las cestas para cada miembro. Pon una extra para los miembros "
 "indicados (con más productos)."
@@ -1026,6 +1004,11 @@ msgstr "Modificar pedido"
 msgid "Complete"
 msgstr "Completo"
 
+#: elbroquil/templates/order/update_order.html:39
+#: elbroquil/templates/order/update_order.html:56 templates/base.html:66
+msgid "View order"
+msgstr "Ver pedido"
+
 #: elbroquil/templates/order/update_order.html:41
 msgid "Available until:"
 msgstr "Disponible hasta:"
@@ -1051,6 +1034,10 @@ msgstr "¡NUEVO!"
 #: elbroquil/templates/order/update_order.html:96
 msgid "No products offered this week!"
 msgstr "No productos ofrecidos esta semana!"
+
+#: elbroquil/templates/order/update_order.html:135
+msgid "You haven't saved your order. Do you want to close the page?"
+msgstr ""
 
 #: elbroquil/templates/order/view_order.html:5
 msgid "Your order for this week"
@@ -1099,8 +1086,8 @@ msgid ""
 "the administrator."
 msgstr ""
 "Verifica que la información de los productos se hayan procesado "
-"correctamente. Si todo está correcto, <strong>guarda los productos</strong>."
-" Si hay algún error, informe el administrador."
+"correctamente. Si todo está correcto, <strong>guarda los productos</strong>. "
+"Si hay algún error, informe el administrador."
 
 #: elbroquil/templates/product/check_product_info.html:23
 msgid "Category"
@@ -1152,10 +1139,6 @@ msgstr "Por favor elige los miembros"
 msgid "Please enter fee amount"
 msgstr "Por favor elige el importe de cuota"
 
-#: templates/base.html:66
-msgid "View order"
-msgstr "Ver pedido"
-
 #: templates/base.html:71
 msgid "Prepare Baskets"
 msgstr "Preparar Cistellas"
@@ -1172,7 +1155,7 @@ msgstr "Subir el excel de productos"
 msgid "View products"
 msgstr "Ver productos"
 
-#: templates/base.html:83
+#: templates/base.html:82
 msgid "Accounting"
 msgstr "Contabilidad"
 
@@ -1204,6 +1187,10 @@ msgstr "Terminar sesión"
 msgid "Username"
 msgstr "Nombre de usuario"
 
+#: templates/base.html:137 templates/login.html:19
+msgid "Password"
+msgstr "Contraseña"
+
 #: templates/base.html:139 templates/login.html:24
 msgid "Sign in"
 msgstr "Entra"
@@ -1215,12 +1202,23 @@ msgstr "He olvidado la contraseña"
 #: templates/login.html:11
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
-"Tu nombre de usuario y contraseña no coinciden. Por favor intentalo otra "
-"vez."
+"Tu nombre de usuario y contraseña no coinciden. Por favor intentalo otra vez."
 
 #: templates/login.html:17
 msgid "Please sign in"
 msgstr "Por favor entra"
+
+#~ msgid "Password confirmation"
+#~ msgstr "Confirmación de contraseña"
+
+#~ msgid "Enter the same password as above, for verification."
+#~ msgstr "Para verificación, entra la misma contraseña como arriba."
+
+#~ msgid "Phone number is required."
+#~ msgstr "Número de telefono es necesario."
+
+#~ msgid "The two password fields didn't match."
+#~ msgstr "Las dos contraseñas no coinciden."
 
 #~ msgid "/products/"
 #~ msgstr "/productos/"
