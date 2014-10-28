@@ -7,6 +7,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.core.exceptions import ObjectDoesNotExist
 import html2text
 import email, os
+import random
 
 import elbroquil.libraries as libs
 
@@ -57,7 +58,7 @@ class Command(BaseCommand):
                     self.stdout.write('Miembro no encontrado, creando nuevo usuario ')
                     
                     member = User()
-                    member.username = 'user' + str(member_column)
+                    member.username = 'user' + str(random.randint(100, 100000))
                     member.first_name = member_name
                     member.last_name = ""
                     
