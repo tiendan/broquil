@@ -79,9 +79,9 @@ class CustomUserCreationForm(UserCreationForm):
     username = forms.RegexField(label=_("Email"), max_length=30, regex=r'^[\w.@+-]+$',
         help_text = _("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
         error_messages = {'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")})
-    password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
-    password2 = forms.CharField(label=_("Password confirmation"), widget=forms.PasswordInput,
-        help_text = _("Enter the same password as above, for verification."))
+    #password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+    #password2 = forms.CharField(label=_("Password confirmation"), widget=forms.PasswordInput,
+    #    help_text = _("Enter the same password as above, for verification."))
     #email = forms.EmailField(label = _(u"Email"))
     first_name = forms.CharField(label = _(u"First name"))
     last_name = forms.CharField(label = _(u"Last name"))
@@ -98,9 +98,9 @@ class CustomUserCreationForm(UserCreationForm):
         username = self.cleaned_data["username"]
         
         # First validate that phone number exists (was not easy to do it elsewhere)
-        phone_number = self.data.get("extrainfo-0-phone", "")
-        if phone_number == "":
-            raise forms.ValidationError(_("Phone number is required."))
+        #phone_number = self.data.get("extrainfo-0-phone", "")
+        #if phone_number == "":
+        #    raise forms.ValidationError(_("Phone number is required."))
         
         try:
             User.objects.get(username=username)
@@ -108,12 +108,17 @@ class CustomUserCreationForm(UserCreationForm):
             return username
         raise forms.ValidationError(_("A user with that username already exists."))
 
+    def clean_password(self):
+        return ""
+    
     def clean_password2(self):
-        password1 = self.cleaned_data.get("password1", "")
-        password2 = self.cleaned_data["password2"]
-        if password1 != password2:
-            raise forms.ValidationError(_("The two password fields didn't match."))
-        return password2
+        return ""
+        
+        #password1 = self.cleaned_data.get("password1", "")
+        #password2 = self.cleaned_data["password2"]
+        #if password1 != password2:
+        #    raise forms.ValidationError(_("The two password fields didn't match."))
+        #return password2
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
@@ -183,7 +188,7 @@ class UserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'first_name', 'last_name', 'password1', 'password2')} #, 'phone', 'secondary_email', 'secondary_phone')}
+            'fields': ('username', 'first_name', 'last_name')} #, 'phone', 'secondary_email', 'secondary_phone')}
         ),
     )
     inlines = (ExtraInfoInline, )

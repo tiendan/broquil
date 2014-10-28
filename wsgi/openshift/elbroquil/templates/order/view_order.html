@@ -30,7 +30,7 @@
 						<td class="price">{{ order.product.price|floatformat:2 }}</td>
 						<td class="quantity">{{ order.arrived_quantity }}</td>
 						<td>{{ order.product.unit }}</td>
-						<td class="total success">{{ total }}</td>
+						<td class="total success">{{ total|floatformat:2 }}</td>
 					</tr>
 					{% endfor %}
 					{% if debt != 0 %}

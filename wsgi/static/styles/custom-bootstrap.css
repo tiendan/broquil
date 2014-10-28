@@ -30,6 +30,17 @@ h5.fillSpace
     text-align: right;
 }
 
+.pager .importantlink > a {
+    color: #fff;
+    background-color: #419641;
+    font-weight: bolder;
+}
+.pager .importantlink > a:hover {
+    color: #fff;
+    background-color: #61B661;
+    font-weight: bolder;
+}
+
 .blankpreviouspager
 {
     width: 220px;

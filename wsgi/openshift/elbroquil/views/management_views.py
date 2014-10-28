@@ -22,7 +22,7 @@ import elbroquil.models as models
 
 
 @login_required
-@permission_required('elbroquil.accounting')
+#@permission_required('elbroquil.accounting')   ONUR: Accounting page open to everyone
 def view_distribution_detail(request):
     # Form fields
     only_latest_dates = True

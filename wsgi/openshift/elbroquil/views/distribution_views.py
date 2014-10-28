@@ -366,7 +366,7 @@ def member_payment(request):
             else:
                 payment = models.Payment()
                 payment.user_id = member_id
-                payment.date = libs.get_today()
+                payment.date = libs.get_now()
                 payment.amount = paid_amount
                 payment.save()
             
@@ -459,7 +459,7 @@ def account_summary(request):
                 # Create a dummy payment object for today (with 0 euros paid)
                 payment = models.Payment()
                 payment.user = member
-                payment.date = today
+                payment.date = libs.get_now()
                 payment.amount = 0
                 payment.save()
 

@@ -79,8 +79,8 @@
 		          </ul>
 		        </li>
 				{% endif %}
-				{% if perms.elbroquil.accounting %}
 				<li id="menu-item-accounting"><a href="{% url 'elbroquil.views.view_distribution_detail' %}">{% trans "Accounting" %}</a></li>
+				{% if perms.elbroquil.accounting %}
 				<li id="menu-item-fee" class="dropdown">
 				  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Quarterly Fees" %} <span class="caret"></span></a>
 		          <ul class="dropdown-menu" role="menu">
@@ -115,7 +115,7 @@
 				{% if user.is_authenticated %}
 	              <li class="dropdown">
 	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						{{ user.username }}
+						{{ user.first_name }}
 	                  <b class="caret"></b>
 	                </a>
 	                <ul class="dropdown-menu">

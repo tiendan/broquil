@@ -210,7 +210,7 @@ class Order(models.Model):
 # Holds the total payment amount made by the member
 class Payment(models.Model):
     user = models.ForeignKey(User)
-    date = models.DateTimeField(_(u'date'), default=timezone.now)   # TODO DATETIME
+    date = models.DateTimeField(_(u'date'), default=timezone.now)
     amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=5, default=0)
 
 # Consumption model
@@ -279,7 +279,7 @@ class EmailTemplate(models.Model):
     body = models.TextField(_(u'body'), blank=True, default='', help_text=_(u"<em>(Do not remove the [[CONTENT]] parts.)</em>"))
     
     def full_subject(self):
-        return "[BroquilGotic]" + self.subject
+        return "[BroquilGoticTEST]" + self.subject
 
     def get_language_name(self):
         for code, name in LANGUAGE_CHOICES:

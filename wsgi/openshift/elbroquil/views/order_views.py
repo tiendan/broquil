@@ -106,7 +106,7 @@ def update_order(request, category_no=''):
 
     products = zip(products, product_orders)
 
-    progress = int(100*current_category/len(categories))
+    progress = int(100*current_category/len(categories+1))
     
     if not request.session.get('order_total'):
         libs.calculate_order_summary(request)
