@@ -16,10 +16,10 @@ import xlrd
 from decimal import Decimal
 
 class Command(BaseCommand):
-    help = 'Importa los pedidos del excel de Encarrecs'
+    help = 'Importa los pedidos actualizados del excel de Encarrecs'
 
     def handle(self, *args, **options):
-        self.stdout.write('Importando los pedidos del excel de Encarrecs ')
+        self.stdout.write('Importando los pedidos actualizados del excel de Encarrecs')
         
         detach_dir = '/Users/onur/ultim/data/temp/'
         
@@ -71,10 +71,11 @@ class Command(BaseCommand):
                 else:
                     member = member.first()
                 
-                # Add the orders for this user
+                # Update the orders for this user
                 next_dist_date = libs.get_next_distribution_date(False)
                 
-                models.Order.objects.filter(user=member, product__distribution_date=next_dist_date).delete()
+                # Update all the arrived quantities to 0
+                models.Order.objects.filter(user=member, product__distribution_date=next_dist_date).update(arrived_quantity=0)
                 
                 for product_row in range(4, row_count-2):
                     price = sheet.cell_value(rowx=product_row, colx=0)
@@ -91,19 +92,12 @@ class Command(BaseCommand):
                         continue
                     
                     product = models.Product.objects.filter(name__startswith=product_name, distribution_date=next_dist_date)
+                    order = models.Order.objects.filter(product=product, user=member)
                     
-                    if product:
-                        product = product.first()
-                        
-                        order = models.Order()
-                        order.user = member
-                        order.product = product
-                        order.quantity = member_order
+                    if order:
+                        order = order.first()
                         order.arrived_quantity = member_order
                         order.save()
-                    else:
-                        self.stdout.write('Producto no encontrado: ' + product_name)
-                        
                     
                 order_summary = libs.calculate_user_orders(member, next_dist_date)
                 
