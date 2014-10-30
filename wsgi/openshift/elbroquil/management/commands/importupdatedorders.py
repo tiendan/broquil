@@ -91,14 +91,20 @@ class Command(BaseCommand):
                     if member_order == '':
                         continue
                     
+                    self.stdout.write('Buscando el producto')
                     product = models.Product.objects.filter(name__startswith=product_name, distribution_date=next_dist_date)
-                    order = models.Order.objects.filter(product=product, user=member)
                     
-                    if order:
-                        self.stdout.write('Actualizando pedido: producto=' + product.name + ', nueva cantidad=' + str(member_order))
-                        order = order.first()
-                        order.arrived_quantity = member_order
-                        order.save()
+                    if product:
+                        product = product.first()
+                        
+                        self.stdout.write('Producto encontrado: ' + product)
+                        order = models.Order.objects.filter(product=product, user=member)
+                    
+                        if order:
+                            self.stdout.write('Actualizando pedido: producto=' + product.name + ', nueva cantidad=' + str(member_order))
+                            order = order.first()
+                            order.arrived_quantity = member_order
+                            order.save()
                     
                 order_summary = libs.calculate_user_orders(member, next_dist_date)
                 
