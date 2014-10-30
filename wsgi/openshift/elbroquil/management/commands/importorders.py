@@ -72,7 +72,7 @@ class Command(BaseCommand):
                     member = member.first()
                 
                 # Add the orders for this user
-                next_dist_date = libs.get_next_distribution_date(False)
+                next_dist_date = libs.get_next_distribution_date()
                 
                 models.Order.objects.filter(user=member, product__distribution_date=next_dist_date).delete()
                 

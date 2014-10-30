@@ -72,7 +72,7 @@ class Command(BaseCommand):
                     member = member.first()
                 
                 # Update the orders for this user
-                next_dist_date = libs.get_next_distribution_date(False)
+                next_dist_date = libs.get_next_distribution_date()
                 
                 # Update all the arrived quantities to 0
                 models.Order.objects.filter(user=member, product__distribution_date=next_dist_date).update(arrived_quantity=0)
@@ -91,7 +91,7 @@ class Command(BaseCommand):
                     if member_order == '':
                         continue
                     
-                    self.stdout.write('Buscando el producto')
+                    self.stdout.write('Buscando el producto: ' + product_name)
                     product = models.Product.objects.filter(name__startswith=product_name, distribution_date=next_dist_date)
                     
                     if product:
