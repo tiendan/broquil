@@ -97,7 +97,7 @@ class Command(BaseCommand):
                     if product:
                         product = product.first()
                         
-                        self.stdout.write('Producto encontrado: ' + product)
+                        self.stdout.write('Producto encontrado: ' + product.name)
                         order = models.Order.objects.filter(product=product, user=member)
                     
                         if order:
