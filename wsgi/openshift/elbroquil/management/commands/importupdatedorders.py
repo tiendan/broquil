@@ -95,6 +95,7 @@ class Command(BaseCommand):
                     order = models.Order.objects.filter(product=product, user=member)
                     
                     if order:
+                        self.stdout.write('Actualizando pedido: producto=' + product.name + ', nueva cantidad=' + str(member_order))
                         order = order.first()
                         order.arrived_quantity = member_order
                         order.save()
