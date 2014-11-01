@@ -5,7 +5,7 @@
 <h1>{% trans "Your order for this week" %} {% if available_product_count %}<a href="{% url 'elbroquil.views.update_order' 1 %}" class="btn btn-success btn-lg active pull-right" role="button">{% if products_sum > 0 %}{% trans "Update your order" %}{% else %}{% trans "Make an order" %}{% endif %} &rarr;</a>{% endif %}</h1>
 {% endblock %}
 
-
+ 
 {% block extrahead %}
 {% endblock %}
 
