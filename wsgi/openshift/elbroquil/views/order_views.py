@@ -262,7 +262,8 @@ def view_order(request):
     rest_of_orders = []
     debt = 0
     quarterly_fee = 0
-    sum = 0
+    products_sum = 0
+    overall_sum = 0
 
     for order in all_orders:
         if order.product.distribution_date != next_dist_date:
@@ -271,7 +272,7 @@ def view_order(request):
             orders.append(order)
             total_price = (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
             totals.append(total_price)
-            sum += total_price
+            products_sum += total_price
         
     available_product_count = models.Product.objects.filter(archived=False, order_limit_date__gt=libs.get_now()).count()
     
@@ -288,7 +289,7 @@ def view_order(request):
     if quarterly is not None:
         quarterly_fee = quarterly.amount
         
-    sum = sum + debt + quarterly_fee
+    overall_sum = products_sum + debt + quarterly_fee
     
     if not request.session.get('order_total'):
         libs.calculate_order_summary(request)
@@ -296,6 +297,7 @@ def view_order(request):
     
     return render(request, 'order/view_order.html', {
           'orders_with_totals': orders_with_totals,
+          'products_sum': products_sum,
           'overall_sum': sum,
           'debt': debt,
           'quarterly_fee': quarterly_fee,

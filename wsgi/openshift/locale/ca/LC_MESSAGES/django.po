@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-28 18:14+0100\n"
+"POT-Creation-Date: 2014-11-01 05:04+0100\n"
 "PO-Revision-Date: 2014-10-22 00:50+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,12 +67,13 @@ msgid "^order/([0-9]+)/$"
 msgstr "^comanda/([0-9]+)/$"
 
 #: urls.py:25
-msgid "^order/$"
+#, fuzzy
+msgid "^order/history$"
 msgstr "^comanda/$"
 
 #: urls.py:26
-msgid "^email/$"
-msgstr "^email/$"
+msgid "^order/$"
+msgstr "^comanda/$"
 
 #: urls.py:29
 msgid "^products/view/(?P<producer_id>[0-9]+)$"
@@ -186,6 +187,7 @@ msgstr "Fitxer de Excel"
 
 #: elbroquil/libraries.py:47
 #: elbroquil/templates/distribution/member_payment.html:136
+#: elbroquil/templates/order/order_history.html:105
 msgid "PRODUCTS"
 msgstr "PRODUCTES"
 
@@ -702,10 +704,12 @@ msgid " members paid."
 msgstr "membres cobrats."
 
 #: elbroquil/templates/distribution/member_payment.html:63
+#: elbroquil/templates/order/order_history.html:47
 msgid "Products:"
 msgstr "Productes:"
 
 #: elbroquil/templates/distribution/member_payment.html:72
+#: elbroquil/templates/order/order_history.html:56
 msgid "Debt from last week:"
 msgstr "Deute de la setmana passada:"
 
@@ -719,15 +723,18 @@ msgid "TOTAL TO PAY:"
 msgstr "TOTAL A PAGAR:"
 
 #: elbroquil/templates/distribution/member_payment.html:105
+#: elbroquil/templates/order/order_history.html:80
 msgid "Paid:"
 msgstr "Pagat:"
 
 #: elbroquil/templates/distribution/member_payment.html:116
+#: elbroquil/templates/order/order_history.html:91
 msgid "marked as debt for next week."
 msgstr "marcat com deute per a la setmana próxima."
 
 #: elbroquil/templates/distribution/member_payment.html:146
 #: elbroquil/templates/distribution/view_order_totals.html:50
+#: elbroquil/templates/order/order_history.html:115
 #: elbroquil/templates/order/update_order.html:64
 #: elbroquil/templates/order/view_order.html:24
 #: elbroquil/templates/order/view_order.html:67
@@ -737,34 +744,41 @@ msgid "Price"
 msgstr "Preu"
 
 #: elbroquil/templates/distribution/member_payment.html:146
+#: elbroquil/templates/order/order_history.html:115
 msgid "Quantity"
 msgstr "Quantitat"
 
 #: elbroquil/templates/distribution/member_payment.html:164
 #: elbroquil/templates/management/view_distribution_detail.html:131
+#: elbroquil/templates/order/order_history.html:133
 msgid "INCIDENTS"
 msgstr "INCIDÈNCIES"
 
 #: elbroquil/templates/distribution/member_payment.html:175
+#: elbroquil/templates/order/order_history.html:144
 msgid "Not Ordered"
 msgstr "No Demanat"
 
 #: elbroquil/templates/distribution/member_payment.html:193
 #: elbroquil/templates/management/view_distribution_detail.html:143
+#: elbroquil/templates/order/order_history.html:162
 msgid "Not Arrived"
 msgstr "No Arribat"
 
 #: elbroquil/templates/distribution/member_payment.html:211
 #: elbroquil/templates/management/view_distribution_detail.html:161
+#: elbroquil/templates/order/order_history.html:180
 msgid "Amount Changed"
 msgstr "Quantitat Canviada"
 
 #: elbroquil/templates/distribution/member_payment.html:215
 #: elbroquil/templates/management/view_distribution_detail.html:165
+#: elbroquil/templates/order/order_history.html:184
 msgid "Ordered"
 msgstr "Demanat"
 
 #: elbroquil/templates/distribution/member_payment.html:215
+#: elbroquil/templates/order/order_history.html:184
 msgid "Final"
 msgstr "Final"
 
@@ -935,14 +949,17 @@ msgid "View distribution summary"
 msgstr "Veure resum de distribució"
 
 #: elbroquil/templates/management/view_distribution_detail.html:17
+#: elbroquil/templates/order/order_history.html:23
 msgid "Distribution date"
 msgstr "Data de distribució"
 
 #: elbroquil/templates/management/view_distribution_detail.html:20
+#: elbroquil/templates/order/order_history.html:26
 msgid "CHOOSE DISTRIBUTION DATE"
 msgstr "TRIA DATA DE DISTRIBUCIÓ"
 
 #: elbroquil/templates/management/view_distribution_detail.html:28
+#: elbroquil/templates/order/order_history.html:34
 msgid "Show only recent dates"
 msgstr "Només mostra dates recents"
 
@@ -966,7 +983,17 @@ msgstr "Pagat als Productors"
 msgid "NO INCIDENTS"
 msgstr "NO INCIDÈNCIES"
 
-#: elbroquil/templates/order/rate_products.html:6 templates/base.html:67
+#: elbroquil/templates/order/order_history.html:5 templates/base.html:67
+#, fuzzy
+msgid "Order history"
+msgstr "hora de comanda"
+
+#: elbroquil/templates/order/order_history.html:66
+#, fuzzy
+msgid "Quarterly fee:"
+msgstr "Quota Trimestral:"
+
+#: elbroquil/templates/order/rate_products.html:6 templates/base.html:68
 msgid "Rate products"
 msgstr "Valorar productes"
 
@@ -1045,6 +1072,11 @@ msgstr "La teva comanda"
 
 #: elbroquil/templates/order/view_order.html:5
 msgid "Update your order"
+msgstr "Modificar comanda"
+
+#: elbroquil/templates/order/view_order.html:5
+#, fuzzy
+msgid "Make an order"
 msgstr "Modificar comanda"
 
 #: elbroquil/templates/order/view_order.html:24
@@ -1139,63 +1171,63 @@ msgstr "Sisplau tria membres"
 msgid "Please enter fee amount"
 msgstr "Sisplau entra import de quota"
 
-#: templates/base.html:71
+#: templates/base.html:72
 msgid "Prepare Baskets"
 msgstr "Preparar Cistelles"
 
-#: templates/base.html:75
+#: templates/base.html:76
 msgid "Products"
 msgstr "Productes"
 
-#: templates/base.html:77
+#: templates/base.html:78
 msgid "Upload products excel"
 msgstr "Pujar excel de productes"
 
-#: templates/base.html:78
+#: templates/base.html:79
 msgid "View products"
 msgstr "Veure productes"
 
-#: templates/base.html:82
+#: templates/base.html:83
 msgid "Accounting"
 msgstr "Comptabilitat"
 
-#: templates/base.html:85
+#: templates/base.html:86
 msgid "Quarterly Fees"
 msgstr "Quotes Trimestrals"
 
-#: templates/base.html:87
+#: templates/base.html:88
 msgid "View Fee Status"
 msgstr "Veure Estat de Quota"
 
-#: templates/base.html:88
+#: templates/base.html:89
 msgid "Create Fees"
 msgstr "Crear Quotes"
 
-#: templates/base.html:96
+#: templates/base.html:97
 msgid "Admin"
 msgstr "Admin"
 
-#: templates/base.html:123
+#: templates/base.html:124
 msgid "Change password"
 msgstr "Canviar contrasenya"
 
-#: templates/base.html:125
+#: templates/base.html:126
 msgid "Log out"
 msgstr "Finalitzar sessió"
 
-#: templates/base.html:134 templates/login.html:18
+#: templates/base.html:135 templates/login.html:18
 msgid "Username"
 msgstr "Nom d'usuari"
 
-#: templates/base.html:137 templates/login.html:19
+#: templates/base.html:138 templates/login.html:19
 msgid "Password"
 msgstr "Contrasenya"
 
-#: templates/base.html:139 templates/login.html:24
+#: templates/base.html:140 templates/login.html:24
 msgid "Sign in"
 msgstr "Entra"
 
-#: templates/base.html:141 templates/login.html:26
+#: templates/base.html:142 templates/login.html:26
 msgid "Forgot password"
 msgstr "He oblidad la contrasenya "
 
@@ -1208,6 +1240,9 @@ msgstr ""
 #: templates/login.html:17
 msgid "Please sign in"
 msgstr "Sisplau entra"
+
+#~ msgid "^email/$"
+#~ msgstr "^email/$"
 
 #~ msgid "Password confirmation"
 #~ msgstr "Confirmació de contrasenya"
