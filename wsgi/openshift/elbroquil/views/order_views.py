@@ -27,6 +27,114 @@ import elbroquil.parse as parser
 
 import elbroquil.libraries as libs
 
+from pytz import timezone as pytztimezone
+import settings
+
+@login_required
+def order_history(request):
+    today = libs.get_today()
+    # Form fields
+    only_latest_dates = True
+    selected_date = None
+    date_texts = []
+    date_values = []
+    payment_records = models.Payment.objects.filter(user=request.user).order_by("-date")
+    
+    totals = []
+    orders = []
+    debt_before = 0
+    debt_after = 0
+    quarterly_fee = 0
+    total_price = 0
+    paid_amount = 0
+    
+    counted_product_list = []
+    not_arrived_product_list = []
+    not_ordered_product_list = []
+    amount_changed_product_list = []
+
+    
+    # Read post variables
+    if request.method == 'POST':
+        selected_date = request.POST.get("date")
+        only_latest_dates = request.POST.get("only-latest") is not None
+        
+        if selected_date != "-1":
+            user_orders = models.Order.objects.filter(user=request.user, archived=False, product__distribution_date=selected_date).prefetch_related('product').order_by('product__category__sort_order', 'pk')
+            
+            # Separate the orders according to their status and calculate the order sum
+            # using only the orders which are OK (that arrived)
+            for order in user_orders:
+                if order.status == models.STATUS_NORMAL:
+                    counted_product_list.append(order)
+
+                    total_price += (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
+
+                    if order.arrived_quantity != order.quantity:
+                        amount_changed_product_list.append(order)
+
+                elif order.status == models.STATUS_DID_NOT_ARRIVE:
+                    not_arrived_product_list.append(order)
+                elif order.status == models.STATUS_MIN_ORDER_NOT_MET:
+                    not_ordered_product_list.append(order)
+        
+            # Get debt from last weeks (if exists)
+            last_debt = models.Debt.objects.filter(user=request.user, payment__date__lt=selected_date).order_by('-payment__date').first()
+        
+            if last_debt is not None:
+                debt_before = last_debt.amount
+            
+            payment = models.Payment.objects.filter(user=request.user, date__contains=selected_date).first()
+            
+            if payment is not None:
+                paid_amount = payment.amount
+                
+                # Get debt from last weeks (if exists)
+                next_debt = models.Debt.objects.filter(user=request.user, payment=payment).first()
+
+                if next_debt is not None:
+                    debt_after = next_debt.amount
+                
+        
+    orders_with_totals = zip(orders, totals)
+    
+    if not request.session.get('order_total'):
+        libs.calculate_order_summary(request)
+        
+    # Store latest few dates in variable
+    zone = pytztimezone(settings.TIME_ZONE)
+    
+    for payment in payment_records:
+        date_texts.append(zone.normalize(payment.date).date)
+        date_values.append(zone.normalize(payment.date).strftime("%Y-%m-%d"))
+        
+        # Limit to latest 10 dates
+        if only_latest_dates and len(date_texts) >= 10:
+            break
+             
+    distribution_dates = zip(date_texts, date_values)
+    
+    return render(request, 'order/order_history.html', {
+          'orders_with_totals': orders_with_totals,
+          'total_price': total_price,
+          'last_debt': debt_before,
+          'next_debt': debt_after,
+          'quarterly_fee': quarterly_fee,
+          'paid_amount': paid_amount,
+          
+          'selected_date': selected_date,
+          'only_latest_dates': only_latest_dates,
+          'distribution_dates': distribution_dates,
+          
+          'counted_product_list': counted_product_list,
+          'not_arrived_product_list': not_arrived_product_list,
+          'not_ordered_product_list': not_ordered_product_list,
+          'amount_changed_product_list': amount_changed_product_list,
+          
+          'order_total': request.session['order_total'],
+          'order_summary': request.session['order_summary'],
+      })
+      
 '''Page to enable users update/place their orders'''
 @login_required
 def update_order(request, category_no=''):
@@ -188,6 +296,9 @@ def view_order(request):
           'order_total': request.session['order_total'],
           'order_summary': request.session['order_summary'],
       })
+
+
+
 
 @login_required
 def rate_products(request):

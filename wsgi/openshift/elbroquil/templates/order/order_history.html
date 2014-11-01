@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block content_title %}
-<h1>{% trans "Member payments" %}</h1>
+<h1>{% trans "Order history" %}</h1>
 {% endblock %}
 
 
@@ -11,59 +11,43 @@
 
 {% block scriptincludes %}
 <script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
-<!-- <script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script> -->
-<script type="text/javascript" src="/static/scripts/bootstrap-formhelpers-number.js"></script>
 {% endblock %}
 
-
 {% block content %}
-	{% include "distribution/wizard.html" with step=3 current_product=0 total_products=0 %}
-	<br/>
-	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "Choose the member and charge him the required amount. In case the user wants to pay the quarterly fee, mark the box to add it to the total amount. If you or the member does not have change, just enter the paid amount and the rest will be saved as debt." %}</div>
-	
     <div id="content-main" class="inner-two-columns">
-		<div>
-			<ul class="pager">	
-				<li class="previous"><a href="{% url 'elbroquil.views.view_product_orders' previous_product %}">&larr; {{ prev_product_name }}</a></li>
-			  	<li class="next"><a href="{% url 'elbroquil.views.account_summary' %}">{% trans "Close account" %} &rarr;</a></li>
-			</ul>
-		</div>
-		
 		<div class="row">
-        <form id="member-form" role="form"  action="{% url 'elbroquil.views.member_payment' %}" method="POST"  class="form-horizontal">
-            	{% csrf_token %}
-			<input name="form-name" type="hidden" value="member-form"/>
-			
-			  <div class="form-group">
-			    <div class="col-md-offset-3 col-md-6">
-		      		 <select id="member-id" name="member-id" class="form-control">
-				  		<option value="-1">{% trans "CHOOSE MEMBER" %}</option>
-						{% for member in member_orders %}
-					  		<option value="{{ member.pk }}" {% if member_id == member.pk %}selected{% endif %}>{{ member.get_full_name }}</option>
-					  	{% endfor %}
-					</select>
-			    </div>
-			  </div>
-			
-		</form>
+			<div class="col-md-12">
+				<form id="distribution_date" role="form"  action="{% url 'elbroquil.views.order_history' %}" method="POST"  class="form-horizontal">
+		         {% csrf_token %}	
+					<div class="form-group col-md-12">
+			      		<label for="date" class="control-label col-md-3">{% trans "Distribution date"%}</label>
+						<div class="col-md-6">
+							<select id="date" name="date" class="form-control" value="{{ selected_date }}">
+								<option value="-1">{% trans "CHOOSE DISTRIBUTION DATE" %}</option>
+								{% for text, value in distribution_dates %}
+							  		<option value="{{ value }}" {% if value == selected_date %}selected{% endif %}>{{ text }}</option>
+							  	{% endfor %}
+							</select>
+						</div>
+					</div>	
+					<div class="form-group col-md-12">
+ 						<label for="only-latest" class="control-label col-md-3">{% trans "Show only recent dates"%}</label>
+						<div class="col-md-6">
+							<input id="only-latest" name="only-latest" type="checkbox" {% if only_latest_dates %}checked{% endif %}>
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
-		
-		
-		<div class="alert alert-info col-md-offset-3 col-md-6" role="alert">{{ paid_count }} / {{ total_count }} {% trans " members paid." %}</div>
-		
-		{% if member_id > 0 %}
+		{% if selected_date %}
 		<div class="row">
-        <form id="payment-form" role="form"  action="{% url 'elbroquil.views.member_payment' %}" method="POST"  class="form-horizontal col-md-offset-2 col-md-10">
-            	{% csrf_token %}
-			<input name="form-name" type="hidden" value="payment-form"/>	
-			<input name="member-id" type="hidden" value="{{ member_id }}"/>
-			
+        <form id="payment-form" role="form"  action="" method="POST"  class="form-horizontal col-md-offset-2 col-md-10">
 			<div class="col-md-10">
 				<div class="form-group">
 			    	<label for="amount-product" class="control-label col-md-4">{% trans "Products:" %}</label>
 			    	<div class="col-md-4">
 				    	<div class="input-group"> 
-							<input id="amount-product" name="amount-product" type="text" class="form-control bfh-number input-sm quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ total_price }}" disabled/>
+							<input id="amount-product" name="amount-product" type="text" class="form-control bfh-number input-sm quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ total_price|floatformat:2 }}" disabled/>
 				      		<div class="input-group-addon"><strong>&euro;</strong></div>
 						</div>
 					</div>
@@ -93,19 +77,10 @@
 				{% endif %}
 				<hr>
 				<div class="form-group">
-			    	<label for="amount-total" class="control-label col-md-4">{% trans "TOTAL TO PAY:" %}</label>
-			    	<div class="col-md-4">
-				    	<div class="input-group">
-							<input id="amount-total" name="amount-total" type="text" class="form-control bfh-number input-lg quantity" data-keyboard="true" data-min="-9999" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ total_to_pay }}" disabled/>
-				      		<div class="input-group-addon"><strong>&euro;</strong></div>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
 			    	<label for="amount-paid" class="control-label col-md-4">{% trans "Paid:" %}</label>
 			    	<div class="col-md-4">
 				    	<div class="input-group">
-							<input id="amount-paid" name="amount-paid" type="text" class="form-control bfh-number input-lg quantity focusedInput" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ paid_amount }}"/>
+							<input id="amount-paid" name="amount-paid" type="text" class="form-control bfh-number input-lg quantity focusedInput" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ paid_amount }}" disabled/>
 				      		<div class="input-group-addon"><strong>&euro;</strong></div>
 						</div>
 					</div>
@@ -118,14 +93,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-2">
-				<div class="sidebar">
-				<button id="save_button" type="submit" class="btn btn-lg btn-success pull-right">{% trans "Save changes" %}</button>
-				</div>
-			</div>
-		</form>
+			</form>
 		</div>
-		
 		<div class="row">
 			<div class="panel-group" id="accordion">
 			{% if counted_product_list|length > 0 %}
@@ -135,10 +104,10 @@
 			        <a data-toggle="collapse" href="#collapseOne">
 			          {% trans "PRODUCTS" %}
 			        </a>
-					<span style="float: right;">{{ total_price }} &euro;</span>
+					<span style="float: right;">{{ total_price|floatformat:2 }} &euro;</span>
 			      </h4>
 			    </div>	
-			    <div id="collapseOne" class="panel-collapse collapse">
+			    <div id="collapseOne" class="panel-collapse collapse in">
 			      <div class="panel-body">		
 					<table class="table table-striped">
 						<thead>
@@ -234,83 +203,25 @@
 			{% endif %}
 			</div>
 		</div>
-   		{% endif %}
- 	</div>
+		{% endif %}
+    </div>
 {% endblock %}
+
 
 {% block extrascripts %}
 <script type="text/javascript">
 	 $(function() {
 		// Set selected menu item
-		$('#menu-item-distribution').addClass("active");
+		$('#menu-item-order').addClass("active");
 		
-		// If left and right arrow keys are pressed (outside input boxes), 
-		// switch to next or previous product
-		$("body").keydown(function(e) {
-		  if( e.target.tagName.toLowerCase() !== 'input' &&
-			  e.target.tagName.toLowerCase() !== 'textarea' && 
-			  e.keyCode == 37) { // left
-			if($('li.previous > a').length)
-				window.location = $('li.previous > a').attr('href');
-		  }
-		  else if(	e.target.tagName.toLowerCase() !== 'input' &&
-			  		e.target.tagName.toLowerCase() !== 'textarea' && 
-					e.keyCode == 39) { // right
-			if($('li.next > a').length)
-				window.location = $('li.next > a').attr('href');
-		  }
+		// Bind the event so that when form items change, form is submitted
+		$("#date").change(function(e) {
+			$("#distribution_date").submit();
 		});
 		
-		
-		// Bind the event so that when dropdown (producer) changes, form is submitted
-		$("#member-id").change(function(e) {
-			$("#member-form").submit();
+		$("#only-latest").change(function(e) {
+			$("#distribution_date").submit();
 		});
-		
-		var updateNextDebt = function(dummy) {
-			var next_debt = parseFloat($("#amount-total").val()) - parseFloat($("#amount-paid").val());
-			next_debt = Math.round(next_debt*100)/100;
-			
-			$("#amount-next-debt").text(next_debt);
-			//alert('next debt changed');
-		}
-		
-		// If there is quarterly fee, enable its event to update the total amount
-		if ($("#pay-quarterly").length > 0){
-			$("#pay-quarterly").click(function() {
-			    var $this = $(this);
-		
-			
-				var total_amount = parseFloat($("#amount-product").val()) + parseFloat($("#amount-debt").val());
-			
-			    if ($this.is(':checked')) {
-					total_amount += parseFloat($("#amount-quarterly").val());
-				}
-			
-				$("#amount-total").val(total_amount);
-				updateNextDebt();
-			});
-		}
-
-		// Click an item when list item is clicked
-		$(".wizard > .steps > li").click(function(e){
-			e.target.children[0].click();
-		});
-		
-		
-		$("#amount-paid").change(updateNextDebt);
-		
-		/*
-		// If text inputs are changed, enable the save button
-		$('#initial-cash').keyup(function( event ) {
-			$('#save_button').removeAttr('disabled');
-		});
-		
-		// Activate the save button's form submit
-		$("#save_button").click(function(e) {
-		    $("form").submit();
-		});
-		*/
 	  });
 </script>
 {% endblock %}

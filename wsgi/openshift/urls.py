@@ -22,8 +22,8 @@ urlpatterns = patterns('',
     # Order related URLs
     url(_(r'^order/rate/$'), 'elbroquil.views.rate_products', name='rate_products'),
     url(_(r'^order/([0-9]+)/$'), 'elbroquil.views.update_order', name='update_order'),
+    url(_(r'^order/history$'), 'elbroquil.views.order_history', name='order_history'),
     url(_(r'^order/$'), 'elbroquil.views.view_order', name='view_order'),
-    url(_(r'^email/$'), 'elbroquil.views.test_email', name='test_email'),
     
     # Product related URLs
     url(_(r'^products/view/(?P<producer_id>[0-9]+)$'), 'elbroquil.views.view_products', name='view_products'),

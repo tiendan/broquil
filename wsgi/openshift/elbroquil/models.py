@@ -168,7 +168,7 @@ class Product(models.Model):
     
     total_quantity = models.DecimalField(_(u'total quantity'), decimal_places=2, max_digits=5, default=0)
     arrived_quantity = models.DecimalField(_(u'arrived quantity'), decimal_places=2, max_digits=5, default=0)
-    order_limit_date = models.DateTimeField(_(u'order limit date'), null=True, blank=True, help_text=_(u"<em>(Only fill for products that are offered just once.)</em>"))  # TODO DATETIME
+    order_limit_date = models.DateTimeField(_(u'order limit date'), null=True, blank=True, help_text=_(u"<em>(Only fill for products that are offered just once.)</em>"))
     average_rating = models.DecimalField(_(u'average rating'), decimal_places=1, max_digits=5, default=0)
     
     new_product = models.BooleanField(_(u'new product'), default=False, help_text=_(u"<em>(To highlight this product as NEW in the order pages.)</em>"))
@@ -237,7 +237,7 @@ class Quarterly(models.Model):
     user = models.ForeignKey(User)
     year = models.SmallIntegerField(_(u'year'))
     quarter = models.SmallIntegerField(_(u'quarter'))
-    created_date = models.DateTimeField(_(u'created date'), default=timezone.now)   # TODO DATETIME
+    created_date = models.DateTimeField(_(u'created date'), default=timezone.now)
     amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=5, default=0)
 
     payment = models.ForeignKey(Payment, null=True)
