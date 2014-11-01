@@ -84,7 +84,10 @@ def order_history(request):
             if last_debt is not None:
                 debt_before = last_debt.amount
             
-            payment = models.Payment.objects.filter(user=request.user, date__contains=selected_date).first()
+            # Get the user payment for this distribution date
+            date_start = datetime.strptime(selected_date, "%Y-%m-%d")
+            date_end = date_start + timedelta(days=1)
+            payment = models.Payment.objects.filter(user=request.user, date__range=(date_start, date_end)).first()
             
             if payment is not None:
                 paid_amount = payment.amount
@@ -338,9 +341,4 @@ def rate_products(request):
           'order_total': request.session['order_total'],
           'order_summary': request.session['order_summary'],
       })
-      
-def test_email(request):
-    # TODO Check other parameters from https://docs.djangoproject.com/en/1.6/topics/email/#emailmessage-objects
-    email = EmailMessage('Dummy subject', 'This is my beautiful email body', to=['tiendan@gmail.com'])
-    email.send()
     
