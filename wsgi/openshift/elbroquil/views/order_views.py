@@ -92,11 +92,17 @@ def order_history(request):
             if payment is not None:
                 paid_amount = payment.amount
                 
-                # Get debt from last weeks (if exists)
+                # Get debt saved for next weeks
                 next_debt = models.Debt.objects.filter(user=request.user, payment=payment).first()
 
                 if next_debt is not None:
                     debt_after = next_debt.amount
+                    
+                # Get paid quarterly fee (if exists)
+                quarterly = models.Quarterly.objects.filter(user=request.user, payment=payment).first()
+
+                if quarterly is not None:
+                    quarterly_fee = quarterly.amount
                 
         
     orders_with_totals = zip(orders, totals)
