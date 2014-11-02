@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-11-01 05:04+0100\n"
-"PO-Revision-Date: 2014-10-22 00:43+0000\n"
+"PO-Revision-Date: 2014-11-03 00:29+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Translated-Using: django-rosetta 0.7.4\n"
 
 #: settings.py:173 elbroquil/models.py:56
@@ -67,9 +67,8 @@ msgid "^order/([0-9]+)/$"
 msgstr "^pedido/([0-9]+)/$"
 
 #: urls.py:25
-#, fuzzy
 msgid "^order/history$"
-msgstr "^pedido/$"
+msgstr "^pedido/historial$"
 
 #: urls.py:26
 msgid "^order/$"
@@ -453,7 +452,8 @@ msgstr "producto nuevo"
 
 #: elbroquil/models.py:174
 msgid "<em>(To highlight this product as NEW in the order pages.)</em>"
-msgstr "<em>(Para poner la etiqueta de ¡NUEVO! en las páginas de pedido.)</em>"
+msgstr ""
+"<em>(Para poner la etiqueta de ¡NUEVO! en las páginas de pedido.)</em>"
 
 #: elbroquil/models.py:175
 msgid "sent to producer"
@@ -591,13 +591,14 @@ msgstr "Resumen de contabilidad"
 #: elbroquil/templates/distribution/account_summary.html:21
 msgid ""
 "<strong>Prepare the envelopes</strong> for each producer, placing the "
-"required amount of money inside.<br/>Count the <strong>final amount</strong> "
-"in the drawer and save it here. Make sure it more or less equals the "
+"required amount of money inside.<br/>Count the <strong>final amount</strong>"
+" in the drawer and save it here. Make sure it more or less equals the "
 "expected amount."
 msgstr ""
-"<strong>Prepara los sobres</strong> para cada productor, poniendo el importe "
-"de dinero requerido.<br/>Cuenta el <strong>importe final</strong> en la caja "
-"y guardalo aquí. Asegúrate de que sea mas o menos igual a la expectativa."
+"<strong>Prepara los sobres</strong> para cada productor, poniendo el importe"
+" de dinero requerido.<br/>Cuenta el <strong>importe final</strong> en la "
+"caja y guardalo aquí. Asegúrate de que sea mas o menos igual a la "
+"expectativa."
 
 #: elbroquil/templates/distribution/account_summary.html:24
 msgid "The initial cash has not been entered!"
@@ -681,10 +682,10 @@ msgstr "Pagos de miembros"
 
 #: elbroquil/templates/distribution/member_payment.html:22
 msgid ""
-"Choose the member and charge him the required amount. In case the user wants "
-"to pay the quarterly fee, mark the box to add it to the total amount. If you "
-"or the member does not have change, just enter the paid amount and the rest "
-"will be saved as debt."
+"Choose the member and charge him the required amount. In case the user wants"
+" to pay the quarterly fee, mark the box to add it to the total amount. If "
+"you or the member does not have change, just enter the paid amount and the "
+"rest will be saved as debt."
 msgstr ""
 "Elige el miembro y cóbrale el importe necesario. En el caso de que el "
 "miembro quiera pagar la cuota trimestral, marca la casilla para sumarlo al "
@@ -784,8 +785,8 @@ msgstr "Final"
 
 #: elbroquil/templates/distribution/view_basket_counts.html:22
 msgid ""
-"Prepare the baskets for each member. Place an extra basket for the indicated "
-"members (with more products)."
+"Prepare the baskets for each member. Place an extra basket for the indicated"
+" members (with more products)."
 msgstr ""
 "Prepara las cestas para cada miembro. Pon una extra para los miembros "
 "indicados (con más productos)."
@@ -984,14 +985,12 @@ msgid "NO INCIDENTS"
 msgstr "NO INCIDÉNCIAS"
 
 #: elbroquil/templates/order/order_history.html:5 templates/base.html:67
-#, fuzzy
 msgid "Order history"
-msgstr "hora de pedido"
+msgstr "Historial de pedido"
 
 #: elbroquil/templates/order/order_history.html:66
-#, fuzzy
 msgid "Quarterly fee:"
-msgstr "Cuota Trimestral:"
+msgstr "Cuota trimestral:"
 
 #: elbroquil/templates/order/rate_products.html:6 templates/base.html:68
 msgid "Rate products"
@@ -1075,9 +1074,8 @@ msgid "Update your order"
 msgstr "Modificar pedido"
 
 #: elbroquil/templates/order/view_order.html:5
-#, fuzzy
 msgid "Make an order"
-msgstr "Modificar pedido"
+msgstr "Hacer pedido"
 
 #: elbroquil/templates/order/view_order.html:24
 msgid "Total"
@@ -1118,8 +1116,8 @@ msgid ""
 "the administrator."
 msgstr ""
 "Verifica que la información de los productos se hayan procesado "
-"correctamente. Si todo está correcto, <strong>guarda los productos</strong>. "
-"Si hay algún error, informe el administrador."
+"correctamente. Si todo está correcto, <strong>guarda los productos</strong>."
+" Si hay algún error, informe el administrador."
 
 #: elbroquil/templates/product/check_product_info.html:23
 msgid "Category"
@@ -1234,7 +1232,8 @@ msgstr "He olvidado la contraseña"
 #: templates/login.html:11
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
-"Tu nombre de usuario y contraseña no coinciden. Por favor intentalo otra vez."
+"Tu nombre de usuario y contraseña no coinciden. Por favor intentalo otra "
+"vez."
 
 #: templates/login.html:17
 msgid "Please sign in"
