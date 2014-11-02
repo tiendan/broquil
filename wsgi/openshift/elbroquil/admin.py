@@ -12,6 +12,9 @@ from django.contrib.auth.models import Permission
 from django.db.models import Q
 import elbroquil.libraries as libs
 
+import logging
+logger = logging.getLogger("custom")
+
 # Producer availability model is shown inline in the producer admin pages
 class AvailabilityInline(admin.TabularInline):
     model = models.ProducerAvailableDate
@@ -75,62 +78,85 @@ class ExtraInfoInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'extra info'
 
+        
 class CustomUserCreationForm(UserCreationForm):
     username = forms.RegexField(label=_("Email"), max_length=30, regex=r'^[\w.@+-]+$',
         help_text = _("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
         error_messages = {'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")})
-    #password1 = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
-    #password2 = forms.CharField(label=_("Password confirmation"), widget=forms.PasswordInput,
-    #    help_text = _("Enter the same password as above, for verification."))
-    #email = forms.EmailField(label = _(u"Email"))
     first_name = forms.CharField(label = _(u"First name"))
     last_name = forms.CharField(label = _(u"Last name"))
     
-    #phone = forms.CharField(label = _(u"Phone number"))
-    #secondary_email = forms.EmailField(label = _(u"Alternative email"))
-    #secondary_phone = forms.CharField(label = _(u"Alt. phone number"))
+    phone = forms.CharField(label = _(u"Phone number"))
+    secondary_email = forms.EmailField(label = _(u"Alternative email"), required=False)
+    secondary_phone = forms.CharField(label = _(u"Alt. phone number"), required=False)
+    
+    
+    def __init__(self, *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+        self.fields['password1'].required = False
+        self.fields['password2'].required = False
+        # If one field gets autocompleted but not the other, our 'neither
+        # password or both password' validation will be triggered.
+        self.fields['password1'].widget.attrs['autocomplete'] = 'off'
+        self.fields['password2'].widget.attrs['autocomplete'] = 'off'
     
     class Meta:
         model = User
-        fields = ("username",)
-        
+        fields = ["username","first_name", "last_name"]
+
     def clean_username(self):
+        #cleaned_data = super(UserCreationForm, self).clean()
+        
         username = self.cleaned_data["username"]
-        
-        # First validate that phone number exists (was not easy to do it elsewhere)
-        #phone_number = self.data.get("extrainfo-0-phone", "")
-        #if phone_number == "":
-        #    raise forms.ValidationError(_("Phone number is required."))
-        
         try:
             User.objects.get(username=username)
+            raise forms.ValidationError(_("A user with that username already exists."))
         except User.DoesNotExist:
             return username
-        raise forms.ValidationError(_("A user with that username already exists."))
-
+            
     def clean_password(self):
         return ""
     
     def clean_password2(self):
         return ""
-        
-        #password1 = self.cleaned_data.get("password1", "")
-        #password2 = self.cleaned_data["password2"]
-        #if password1 != password2:
-        #    raise forms.ValidationError(_("The two password fields didn't match."))
-        #return password2
 
     def save(self, commit=True):
+        logger.error("Before calling super save")
         user = super(UserCreationForm, self).save(commit=False)
-        user.set_password(self.data["extrainfo-0-phone"])
-        user.first_name = self.cleaned_data["first_name"]
-        user.last_name = self.cleaned_data["last_name"]
+        
+        logger.error("Setting fields")
+        
+        user.set_password(self.cleaned_data["phone"])
+        #user.first_name = self.cleaned_data["first_name"]
+        #user.last_name = self.cleaned_data["last_name"]
         user.email = self.cleaned_data["username"]
-        #user.extrainfo.email = self.cleaned_data["secondary_email"]
+        #user.username = self.cleaned_data["username"]
+        
+        extra = models.ExtraInfo()
+        extra.phone = self.cleaned_data["phone"]
+        extra.secondary_email = self.cleaned_data["secondary_email"]
+        extra.secondary_phone = self.cleaned_data["secondary_phone"]
+        extra.user = user
+        
+        logger.error("Non field errors: ")
+        logger.error(self.non_field_errors())
+        
+        #logger.error("Errors: ")
+        #logger.error(self.errors())
+        
+        #logger.error("Error messages: ")
+        #logger.error(self.error_messages())
+        
+        
         if commit:
+            logger.error("In commit")
             user.save()
+            logger.error("Saved!")
+            #extra.save()
+        
         return user
-                
+
+        
 class CustomUserCreationForm2(UserCreationForm):
     username = forms.RegexField(label=_("Email"), max_length=30, regex=r'^[\w.@+-]+$',
         help_text = _("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
@@ -140,20 +166,16 @@ class CustomUserCreationForm2(UserCreationForm):
     phone = forms.CharField(label = _(u"Phone"), max_length=15)
     secondary_email = forms.EmailField(label = _(u"Secondary email"), required=False)
     secondary_phone = forms.CharField(label = _(u"Secondary phone"), max_length=15, required=False)
-
     class Meta:
         model = User
         fields = ("username",)
-
     def clean_username(self):
         username = self.cleaned_data["username"]
-
         try:
             User.objects.get(username=username)
         except User.DoesNotExist:
             return username
         raise forms.ValidationError(_("A user with that username already exists."))
-    
     def save(self, commit=True):
         #user = User()
         #raise Exception("Something's wrong.")
@@ -181,17 +203,17 @@ class CustomUserCreationForm2(UserCreationForm):
             extrainfo.save()
         
         return user
-          
+
+
 # Define a new User admin
 class UserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'first_name', 'last_name')} #, 'phone', 'secondary_email', 'secondary_phone')}
+            'fields': ('username', 'first_name', 'last_name', 'phone', 'secondary_email', 'secondary_phone')}
         ),
     )
-    inlines = (ExtraInfoInline, )
 
 class EmailTemplateForm(forms.ModelForm):
     class Meta:
@@ -210,6 +232,7 @@ class EmailTemplateAdmin(admin.ModelAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Permission)
+
 
 admin.site.register(models.Producer, ProducerAdmin)
 

@@ -205,16 +205,34 @@ if ON_OPENSHIFT:
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
+        'formatters': {
+            'verbose': {
+                'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            },
+            'simple': {
+                'format': '%(levelname)s %(message)s'
+            },
+        },
         'handlers': {
             'file': {
                 'level': 'DEBUG',
                 'class': 'logging.FileHandler',
                 'filename': os.environ['OPENSHIFT_HOMEDIR']+'/app-root/logs/broquil.log',
             },
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+                'formatter': 'simple'
+            },
         },
         'loggers': {
             'django.request': {
                 'handlers': ['file'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+            'custom': {
+                'handlers': ['console'],
                 'level': 'DEBUG',
                 'propagate': True,
             },

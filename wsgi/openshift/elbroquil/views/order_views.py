@@ -35,7 +35,7 @@ def order_history(request):
     today = libs.get_today()
     # Form fields
     only_latest_dates = True
-    selected_date = None
+    selected_date = "-1"
     date_texts = []
     date_values = []
     payment_records = models.Payment.objects.filter(user=request.user).order_by("-date")
@@ -52,7 +52,6 @@ def order_history(request):
     not_arrived_product_list = []
     not_ordered_product_list = []
     amount_changed_product_list = []
-
     
     # Read post variables
     if request.method == 'POST':
@@ -67,12 +66,9 @@ def order_history(request):
             for order in user_orders:
                 if order.status == models.STATUS_NORMAL:
                     counted_product_list.append(order)
-
                     total_price += (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
-
                     if order.arrived_quantity != order.quantity:
                         amount_changed_product_list.append(order)
-
                 elif order.status == models.STATUS_DID_NOT_ARRIVE:
                     not_arrived_product_list.append(order)
                 elif order.status == models.STATUS_MIN_ORDER_NOT_MET:
@@ -94,13 +90,11 @@ def order_history(request):
                 
                 # Get debt saved for next weeks
                 next_debt = models.Debt.objects.filter(user=request.user, payment=payment).first()
-
                 if next_debt is not None:
                     debt_after = next_debt.amount
                     
                 # Get paid quarterly fee (if exists)
                 quarterly = models.Quarterly.objects.filter(user=request.user, payment=payment).first()
-
                 if quarterly is not None:
                     quarterly_fee = quarterly.amount
                 
@@ -143,7 +137,8 @@ def order_history(request):
           'order_total': request.session['order_total'],
           'order_summary': request.session['order_summary'],
       })
-      
+
+
 '''Page to enable users update/place their orders'''
 @login_required
 def update_order(request, category_no=''):
@@ -168,7 +163,7 @@ def update_order(request, category_no=''):
         current_category = int(category_no)
         if current_category > len(categories) or current_category < 1:
             raise Http404
-    
+
         if current_category > 1:
             previous_category = current_category - 1
             
