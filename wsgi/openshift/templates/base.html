@@ -28,6 +28,7 @@
 	<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
 	<link rel="stylesheet" href="/static/styles/bootstrap-formhelpers.min.css" type="text/css">
 	<link rel="stylesheet" href="/static/styles/fuelux.css" type="text/css">
+	<link rel="stylesheet" href="/static/styles/hopscotch.css" type="text/css">
 	{% block extrahead %}{% endblock %}
 	
     <!-- Custom styles for this template
@@ -102,7 +103,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				
 				{% if order_total %}
-		        <li class="dropdown">
+		        <li id="order-total-dropdown" class="dropdown">
                 	<a href="#" class="dropdown-toggle larger-text" data-toggle="dropdown">
 					  <span class="glyphicon glyphicon-shopping-cart"></span> {{ order_total }} &euro;
 	                  <b class="caret"></b>
@@ -227,6 +228,7 @@
     <script src="/static/scripts/jquery.min.js"></script>
     <script src="/static/scripts/bootstrap.min.js"></script>
 	<script src="/static/scripts/jquery.cookie.min.js"></script>
+	<script src="/static/scripts/hopscotch.js"></script>
 	
 	{% block scriptincludes %}{% endblock %}
 	{% block extrascripts %}{% endblock %}

@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+
 {% block content_title %}
-<h1>{% trans "Your order for this week" %} {% if available_product_count %}<a href="{% url 'elbroquil.views.update_order' 1 %}" class="btn btn-success btn-lg active pull-right" role="button">{% if products_sum > 0 %}{% trans "Update your order" %}{% else %}{% trans "Make an order" %}{% endif %} &rarr;</a>{% endif %}</h1>
+<h1>{% trans "Your order for this week" %} <span id="order-help" class="glyphicon glyphicon-question-sign right-tooltip" data-toggle="tooltip" data-placement="right" title="{% trans "Start help tour" %}"></span> {% if available_product_count %}<a id="make-order-button" href="{% url 'elbroquil.views.update_order' 1 %}" class="btn btn-success btn-lg active pull-right" role="button">{% if products_sum > 0 %}{% trans "Update your order" %}{% else %}{% trans "Make an order" %}{% endif %} &rarr;</a>{% endif %}</h1>
 {% endblock %}
 
  
@@ -10,15 +11,13 @@
 {% endblock %}
 
 {% block scriptincludes %}
-<script type="text/javascript" src="/static/scripts/jquery-ui.min.js"></script>
-<!-- <script type="text/javascript" src="/static/scripts/jquery.dataTables.min.js"></script> -->
 {% endblock %}
 
 {% block content %}
     <div id="content-main" class="inner-two-columns">
 		{% if orders_with_totals %}
 			<h2>{{ orders_with_totals.0.0.product.distribution_date }}</h2>
-	        <div class="table-responsive">
+	        <div class="table-responsive" id="order-summary">
 				<table class="category_table table table-striped table-condensed table-bordered" >
 				<thead>
 					<tr><th class="product_name_header">{% trans "Product" %}</th><th class="product_price_header">{% trans "Price" %}</th><th class="product_order_header">{% trans "Order" %}</th><th class="product_unit_header">{% trans "Unit" %}</th><th class="product_total_header">{% trans "Total" %}</th></tr>
@@ -56,7 +55,7 @@
 				</table>
 			</div>
 		{% else %}
-			<div class="alert alert-warning">{% trans "You do not have any order currently!" %}</div>
+			<div class="alert alert-warning" id="no-order-summary">{% trans "You do not have any order currently!" %}</div>
 		{% endif %}
 		
 		{% if rest_of_orders %}
@@ -89,6 +88,14 @@
 	 $(function() {
 		// Set selected menu item
 		$('#menu-item-order').addClass("active");
+		
+		{% include "order/tour.js" with order_first_page=1 order_last_page=3 %}
+		
+		$("#order-help").tooltip();
+		$("#order-help").click( function() {
+			// Start the tour!
+			hopscotch.startTour(tour, 0);
+		});
 	  });
 </script>
 {% endblock %}

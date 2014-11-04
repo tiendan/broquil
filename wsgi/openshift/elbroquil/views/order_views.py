@@ -244,6 +244,8 @@ def update_order(request, category_no=''):
 
          'order_total': request.session['order_total'],
          'order_summary': request.session['order_summary'],
+         
+         'category_count': len(categories),
      })
  
 
@@ -289,11 +291,12 @@ def view_order(request):
     if not request.session.get('order_total'):
         libs.calculate_order_summary(request)
         
+    categories = models.Category.objects.filter(product__archived=False, product__order_limit_date__gt=libs.get_now()).distinct()
     
     return render(request, 'order/view_order.html', {
           'orders_with_totals': orders_with_totals,
           'products_sum': products_sum,
-          'overall_sum': sum,
+          'overall_sum': overall_sum,
           'debt': debt,
           'quarterly_fee': quarterly_fee,
           'available_product_count': available_product_count,
@@ -301,6 +304,8 @@ def view_order(request):
           
           'order_total': request.session['order_total'],
           'order_summary': request.session['order_summary'],
+          
+          'category_count': len(categories),
       })
 
 

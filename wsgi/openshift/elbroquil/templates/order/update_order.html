@@ -69,10 +69,10 @@
 								<td class="quantity">
 									{% if product.integer_demand %}
 									<div class="input-group input-group-sm" >
-									<input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text" class="quantity-input product-order form-control bfh-number" data-keyboard="true" data-integer="true" {% if product_order %} value="{{ product_order|localize }}" {% endif %}/>
+									<input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text" class="quantity-input product-order form-control bfh-number integer-order" data-keyboard="true" data-integer="true" {% if product_order %} value="{{ product_order|localize }}" {% endif %}/>
 									</div>
 									{% else %}
-									<input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text" class="quantity-input product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-buttons="false"{% if product_order %} value="{{ product_order|localize }}" {% endif %}/>
+									<input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text" class="quantity-input product-order form-control bfh-number float-order" data-keyboard="true" data-integer="false" data-buttons="false"{% if product_order %} value="{{ product_order|localize }}" {% endif %}/>
 									{% endif %}
 									</td>
 								<td>{{ product.name }}{% if product.comments %} <span class="glyphicon glyphicon-comment right-tooltip larger-text" data-toggle="tooltip" data-placement="right" title="{{ product.comments }}"></span>{% endif %}{% if product.new_product %} <span class="label label-success">{% trans "NEW!"%}</span>{% endif %}</td>
@@ -157,6 +157,13 @@
 		$("#save_button").click(function(e) {
 			$("form").submit();
 		});
+		
+		// Continue the site tour if it's in a middle step
+		{% include "order/tour.js" with order_first_page=1 order_last_page=3 %}
+		
+		if (hopscotch.getState() === "hello-hopscotch:3" || hopscotch.getState() === "hello-hopscotch:8") {
+		    hopscotch.startTour(tour);
+		}
 	  });	
 </script>
 {% endblock %}

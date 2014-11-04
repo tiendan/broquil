@@ -206,3 +206,7 @@ div.panel-heading.incident-panel {
     margin-top: 10px;
     margin-left: 50px;
 }
+
+#order-help {
+    cursor: pointer;
+}
