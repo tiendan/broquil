@@ -89,7 +89,7 @@
 		// Set selected menu item
 		$('#menu-item-order').addClass("active");
 		
-		{% include "order/tour.js" with order_first_page=1 order_last_page=3 %}
+		{% include "order/tour.js" with order_first_page=1 order_last_page=category_count %}
 		
 		$("#order-help").tooltip();
 		$("#order-help").click( function() {
