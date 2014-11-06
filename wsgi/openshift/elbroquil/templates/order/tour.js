@@ -69,6 +69,7 @@ var tour = {
           target: document.querySelector(".next > a"),
           placement: "left",
           zindex: 1000,
+    	  nextOnTargetClick: true,
           multipage: true,
           onNext: function() {
               window.location = "{% url 'elbroquil.views.update_order' order_last_page %}";

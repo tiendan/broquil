@@ -161,7 +161,7 @@
 		// Continue the site tour if it's in a middle step
 		{% include "order/tour.js" with order_first_page=1 order_last_page=category_count %}
 		
-		if (hopscotch.getState() === "hello-hopscotch:3" || hopscotch.getState() === "hello-hopscotch:8") {
+		if (hopscotch.getState().lastIndexOf("hello-hopscotch", 0) === 0) {
 		    hopscotch.startTour(tour);
 		}
 	  });	

@@ -147,7 +147,7 @@ def view_basket_counts(request):
             last_order_user = order.user.id
             last_order_user_name = order.user.get_full_name()
 
-        last_order_total += order.quantity * order.product.price
+        last_order_total += order.arrived_quantity * order.product.price
 
     if last_order_total > 0:
         if last_order_total < 20:

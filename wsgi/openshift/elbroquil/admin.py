@@ -86,9 +86,9 @@ class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(label = _(u"First name"))
     last_name = forms.CharField(label = _(u"Last name"))
     
-    phone = forms.CharField(label = _(u"Phone number"))
+    phone = forms.CharField(label = _(u"Phone number"), max_length=15)
     secondary_email = forms.EmailField(label = _(u"Alternative email"), required=False)
-    secondary_phone = forms.CharField(label = _(u"Alt. phone number"), required=False)
+    secondary_phone = forms.CharField(label = _(u"Alt. phone number"), max_length=15, required=False)
     
     
     def __init__(self, *args, **kwargs):
@@ -121,10 +121,8 @@ class CustomUserCreationForm(UserCreationForm):
         return ""
 
     def save(self, commit=True):
-        logger.error("Before calling super save")
-        user = super(UserCreationForm, self).save(commit=False)
-        
-        logger.error("Setting fields")
+        user = super(CustomUserCreationForm, self).save(commit=True)
+        extra = models.ExtraInfo()
         
         user.set_password(self.cleaned_data["phone"])
         #user.first_name = self.cleaned_data["first_name"]
@@ -132,81 +130,29 @@ class CustomUserCreationForm(UserCreationForm):
         user.email = self.cleaned_data["username"]
         #user.username = self.cleaned_data["username"]
         
-        extra = models.ExtraInfo()
-        extra.phone = self.cleaned_data["phone"]
-        extra.secondary_email = self.cleaned_data["secondary_email"]
-        extra.secondary_phone = self.cleaned_data["secondary_phone"]
-        extra.user = user
-        
-        logger.error("Non field errors: ")
-        logger.error(self.non_field_errors())
-        
-        #logger.error("Errors: ")
-        #logger.error(self.errors())
-        
-        #logger.error("Error messages: ")
-        #logger.error(self.error_messages())
-        
-        
         if commit:
-            logger.error("In commit")
-            user.save()
-            logger.error("Saved!")
-            #extra.save()
-        
-        return user
-
-        
-class CustomUserCreationForm2(UserCreationForm):
-    username = forms.RegexField(label=_("Email"), max_length=30, regex=r'^[\w.@+-]+$',
-        help_text = _("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
-        error_messages = {'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")})
-    first_name = forms.CharField(label = _(u"First name"))
-    last_name = forms.CharField(label = _(u"Last name"))
-    phone = forms.CharField(label = _(u"Phone"), max_length=15)
-    secondary_email = forms.EmailField(label = _(u"Secondary email"), required=False)
-    secondary_phone = forms.CharField(label = _(u"Secondary phone"), max_length=15, required=False)
-    class Meta:
-        model = User
-        fields = ("username",)
-    def clean_username(self):
-        username = self.cleaned_data["username"]
-        try:
-            User.objects.get(username=username)
-        except User.DoesNotExist:
-            return username
-        raise forms.ValidationError(_("A user with that username already exists."))
-    def save(self, commit=True):
-        #user = User()
-        #raise Exception("Something's wrong.")
-        
-        user = super(UserCreationForm, self).save(commit=False)
-        
-        
-        #user.username = self.cleaned_data["username"]
-        user.set_password(self.cleaned_data["phone"])
-        user.first_name = self.cleaned_data["first_name"]
-        user.last_name = self.cleaned_data["last_name"]
-        user.email = self.cleaned_data["username"]
-        
-        #user.extrainfo.email = self.cleaned_data["secondary_email"]
-        if commit:
+            logger.error("User saved")
             user.save()
             
+            extra.phone = self.cleaned_data["phone"]
+            if self.cleaned_data.has_key("secondary_email"):
+                extra.secondary_email = self.cleaned_data["secondary_email"]
+            else:
+                extra.secondary_email = ""
+                
+            if self.cleaned_data.has_key("secondary_phone"):
+                extra.secondary_phone = self.cleaned_data["secondary_phone"]
+            else:
+                extra.secondary_phone = ""
             
-            # Create the record for extra user information
-            extrainfo = models.ExtraInfo()
-            extrainfo.user = user
-            extrainfo.secondary_email = self.cleaned_data["secondary_email"]
-            extrainfo.phone = self.cleaned_data["phone"]
-            extrainfo.secondary_phone = self.cleaned_data["secondary_phone"]
-            extrainfo.save()
+            extra.user = user
+            extra.save()
+            logger.error("... and saved")
         
         return user
-
 
 # Define a new User admin
-class UserAdmin(UserAdmin):
+class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     add_fieldsets = (
         (None, {
@@ -214,6 +160,15 @@ class UserAdmin(UserAdmin):
             'fields': ('username', 'first_name', 'last_name', 'phone', 'secondary_email', 'secondary_phone')}
         ),
     )
+    inlines = ()
+    
+    def add_view(self, request):
+        self.inlines = ()
+        return super(CustomUserAdmin, self).add_view(request)
+           
+    def change_view(self, request, object_id):
+        self.inlines = (ExtraInfoInline, )
+        return super(CustomUserAdmin, self).change_view(request, object_id)
 
 class EmailTemplateForm(forms.ModelForm):
     class Meta:
@@ -230,7 +185,7 @@ class EmailTemplateAdmin(admin.ModelAdmin):
 
 # Re-register UserAdmin
 admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, CustomUserAdmin)
 admin.site.register(Permission)
 
 

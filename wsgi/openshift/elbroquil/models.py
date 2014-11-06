@@ -65,6 +65,7 @@ LANGUAGE_CHOICES = (
 EMAIL_OFFER_CREATED = 1
 EMAIL_REMINDER = 2
 EMAIL_ORDER_SENT_TO_PRODUCER = 3
+EMAIL_ACCOUNT_CREATED = 4
 
 # Producer emails
 EMAIL_PRODUCER_ORDER_TOTAL = 101
@@ -75,6 +76,7 @@ EMAIL_CODE_CHOICES  = (
     (EMAIL_OFFER_CREATED, _(u'Member: Offer Created')),
     (EMAIL_REMINDER, _(u'Member: Saturday Reminder')),
     (EMAIL_ORDER_SENT_TO_PRODUCER, _(u'Member: Order Sent to Producers')),
+    (EMAIL_ACCOUNT_CREATED, _(u'Member: Account Created')),
     
     (EMAIL_PRODUCER_ORDER_TOTAL, _(u'Producer: Total Order')),
     (EMAIL_PRODUCER_NO_ORDER, _(u'Producer: No Order This Week')),
