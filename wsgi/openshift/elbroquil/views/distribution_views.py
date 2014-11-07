@@ -468,6 +468,12 @@ def account_summary(request):
 
                 next_debt_object.amount = member_next_debt
                 next_debt_object.save()
+                
+                # Create the consumption record for the user
+                consumption, created = models.Consumption.objects.get_or_create(user=member, payment=payment)
+
+                consumption.amount = member_total_order
+                consumption.save()
 
 
     # Calculate collected amount from Payment table
