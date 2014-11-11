@@ -22,7 +22,7 @@ class AvailabilityInline(admin.TabularInline):
     
     verbose_name_plural = _(u"Producer availability (in case of limited availability)")
     verbose_name = _(u"date")
-    
+
 # Producer admin pages
 class ProducerAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -44,11 +44,11 @@ class CategoryAdmin(admin.ModelAdmin):
             'fields': ('name', 'visible_name', 'producer', 'sort_order')}
         ),
     )
-
+    
     # Override default queryset so that only relevant products are shown
     def queryset(self, request):
         qs = super(CategoryAdmin, self).queryset(request).order_by('sort_order', 'pk')
-
+        
         return qs
 
 # Product admin pages
@@ -60,7 +60,7 @@ class ProductAdmin(admin.ModelAdmin):
             'fields': ('name', 'category', 'origin', 'comments', 'price', 'unit', 'integer_demand', 'new_product', 'distribution_date', 'order_limit_date')}
         ),
     )
-
+    
     # Override default queryset so that only relevant products are shown
     def queryset(self, request):
         qs = super(ProductAdmin, self).queryset(request).filter(Q(distribution_date__gt=libs.get_today()) | Q(distribution_date=None)).order_by('category__sort_order', 'pk')
@@ -68,7 +68,7 @@ class ProductAdmin(admin.ModelAdmin):
         return qs
 
 # User definition/update pages
-# We define extra information as inline form component, then customize the user forms 
+# We define extra information as inline form component, then customize the user forms
 # and re-register the new user admin
 
 # Define an inline admin descriptor for ExtraInfo model
@@ -78,7 +78,7 @@ class ExtraInfoInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = 'extra info'
 
-        
+
 class CustomUserCreationForm(UserCreationForm):
     username = forms.RegexField(label=_("Email"), max_length=30, regex=r'^[\w.@+-]+$',
         help_text = _("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
@@ -103,7 +103,7 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username","first_name", "last_name"]
-
+    
     def clean_username(self):
         #cleaned_data = super(UserCreationForm, self).clean()
         
@@ -113,16 +113,15 @@ class CustomUserCreationForm(UserCreationForm):
             raise forms.ValidationError(_("A user with that username already exists."))
         except User.DoesNotExist:
             return username
-            
+    
     def clean_password(self):
         return ""
     
     def clean_password2(self):
         return ""
-
+    
     def save(self, commit=True):
         user = super(CustomUserCreationForm, self).save(commit=True)
-        extra = models.ExtraInfo()
         
         user.set_password(self.cleaned_data["phone"])
         #user.first_name = self.cleaned_data["first_name"]
@@ -130,24 +129,14 @@ class CustomUserCreationForm(UserCreationForm):
         user.email = self.cleaned_data["username"]
         #user.username = self.cleaned_data["username"]
         
-        if commit:
-            logger.error("User saved")
-            user.save()
-            
-            extra.phone = self.cleaned_data["phone"]
-            if self.cleaned_data.has_key("secondary_email"):
-                extra.secondary_email = self.cleaned_data["secondary_email"]
-            else:
-                extra.secondary_email = ""
-                
-            if self.cleaned_data.has_key("secondary_phone"):
-                extra.secondary_phone = self.cleaned_data["secondary_phone"]
-            else:
-                extra.secondary_phone = ""
-            
-            extra.user = user
-            extra.save()
-            logger.error("... and saved")
+        #if commit:
+        logger.error("User saved")
+        user.save()
+        
+        extra = models.ExtraInfo(user=user, phone = self.cleaned_data["phone"], secondary_email=self.cleaned_data["secondary_email"], secondary_phone=self.cleaned_data["secondary_phone"])
+        extra.save()
+        
+        logger.error("... and saved")
         
         return user
 
@@ -165,7 +154,7 @@ class CustomUserAdmin(UserAdmin):
     def add_view(self, request):
         self.inlines = ()
         return super(CustomUserAdmin, self).add_view(request)
-           
+    
     def change_view(self, request, object_id):
         self.inlines = (ExtraInfoInline, )
         return super(CustomUserAdmin, self).change_view(request, object_id)
