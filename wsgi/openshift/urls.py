@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(_(r'^dist/payment/$'), 'elbroquil.views.member_payment', name='member_payment'),
     url(_(r'^dist/account/$'), 'elbroquil.views.account_summary', name='account_summary'),
     url(_(r'^dist/([0-9]+)/$'), 'elbroquil.views.view_product_orders', name='view_product_orders'),
+    url(_(r'^dist/product/([0-9]+)/$'), 'elbroquil.views.view_product_orders_with_id', name='view_product_orders_with_id'),
     url(_(r'^dist/$'), 'elbroquil.views.view_order_totals', name='view_order_totals'),
     
     # Order related URLs

@@ -31,54 +31,20 @@ import elbroquil.parse as parser
 import elbroquil.libraries as libs
 
 # Get an instance of a logger
-logger = logging.getLogger("MYAPP")
-
-#def arrange_order_tables():
-#    today = libs.get_today()
-#    nextweek = today + timedelta(days=7)
-#    calrosset_products = models.Product.objects.filter(archived=False, distribution_date__isnull=False, category__producer_id=1)
-#    
-#    for product in calrosset_products:
-#        quantity = models.Order.objects.filter(product=product).aggregate(Sum('quantity'))['quantity__sum']
-#        
-#        if quantity is None:
-#            quantity = Decimal(0)
-#        
-#        product.total_quantity = quantity
-#        
-#        if product.arrived_quantity == 0:
-#            product.arrived_quantity = product.total_quantity
-#            
-#        #product.distribution_date = date(nextweek.year, 8, 20)
-#        #product.order_limit_date = datetime(today.year, 8, 18, 5, 0)
-#        product.save()
-#
-#    canpipi_products = models.Product.objects.filter(archived=False, distribution_date__isnull=False, category__producer_id=2)
-#    for product in canpipi_products:
-#        quantity = models.Order.objects.filter(product=product).aggregate(Sum('quantity'))['quantity__sum']
-#        
-#        if quantity is None:
-#            quantity = Decimal(0)
-#        
-#        product.total_quantity = quantity
-#
-#        if product.arrived_quantity == 0:
-#            product.arrived_quantity = product.total_quantity
-#
-#        #product.distribution_date = nextweek
-#        #product.distribution_date = date(nextweek.year, 8, 20)
-#        #product.order_limit_date = datetime(nextweek.year, 8, 17, 22, 0)
-#        product.save()
+logger = logging.getLogger("custom")
 
 @login_required
 @permission_required('elbroquil.prepare_baskets')
 def view_order_totals(request):
     products = models.Product.objects.filter(archived=False, distribution_date=libs.get_today(),total_quantity__gt=0).order_by('category__sort_order', 'id')
-
+    show_product_links = False
+    
     add_category_row = []
     prev_category = ''
-
-
+	
+    if request.session.get('initial_cash'):
+        show_product_links = True
+	
     # If the form was submitted
     if request.method == 'POST':
         with transaction.atomic():
@@ -96,7 +62,7 @@ def view_order_totals(request):
                         models.Order.objects.filter(product_id=product.id).update(arrived_quantity=0, status=models.STATUS_DID_NOT_ARRIVE)
                     else:
                         models.Order.objects.filter(product_id=product.id).update(arrived_quantity=F('quantity'), status=models.STATUS_NORMAL)
-
+	
     for prod in products:
         if prod.category.name != prev_category:
             add_category_row.append(True)
@@ -107,7 +73,9 @@ def view_order_totals(request):
     products = zip(products, add_category_row)
     return render(request, 'distribution/view_order_totals.html', {
           'products': products,
+          'show_product_links': show_product_links,
       })
+
 
 @login_required
 @permission_required('elbroquil.prepare_baskets')
@@ -129,7 +97,7 @@ def count_initial_cash(request):
 def view_basket_counts(request):
     # If basket counts are not already calculated and stored in session, calculate them
     orders = models.Order.objects.filter(product__distribution_date=libs.get_today()).prefetch_related('product', 'user').order_by('user__first_name', 'user__last_name')
-
+    
     order_summary = []
     last_order_total = 0
     last_order_user = -1
@@ -172,15 +140,17 @@ def view_basket_counts(request):
 @permission_required('elbroquil.prepare_baskets')
 def view_product_orders(request, product_no=''):
     products = models.Product.objects.filter(archived=False, distribution_date=libs.get_today(),arrived_quantity__gt=0).order_by('category__sort_order', 'id')
-     
+    
     previous_product = None
     current_product = None
     next_product = None
     current_product_id = None
 
+    log_messages = ''
+
     # If no product chosen, choose the first one as default and second one as next
     if product_no == '' and len(products) > 0:
-        logger.error("Product no empty!!")
+        #logger.error("Product no empty!!")
         current_product = 1
         if len(products) > 1:
             next_product = 2
@@ -199,6 +169,8 @@ def view_product_orders(request, product_no=''):
     current_product_id = products[current_product-1].id
 
     if request.method == 'POST': # If the form has been submitted...
+        #log_messages = log_messages + " " + request.POST.get('additional_member[1]') + " " + request.POST.get('additional_quantity[1]')
+        
         # Delete old orders and insert new ones
         with transaction.atomic():
             orders = models.Order.objects.filter(product_id=current_product_id)
@@ -217,9 +189,19 @@ def view_product_orders(request, product_no=''):
                         o.status = models.STATUS_NORMAL
                     
                     o.save()
+            
+            # If some new orders are added (for members who had not ordered this product originally)
+            # create new Order objects so that it is reflected in the final price
+            for idx, member_id in enumerate(request.POST.getlist('additional_member[]')):
+                member_quantity = request.POST.getlist('additional_quantity[]')[idx].strip()
+
+                if member_id != '' and member_quantity != '' and Decimal(member_quantity) > 0:
+                    models.Order.objects.filter(user_id=member_id, product_id=current_product_id).delete()
+                    new_order = models.Order(product_id=current_product_id, user_id=member_id, quantity=0, arrived_quantity=Decimal(member_quantity))
+                    new_order.save()
 
     product_orders = models.Order.objects.filter(product__id=current_product_id).order_by('user__first_name', 'user__last_name')
-
+    all_members = User.objects.filter(is_superuser=False).order_by('first_name', 'last_name')
     total_quantity = 0
     total_arrived_quantity = 0
     
@@ -236,12 +218,7 @@ def view_product_orders(request, product_no=''):
 
     if next_product:
         next_product_name = products[next_product-1].name
-        
-    #initial_progress_percentage = 12
-    #final_progress_percentage = 12
-    #product_progress_percentage = 100 - initial_progress_percentage - final_progress_percentage
-    #progress = int(product_progress_percentage*current_product/len(products))
-        
+    
     return render(request, 'distribution/view_product_orders.html', {
        'product_orders': product_orders,
        'current_product_id': current_product_id,
@@ -256,13 +233,24 @@ def view_product_orders(request, product_no=''):
        
        'total_quantity': total_quantity,
        'total_arrived_quantity': total_arrived_quantity,
-       #'progress': progress,
        
        'current_product': current_product,
        'total_products': len(products),
+       'all_members': all_members,
+       'log_messages': log_messages,
     })
-    
-    
+   	
+@login_required
+@permission_required('elbroquil.prepare_baskets')
+def view_product_orders_with_id(request, product_id):
+    products = models.Product.objects.filter(archived=False, distribution_date=libs.get_today(),arrived_quantity__gt=0).order_by('category__sort_order', 'id')
+
+    for idx, product in enumerate(products):
+        if product.pk == int(product_id):
+            return HttpResponseRedirect(reverse('elbroquil.views.view_product_orders', args=(idx+1,)))
+
+    raise Http404
+
 @login_required
 @permission_required('elbroquil.prepare_baskets')
 def member_payment(request):
@@ -279,13 +267,13 @@ def member_payment(request):
     not_ordered_product_list = []
     amount_changed_product_list = []
     
-    total_price = 0
-    last_debt = 0
-    quarterly_fee = 0
+    total_price = Decimal(0)
+    last_debt = Decimal(0)
+    quarterly_fee = Decimal(0)
     quarterly_fee_paid = False
-    total_to_pay = 0
-    paid_amount = 0
-    next_debt = 0
+    total_to_pay = Decimal(0)
+    paid_amount = Decimal(0)
+    next_debt = Decimal(0)
     
     today = libs.get_today()
     

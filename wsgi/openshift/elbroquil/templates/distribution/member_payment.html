@@ -148,7 +148,7 @@
 					    </thead>
 					    <tbody>
 						{% for pr in counted_product_list %}
-			        		<tr><td>{{ pr.product.name }}</td><td class="quantity">{{ pr.product.price|floatformat:2 }} &euro;</td><td class="quantity">{{ pr.arrived_quantity }} {{ pr.product.unit }}</td></tr>
+			        		<tr><td><a href="{% url 'elbroquil.views.view_product_orders_with_id' pr.product.pk %}">{{ pr.product.name }}</a></td><td class="quantity">{{ pr.product.price|floatformat:2 }} &euro;</td><td class="quantity">{{ pr.arrived_quantity }} {{ pr.product.unit }}</td></tr>
 						{% endfor %}
 							</tbody>
 					</table>

@@ -20,6 +20,8 @@
 	{% include "distribution/wizard.html" with step=2 current_product=current_product total_products=total_products %}
 	<br/>
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "In case the product quantity/weight has to be changed, make the changes and don't forget to save them." %}</div>
+	
+	<div class="alert alert-warning"><span class="glyphicon glyphicon-info-sign"></span> {{ log_messages }}</div>
     <div id="content-main" class="inner-two-columns">
         <form action="{% url 'elbroquil.views.view_product_orders' current_product_no %}" method="POST">
 	    	{% csrf_token %}
@@ -52,6 +54,13 @@
 							<td class="quantity"><input id="order_arrived_{{ order.id }}" name="order_arrived_{{ order.id }}" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ order.arrived_quantity }}"/></td>
 						</tr>
 						{% endfor %}
+						<tr id="additional_row_entry">
+							<td colspan="4" style="text-align: center;">
+								<button id="add_rows_button" type="button" class="btn btn-primary">
+								  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {% trans "Add order for another member" %}
+								</button>
+							</td>
+						</tr>
 						<tr {% if product_order %}class="success"{% endif %}>
 							<td class="total-info">{% trans "TOTAL:" %}</td>
 							<td class="success total-lg" style="border: 2px solid green;">{{ total_quantity|floatformat:-2 }} {{ product_orders.0.product.unit }}</td>
@@ -70,6 +79,20 @@
         </form>
     </div>
 	    </div>
+	  	<script type="text/template" id="new-row-template">
+			<tr>
+				<td class="member_name_col">
+					 <select name="additional_member[]" class="form-control">
+				  		<option value="">{% trans "CHOOSE MEMBER" %}</option>
+				  		{% for member in all_members %}
+					  		<option value="{{ member.pk }}">{{ member.get_full_name }}</option>
+					  	{% endfor %}
+					</select>
+				</td>
+				<td class="quantity"></td>
+				<td class="quantity"><input name="additional_quantity[]" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false"/></td>
+			</tr>
+		</script>
 {% endblock %}
 
 
@@ -151,6 +174,16 @@
 		$("#save_button").click(function(e) {
 			$("form").submit();
 		});
+		
+		$("#add_rows_button").click(function(e) {
+			var row_template = $("#new-row-template").html();
+			$("#additional_row_entry").before(row_template);
+			
+			// Rewire the events
+			$('input.product-order').keydown(function( event ) {
+				$('#save_button').removeAttr('disabled');
+			});
+		})
 	  });
 </script>
 {% endblock %}
