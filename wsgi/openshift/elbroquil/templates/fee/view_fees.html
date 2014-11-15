@@ -55,7 +55,7 @@
 					</thead>
 					<body>
 						{% for fee in filtered_quarterly_fees %}
-						<tr><td>{{ fee.user.first_name }} {{ fee.user.last_name }}</td><td><span class="glyphicon glyphicon-{% if fee.payment %}ok{% else %}remove{% endif %}"></span></td><td>{% if fee.payment %}{{ fee.payment.date }}{% endif %}</td></tr>
+						<tr><td>{{ fee.user.first_name }} {{ fee.user.last_name }}</td><td><span class="glyphicon {% if fee.payment %}glyphicon-ok green-icon{% else %}glyphicon-remove red-icon{% endif %}"></span></td><td>{% if fee.payment %}{{ fee.payment.date }}{% endif %}</td></tr>
 						{% endfor %}
 					</body>
 				</table>
@@ -77,7 +77,7 @@
 							{% for fee in fees %}
 							<td class="centered">
 								{% if fee %}
-									<span class="glyphicon glyphicon-{% if fee.payment %}ok{% else %}remove{% endif %}"></span>
+									<span class="glyphicon {% if fee.payment %}glyphicon-ok green-icon{% else %}glyphicon-remove red-icon{% endif %}"></span>
 								{% endif %}
 							</td>
 							{% endfor %}

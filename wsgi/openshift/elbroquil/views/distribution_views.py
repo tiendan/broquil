@@ -547,7 +547,7 @@ def account_summary(request):
         account_detail.member_consumed_amount = member_consumed_amount
         account_detail.total_member_payment_amount = collected_amount
         #account_detail.producer_paid_amount = overall_producer_payment
-        account_detail.debt_balance_amount = current_debt_total
+        account_detail.debt_balance_amount = debt_balance
         account_detail.quarterly_fee_collected_amount = quarterly_fee_collected_amount
         account_detail.expected_final_amount = expected_final_amount    
     

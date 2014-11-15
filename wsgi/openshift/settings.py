@@ -130,16 +130,23 @@ if ON_OPENSHIFT:
          }
      }
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'elbroquil_ultim2',
-            'USER': 'onur2',
-            'PASSWORD': '12345',
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
-    }
+	DATABASES = {
+	    'default':{
+	        'ENGINE': 'django.db.backends.sqlite3',
+	        'NAME': './broquil.db',
+	#        'TEST_NAME': '/tmp/chroniker.db',
+	    }
+	}
+    #DATABASES = {
+    #    'default': {
+    #        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #        'NAME': 'elbroquil_ultim2',
+    #        'USER': 'onur2',
+    #        'PASSWORD': '12345',
+    #        'HOST': 'localhost',
+    #        'PORT': '5432',
+    #    }
+    #}
 
 # Email settings
 EMAIL_USE_TLS = True

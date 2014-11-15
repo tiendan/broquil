@@ -210,3 +210,15 @@ div.panel-heading.incident-panel {
 #order-help {
     cursor: pointer;
 }
+
+.green-icon {
+	color: #5cb85c;
+}
+
+.red-icon {
+	color: #d9534f;
+}
+
+.blue-icon {
+	color: #337ab7;
+}

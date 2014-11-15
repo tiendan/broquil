@@ -48,7 +48,7 @@
 				</div>
 				
 				<div class="thumbnail producer-group">
-					<h3><span class="glyphicon glyphicon-sort"></span> {% trans "Payments from Members" %}</h3>
+					<h3><span class="glyphicon glyphicon-sort blue-icon"></span> {% trans "Payments from Members" %}</h3>
 					<div class="form-group has-success">
 				    	<label for="collected-amount" class="control-label col-md-4">{% trans "Collected from members:" %}</label>
 				    	<div class="col-md-3">
@@ -87,7 +87,7 @@
 					</div>
 				</div>
 				<div class="thumbnail producer-group">
-					<h3><span class="glyphicon glyphicon-envelope"></span> {% trans "Paid to Producers" %}</h3>
+					<h3><span class="glyphicon glyphicon-envelope blue-icon"></span> {% trans "Paid to Producers" %}</h3>
 					{% for payment in producer_payments %}
 					<div class="form-group has-success">
 				    	<label for="producer-payment-{{ payment.producer.id }}" class="control-label col-md-4">{{ payment.producer.company_name }}</label>
