@@ -130,11 +130,10 @@ if ON_OPENSHIFT:
          }
      }
 else:
-	DATABASES = {
-	    'default':{
-	        'ENGINE': 'django.db.backends.sqlite3',
-	        'NAME': './broquil.db',
-	#        'TEST_NAME': '/tmp/chroniker.db',
+     DATABASES = {
+         'default':{
+             'ENGINE': 'django.db.backends.sqlite3',
+             'NAME': './broquil.db',
 	    }
 	}
     #DATABASES = {
