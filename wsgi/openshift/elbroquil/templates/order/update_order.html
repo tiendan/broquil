@@ -72,7 +72,7 @@
 									<input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text" class="quantity-input product-order form-control bfh-number integer-order" data-keyboard="true" data-integer="true" {% if product_order %} value="{{ product_order|localize }}" {% endif %}/>
 									</div>
 									{% else %}
-									<input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text" class="quantity-input product-order form-control bfh-number float-order" data-keyboard="true" data-integer="false" data-buttons="false"{% if product_order %} value="{{ product_order|localize }}" {% endif %}/>
+									<input id="product_{{ product.id }}" name="product_{{ product.id }}" type="text" class="quantity-input product-order form-control bfh-number float-order" data-keyboard="true" data-integer="false" data-buttons="false" {% if product_order %} value="{{ product_order|localize }}" {% endif %}/>
 									{% endif %}
 									</td>
 								<td>{{ product.name }}{% if product.comments %} <span class="glyphicon glyphicon-comment right-tooltip larger-text" data-toggle="tooltip" data-placement="right" title="{{ product.comments }}"></span>{% endif %}{% if product.new_product %} <span class="label label-success">{% trans "NEW!"%}</span>{% endif %}</td>
