@@ -106,7 +106,7 @@ def get_next_wednesday(allow_today=True):
         day += timedelta(days=1)
     
     # While day of week is not Wednesday, add one 
-    days_till_next_wednesday = (models.THURSDAY - day.weekday()) % 7    ## TODO CHANGE TO WEDNESDAY!!!!!
+    days_till_next_wednesday = (models.WEDNESDAY - day.weekday()) % 7
     day += timedelta(days=days_till_next_wednesday)
     
     return day
@@ -225,5 +225,18 @@ def send_email_to_active_users(subject, content):
 def send_email_to_address(subject, content, to):
     text_content = html2text.html2text(content)
     email = EmailMultiAlternatives(subject, text_content, to=to)
+    email.attach_alternative(content, "text/html")
+    email.send()
+
+def send_email_to_user(subject, content, user):
+    to_list = [user.email]
+    try:
+        if user.extrainfo.secondary_email and len(user.extrainfo.secondary_email) > 0:
+            to_list.append(user.extrainfo.secondary_email)
+    except ObjectDoesNotExist:
+        pass
+
+    text_content = html2text.html2text(content)
+    email = EmailMultiAlternatives(subject, text_content, to=to_list)
     email.attach_alternative(content, "text/html")
     email.send()
