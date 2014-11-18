@@ -21,7 +21,6 @@
 	<br/>
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "In case the product quantity/weight has to be changed, make the changes and don't forget to save them." %}</div>
 	
-	<div class="alert alert-warning"><span class="glyphicon glyphicon-info-sign"></span> {{ log_messages }}</div>
     <div id="content-main" class="inner-two-columns">
         <form action="{% url 'elbroquil.views.view_product_orders' current_product_no %}" method="POST">
 	    	{% csrf_token %}
