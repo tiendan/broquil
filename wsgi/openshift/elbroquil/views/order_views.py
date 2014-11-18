@@ -194,7 +194,7 @@ def update_order(request, category_no=''):
         libs.calculate_order_summary(request)
         
     products = models.Product.objects.filter(Q(category_id=current_category_id), Q(distribution_date__isnull=False), Q(order_limit_date__gt=libs.get_now()), Q(archived=False)).order_by('id')
-    user_orders = models.Order.objects.filter(product__category_id=current_category_id, archived=False, user=request.user).order_by('product__id')
+    user_orders = models.Order.objects.filter(product__category_id=current_category_id, product__distribution_date__isnull=False, product__order_limit_date__gt=libs.get_now(), archived=False, user=request.user).order_by('product__id')
 
     order_index = 0
     product_orders = []

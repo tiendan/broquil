@@ -126,6 +126,22 @@
 			$('#save_button').removeAttr('disabled');
 		});
 		
+		$('input.product-order').keyup(function( event ) {
+			
+			parent_row = $('#' + event.target.id);
+			
+			while(parent_row.prop("tagName").toLowerCase() != 'tr')
+				parent_row = parent_row.parent();
+			
+			if(event.target.value.trim() == '')
+				parent_row.removeClass('success');
+			else
+				parent_row.addClass('success');
+		
+			// If there is some new input, enable the save button		
+			$('#save_button').removeAttr('disabled');
+		});
+		
 		//$('input.product-order').keydown(function( event ) {	
 		//	$('#save_button').removeAttr('disabled');
 		//});
