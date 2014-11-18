@@ -1,6 +1,6 @@
 {% load i18n %}
 
-var tour = {
+tour = {
       id: "hello-hopscotch",
       i18n: {
         nextBtn: "{% trans 'Next' %}",
@@ -59,7 +59,7 @@ var tour = {
         {
           title: "{% trans 'Browse by Categories' %}",
           content: "{% trans 'Here you can see the name of product category. Below, the order limit date for these products is shown. The color shows how much time you have left to update your order (green: much time, orange: one day, red: few hours).' %}",
-          target: "h2",
+          target: "h2.fillSpace",
           placement: "bottom",
           zindex: 1000
          },

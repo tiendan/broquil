@@ -177,7 +177,7 @@ def update_order(request, category_no=''):
         # Delete old orders and insert new ones
         with transaction.atomic():
             products = models.Product.objects.filter(order_limit_date__gt=libs.get_now(), archived=False, category_id=current_category_id)
-            models.Order.objects.filter(user=request.user, archived=False, product__category=current_category_id).delete()
+            models.Order.objects.filter(user=request.user, archived=False, product__category=current_category_id, product__order_limit_date__gt=libs.get_now()).delete()
     
             for p in products:
                 key = "product_"+str(p.id)
