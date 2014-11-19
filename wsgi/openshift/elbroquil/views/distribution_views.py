@@ -53,15 +53,19 @@ def view_order_totals(request):
                 item = request.POST.get(key).strip()
             
                 if len(item) > 0:
-                    # Update the arrived quantity and status
+                    # If an amount is entered (or already present) update the arrived quantity
                     product.arrived_quantity = Decimal(item.replace(',', '.'))
                     product.save()
+                else:
+                    # Else, update the arrived quantity to the original total quantity
+                    product.arrived_quantity = product.total_quantity
+                    product.save()
                 
-                    # If product arrived quantity is marked as 0, mark the product orders too. Also do the reverse
-                    if product.arrived_quantity == 0:
-                        models.Order.objects.filter(product_id=product.id).update(arrived_quantity=0, status=models.STATUS_DID_NOT_ARRIVE)
-                    else:
-                        models.Order.objects.filter(product_id=product.id).update(arrived_quantity=F('quantity'), status=models.STATUS_NORMAL)
+                # Depending on the arrived quantity, set the product orders status
+                if product.arrived_quantity == 0:
+                    models.Order.objects.filter(product_id=product.id).update(status=models.STATUS_DID_NOT_ARRIVE) #arrived_quantity=0, 
+                else:
+                    models.Order.objects.filter(product_id=product.id).update(status=models.STATUS_NORMAL) #arrived_quantity=F('quantity'), 
 	
     for prod in products:
         if prod.category.name != prev_category:
@@ -96,7 +100,7 @@ def count_initial_cash(request):
 @permission_required('elbroquil.prepare_baskets')
 def view_basket_counts(request):
     # If basket counts are not already calculated and stored in session, calculate them
-    orders = models.Order.objects.filter(product__distribution_date=libs.get_today()).prefetch_related('product', 'user').order_by('user__first_name', 'user__last_name')
+    orders = models.Order.objects.filter(product__distribution_date=libs.get_today(), status=models.STATUS_NORMAL).prefetch_related('product', 'user').order_by('user__first_name', 'user__last_name')
     
     order_summary = []
     last_order_total = 0
@@ -106,7 +110,7 @@ def view_basket_counts(request):
     for order in orders:
         if order.user.id != last_order_user:
             if last_order_total > 0:
-                if last_order_total < 20:
+                if last_order_total < 25:
                     order_summary.append([last_order_user, last_order_user_name, last_order_total, 1])
                 else:
                     order_summary.append([last_order_user, last_order_user_name, last_order_total, 2])
@@ -284,7 +288,7 @@ def member_payment(request):
         form_name = request.POST.get("form-name").strip()
         member_id = int(request.POST.get("member-id").strip())
         
-        orders = models.Order.objects.filter(user_id=member_id, archived=False, product__distribution_date=today).prefetch_related('product').order_by('product__category__sort_order', 'product__name')
+        orders = models.Order.objects.filter(user_id=member_id, archived=False, product__distribution_date=today).prefetch_related('product').order_by('product__category__sort_order', 'product_id')
         
 
         # Separate the orders according to their status and calculate the order sum
