@@ -288,7 +288,7 @@ def member_payment(request):
         form_name = request.POST.get("form-name").strip()
         member_id = int(request.POST.get("member-id").strip())
         
-        orders = models.Order.objects.filter(user_id=member_id, archived=False, product__distribution_date=today).prefetch_related('product').order_by('product__category__sort_order', 'product_id')
+        orders = models.Order.objects.filter(user_id=member_id, archived=False, product__distribution_date=today).prefetch_related('product').order_by('product__category__sort_order', 'product__id')
         
 
         # Separate the orders according to their status and calculate the order sum
