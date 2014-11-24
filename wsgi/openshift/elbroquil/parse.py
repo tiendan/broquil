@@ -1,10 +1,5 @@
 import xlrd
 
-# import the logging library
-#import logging
-# Get an instance of a logger
-#logger = logging.getLogger("MYAPP")
-
 # Parse the excel for Cal Rosset producer
 def parse_cal_rosset(book):
     # Define the corresponding column numbers in Excel sheet for each type of information
@@ -117,9 +112,60 @@ def parse_can_pipirimosca(book):
     
         current_row += 1
     return products
+
+def parse_standard(book):
+    # Define the corresponding column numbers in Excel sheet for each type of information
+    category_column = 0
+    product_name_column = 1
+    price_column = 2
+    unit_column = 3
+    origin_column = 4
+    comments_column = 5
+    unit_demand_column = 6
+    
+    # Get the first sheet and read row and column counts
+    sheet = book.sheet_by_index(0)
+    products = []
+    row_count = sheet.nrows
+    col_count = sheet.ncols
+    
+    current_row = 10
+
+    empty_rows = 0
+    category_name = ""
+    unit_name = ""
+    
+    # Read distribution date and order limit date&hour info
+    distribution_date = sheet.cell_value(rowx=3, colx=1)
+    order_limit_date = sheet.cell_value(rowx=4, colx=1)
+    
+    if order_limit_date:
+        order_limit_date += " " + str(sheet.cell_value(rowx=5, colx=1)) + ":00"
+
+    # Loop over the sheet rows
+    while current_row < row_count:
+        # If cell empty, it is another empty row
+        if sheet.cell_value(rowx=current_row, colx=product_name_column) == "":
+            empty_rows += 1
+            category_name = ""
+        else:
+            empty_rows = 0
+            
+            # If category name is filled, update it. Otherwise, use the previous category name
+            category_name = sheet.cell_value(rowx=current_row, colx=category_column).strip() or category_name
+            # If unit is filled, update it. Otherwise, use the previous unit
+            unit_name = sheet.cell_value(rowx=current_row, colx=unit_column).strip() or unit_name
+            
+            product = [category_name, sheet.cell_value(rowx=current_row, colx=product_name_column), sheet.cell_value(rowx=current_row, colx=price_column), unit_name, sheet.cell_value(rowx=current_row, colx=origin_column), sheet.cell_value(rowx=current_row, colx=comments_column), sheet.cell_value(rowx=current_row, colx=unit_demand_column)]
+            
+            products.append(product)
+            
+        current_row += 1
+        
+    return products, distribution_date, order_limit_date
     
 # When script is executed directly from command line, try to parse a sample Excel file
 if __name__=="__main__":
-    book = xlrd.open_workbook('/Users/onur/Desktop/excel/pan.xlsx')
-    print parse_can_pipirimosca(book)
+    book = xlrd.open_workbook('/Users/onur/Downloads/Standard Excel Format.xlsx')
+    print parse_standard(book)
     

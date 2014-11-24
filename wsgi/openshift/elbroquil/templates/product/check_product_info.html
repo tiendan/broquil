@@ -15,11 +15,27 @@
 	<div class="row">
 		<div class="span12">
 		
-	        <form id="form-check" action="{% url 'elbroquil.views.confirm_products' %}" method="POST" class="form-horizontal">	
+	        <form id="form-check" action="{% url 'elbroquil.views.confirm_products' %}" method="POST" class="form-horizontal">
+	            {% if distribution_date %}
+	            <div class="form-group">
+                    <label class="control-label col-sm-2 col-lg-2 ">{% trans "Distribution date" %}</label>
+                    <div class=" col-sm-10 col-lg-10 ">
+                        <label>{{ distribution_date }}</label>
+                    </div>
+                </div>
+                {% endif %}
+                {% if order_limit_date %}
+                <div class="form-group">
+                    <label class="control-label col-sm-2 col-lg-2 ">{% trans "Order limit date" %}</label>
+                    <div class=" col-sm-10 col-lg-10 ">
+                        <label>{{ order_limit_date }}</label>
+                    </div>
+                </div>
+                {% endif %}
 	            	{% csrf_token %}
 					<table id="products_table" class="table table-striped table-bordered table-hover table-condensed">
 					<thead>
-					<tr><th>{% trans "Category" %}</th><th>{% trans "Product Name" %}</th><th>{% trans "Price" %}</th><th>{% trans "Unit" %}</th><th>{% trans "Origin" %}</th><th>{% trans "Comments" %}</th></tr>
+					<tr><th>{% trans "Category" %}</th><th>{% trans "Product Name" %}</th><th>{% trans "Price" %}</th><th>{% trans "Unit" %}</th><th>{% trans "Origin" %}</th><th>{% trans "Comments" %}</th>{% if products.0|length > 6 %}<th>{% trans "Unit Demand" %}</th>{% endif %}</tr>
 					</thead>
 					<tbody>
 					{% for product in products %}
@@ -33,6 +49,8 @@
 					</table>
 					<input id="table_data" name="table_data" type="hidden"/>
 					<input id="producer_id" name="producer_id" type="hidden" value="{{ producer }}" />
+					<input id="distribution_date" name="distribution_date" type="hidden" value="{{ distribution_date }}" />
+					<input id="order_limit_date" name="order_limit_date" type="hidden" value="{{ order_limit_date }}" />
 			
 			
 	        </form>

@@ -3,7 +3,7 @@ from decimal import Decimal
 import ast
 import xlrd
 import logging      # import the logging library
-from datetime import date
+from datetime import date, datetime
 
 from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
@@ -28,6 +28,11 @@ from elbroquil.forms import UploadProductsForm, CheckProductsForm
 import elbroquil.parse as parser
 import elbroquil.libraries as libs
 
+from pytz import timezone as pytztimezone
+import settings
+from django.utils.dateparse import *
+from django.utils.encoding import *
+
 '''Get an instance of a logger'''
 logger = logging.getLogger("MYAPP")
 
@@ -46,6 +51,8 @@ def upload_products(request):
 @permission_required('elbroquil.modify_products')
 def check_products(request):
     products = []
+    distribution_date = ""
+    order_limit_date = ""
     producer_id = ""
     
     '''If the form is submitted, parse the Excel file and show on page'''
@@ -67,10 +74,14 @@ def check_products(request):
                 products = parser.parse_cal_rosset(book)
             elif excel_format == models.CAN_PIPI:
                 products = parser.parse_can_pipirimosca(book)
+            elif excel_format == models.STANDARD:
+                products, distribution_date, order_limit_date = parser.parse_standard(book)
             
             return render(request, 'product/check_product_info.html', {
                 'products': products,
-                'producer': producer_id
+                'producer': producer_id,
+                'distribution_date': distribution_date,
+                'order_limit_date': order_limit_date,
             })
         else:
             '''If form not valid, render the form page again'''
@@ -87,41 +98,59 @@ def check_products(request):
 def confirm_products(request):
     products = []
 
-    '''If the form is submitted, read the verified information and create the products'''
+    # If the form is submitted, read the verified information and create the products'
     if request.method == 'POST':
         form = CheckProductsForm(request.POST)
         form.is_valid()
         table_data = ast.literal_eval(form.cleaned_data['table_data'])
         producer_id = form.cleaned_data['producer_id']
         producer = models.Producer.objects.get(id=producer_id)
+        distribution_date = form.cleaned_data['distribution_date'].strip() or None
+        order_limit_date = form.cleaned_data['order_limit_date'].strip() or None
+        
+        # If distribution date is passed, parse the strings and create DateTime objects with timezone info
+        if distribution_date and order_limit_date:
+            zone = pytztimezone(settings.TIME_ZONE)
+            
+            distribution_date = parse_date(distribution_date)
+            order_limit_date = parse_datetime(order_limit_date)
+            
+            order_limit_date = zone.localize(datetime.datetime(order_limit_date.year, order_limit_date.month, order_limit_date.day, order_limit_date.hour), is_dst=False)
+            order_limit_date = order_limit_date.astimezone(pytztimezone("UTC"))
         
         with transaction.atomic():
-            '''Delete old products from the same producer'''
-            models.Product.objects.filter(distribution_date=None, category__producer_id=producer_id).delete()
+            # Delete old products from the same producer
+            models.Product.objects.filter(distribution_date=distribution_date, category__producer_id=producer_id).delete()
             
-            '''Insert new products one by one'''
+            # Insert new products one by one
             for product_info in table_data:
                 category_text = product_info[0]
-                name_text = product_info[1]
+                name_text = smart_text(product_info[1])
                 price_text = product_info[2].replace(',', '.')
                 unit_text = product_info[3]
                 origin_text = product_info[4]
                 comments_text = product_info[5]
+                
             
-                '''Clean the unit text and remove currency char and extra chars'''
+                # Clean the unit text and remove currency char and extra chars
                 unit_text = unit_text.replace('€', '').replace('*', '').replace('/', '').strip()
                 
-                '''If comments include the word unitat, or the unit is not kilos
-                    the demand should be made in units
-                '''
+                # If comments include the word unitat, or the unit is not kilos
+                #    the demand should be made in units
                 integer_demand = "unitat" in comments_text.lower() or unit_text.lower() != "kg"
                 
                 for exceptional_product in [u"carabassa", u"síndria", u"meló"]:
                     integer_demand = integer_demand or exceptional_product in name_text.lower()
+
+                # If there is extra unit demand information, use it to overwrite current info
+                if len(product_info) > 6:
+                    demand_text = product_info[6].strip() or "NO"
+                    
+                    integer_demand = demand_text != "NO"
                 
                 category, created = models.Category.objects.get_or_create(name=category_text, producer_id=producer_id)
             
-                prod = models.Product(name=name_text, category_id=category.id, origin=origin_text, comments=comments_text, price=Decimal(price_text), unit=unit_text, integer_demand=integer_demand)
+                prod = models.Product(name=name_text, category_id=category.id, origin=origin_text, comments=comments_text, price=Decimal(price_text), unit=unit_text, integer_demand=integer_demand, distribution_date=distribution_date, order_limit_date=order_limit_date)
                 prod.save()
         
         return HttpResponseRedirect(reverse('elbroquil.views.view_products', args=(producer_id,)))

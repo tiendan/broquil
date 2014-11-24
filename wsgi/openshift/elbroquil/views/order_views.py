@@ -32,6 +32,9 @@ import settings
 
 @login_required
 def order_history(request):
+    if request.user.is_superuser:
+        return HttpResponseRedirect(reverse('elbroquil.views.view_order_totals', args=()))
+        
     today = libs.get_today()
     # Form fields
     only_latest_dates = True
@@ -142,6 +145,8 @@ def order_history(request):
 '''Page to enable users update/place their orders'''
 @login_required
 def update_order(request, category_no=''):
+    if request.user.is_superuser:
+        return HttpResponseRedirect(reverse('elbroquil.views.view_order_totals', args=()))
     # Choose the available categories:
     #    - having products with order limit date in the future
     #    - not archived
@@ -251,6 +256,9 @@ def update_order(request, category_no=''):
 
 @login_required
 def view_order(request):
+    if request.user.is_superuser:
+        return HttpResponseRedirect(reverse('elbroquil.views.view_order_totals', args=()))
+    
     today = libs.get_today()
     all_orders = models.Order.objects.filter(user=request.user, archived=False, product__distribution_date__gte=today).prefetch_related('product').order_by('product__category__sort_order', 'pk')
     next_dist_date = libs.get_next_distribution_date()

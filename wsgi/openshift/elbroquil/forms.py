@@ -23,4 +23,6 @@ class UploadProductsForm(forms.Form):
 class CheckProductsForm(forms.Form):
     table_data = forms.CharField()
     producer_id = forms.IntegerField()
+    distribution_date = forms.CharField()
+    order_limit_date = forms.CharField()
 
