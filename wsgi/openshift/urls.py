@@ -4,6 +4,8 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.utils.translation import ugettext_lazy as _
 
+#from django.contrib.auth.views import password_reset_confirm #, password_reset_done, password_reset_complete
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -47,9 +49,10 @@ urlpatterns = patterns('',
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     (r'^accounts/passwordchange/$', 'django.contrib.auth.views.password_change', {'post_change_redirect': '/'}),
     (r'^accounts/passwordreset/$', 'django.contrib.auth.views.password_reset', {'post_reset_redirect': '/'}),
-    (r'^accounts/passwordresetconfirm/(?P<uidb64>.+)/(?P<token>.+)/$', 'password_reset_confirm'),
-    
+    (r'^accounts/passwordresetconfirm/(?P<uidb64>.+)/(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', {'post_reset_redirect': '/'}),
+        
     url(r'^rosetta/', include('rosetta.urls')),
     #(r'^i18n/', include('django.conf.urls.i18n')),
     url(_(r'^setlang/$'), 'elbroquil.views.set_language', name='set_language'),
 )
+

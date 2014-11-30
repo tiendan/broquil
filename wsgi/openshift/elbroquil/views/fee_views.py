@@ -120,28 +120,27 @@ def create_fees(request):
         year = year+1
         
     if request.method == 'POST':
+        # Else, delete old fees and insert new ones
+        member_ids = request.POST.getlist('user_ids')
+        fee_amount = request.POST.get('fee_amount').strip()
+    
         # Search for already paid fees for this year&quarter
-        paid_fees = models.Quarterly.objects.filter(year=year, quarter=quarter, payment__isnull=False)
-        
-        # If there is already a payment, user cannot create fees again
+        paid_fees = models.Quarterly.objects.filter(year=year, quarter=quarter, payment__isnull=False, user__in=member_ids)
+    
         if len(paid_fees) > 0:
+            # If there is already a payment, user cannot create fees again
             alert_message = _(u"Someone has alread paid the fee for this quarter! You cannot delete them!")
+        elif len(member_ids) == 0:
+            alert_message = _(u"Please choose members")
+        elif fee_amount == '':
+            alert_message = _(u"Please enter fee amount")
         else:
-            # Else, delete old fees and insert new ones
-            member_ids = request.POST.getlist('user_ids')
-            fee_amount = request.POST.get('fee_amount').strip()
+            with transaction.atomic():
+                models.Quarterly.objects.filter(year=year, quarter=quarter, user__in=member_ids).delete()
             
-            if len(member_ids) == 0:
-                alert_message = _(u"Please choose members")
-            elif fee_amount == '':
-                alert_message = _(u"Please enter fee amount")
-            else:
-                with transaction.atomic():
-                    models.Quarterly.objects.filter(year=year, quarter=quarter).delete()
-                    
-                    for member_id in member_ids:
-                        fee = models.Quarterly(user_id=member_id, year=year, quarter=quarter, amount=Decimal(fee_amount.replace(',', '.')))
-                        fee.save()
+                for member_id in member_ids:
+                    fee = models.Quarterly(user_id=member_id, year=year, quarter=quarter, amount=Decimal(fee_amount.replace(',', '.')))
+                    fee.save()
     
     
     return render(request, 'fee/create_fees.html', {

@@ -222,3 +222,8 @@ div.panel-heading.incident-panel {
 .blue-icon {
 	color: #337ab7;
 }
+
+.phone-number {
+    font-size: 18px;
+    font-weight: bolder;
+}

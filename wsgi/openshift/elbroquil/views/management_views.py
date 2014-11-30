@@ -62,7 +62,13 @@ def view_distribution_detail(request):
                 elif product.arrived_quantity == 0:
                     not_arrived_product_list.append(product)            # Did not arrive
                 else:
-                    amount_changed_product_list.append(product)         # Amount changed
+                    # Amount changed
+                    
+                    # If product is ordered in units and charged in kg's, it's not an inciden
+                    if product.unit == "kg" and product.integer_demand:
+                        pass
+                    else:
+                        amount_changed_product_list.append(product)         # Amount changed
                     
             # Load accounting summary information
             record = models.DistributionAccountDetail.objects.filter(date=selected_date).first()

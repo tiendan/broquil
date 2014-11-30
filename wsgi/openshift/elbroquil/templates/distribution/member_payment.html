@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load mathfilters %}
 
 {% block content_title %}
 <h1>{% trans "Member payments" %}</h1>
 {% endblock %}
 
+{% block header_style %}visible-md-block visible-lg-block{% endblock %}
 
 {% block extrahead %}
 {% endblock %}
@@ -38,8 +40,8 @@
 			    <div class="col-md-offset-3 col-md-6">
 		      		 <select id="member-id" name="member-id" class="form-control">
 				  		<option value="-1">{% trans "CHOOSE MEMBER" %}</option>
-						{% for member in member_orders %}
-					  		<option value="{{ member.pk }}" {% if member_id == member.pk %}selected{% endif %}>{{ member.get_full_name }}</option>
+						{% for member, payment_status in member_orders %}
+					  		<option value="{{ member.pk }}" {% if member_id == member.pk %}selected{% endif %}>{% if payment_status %}+{% endif %}{{ member.get_full_name }}</option>
 					  	{% endfor %}
 					</select>
 			    </div>
@@ -50,6 +52,9 @@
 		
 		
 		<div class="alert alert-info col-md-offset-3 col-md-6" role="alert">{{ paid_count }} / {{ total_count }} {% trans " members paid." %}</div>
+		{% if member_phone %}
+		<div class="alert alert-success col-md-offset-4 col-md-4 centered" role="alert"><span class="glyphicon glyphicon-phone-alt green-icon"></span> <span class="phone-number">{{ member_phone }}</span></div>
+		{% endif %}
 		
 		{% if member_id > 0 %}
 		<div class="row">
@@ -92,7 +97,7 @@
 				</div>
 				{% endif %}
 				<hr>
-				<div class="form-group">
+				<div class="form-group has-success">
 			    	<label for="amount-total" class="control-label col-md-4">{% trans "TOTAL TO PAY:" %}</label>
 			    	<div class="col-md-4">
 				    	<div class="input-group">
@@ -143,12 +148,12 @@
 					<table class="table table-striped">
 						<thead>
 					    	<tr>
-					        	<th></th><th class="quantity">{% trans "Price" %}</th><th class="quantity">{% trans "Quantity" %}</th>
+					        	<th></th><th class="quantity">{% trans "Price" %}</th><th class="quantity">{% trans "Quantity" %}</th><th class="quantity">{% trans "Total" %}</th>
 					        </tr>
 					    </thead>
 					    <tbody>
 						{% for pr in counted_product_list %}
-			        		<tr><td><a href="{% url 'elbroquil.views.view_product_orders_with_id' pr.product.pk %}">{{ pr.product.name }}</a></td><td class="quantity">{{ pr.product.price|floatformat:2 }} &euro;</td><td class="quantity">{{ pr.arrived_quantity }} {{ pr.product.unit }}</td></tr>
+			        		<tr><td><a href="{% url 'elbroquil.views.view_product_orders_with_id' pr.product.pk %}">{{ pr.product.name }}</a></td><td class="quantity">{{ pr.product.price|floatformat:2 }} &euro;</td><td class="quantity">{{ pr.arrived_quantity }} {{ pr.product.unit }}</td><td class="quantity">{{ pr.arrived_quantity|mul:pr.product.price|floatformat:2 }} &euro;</td></tr>
 						{% endfor %}
 							</tbody>
 					</table>
@@ -219,7 +224,7 @@
 						      <tbody>
 								{% if amount_changed_product_list|length > 0 %}
 									{% for pr in amount_changed_product_list %}
-						        	<tr><td>{{ pr.product.name }}</td><td class="quantity">{{ pr.quantity }} {{ pr.product.unit }}</td><td class="quantity">{{ pr.arrived_quantity }} {{ pr.product.unit }}</td></tr>
+						        	<tr><td><a href="{% url 'elbroquil.views.view_product_orders_with_id' pr.product.pk %}">{{ pr.product.name }}</a></td><td class="quantity">{{ pr.quantity }} {{ pr.product.unit }}</td><td class="quantity">{{ pr.arrived_quantity }} {{ pr.product.unit }}</td></tr>
 									{% endfor %}
 								{% else %}
 							        <tr><td class="centered">---</td></tr>

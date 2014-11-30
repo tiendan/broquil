@@ -284,10 +284,23 @@ def member_payment(request):
     posted_paid_amount = 0
     posted_quarterly_fee_paid = ""
     
+    member_phone = None
+    
     if request.method == 'POST':
         form_name = request.POST.get("form-name").strip()
         member_id = int(request.POST.get("member-id").strip())
         
+        user = User.objects.get(id=member_id)
+        
+        try:
+            if user.extrainfo:
+                if user.extrainfo.phone:
+                    member_phone = user.extrainfo.phone
+                
+                    if user.extrainfo.secondary_phone:
+                        member_phone = member_phone + " / " + user.extrainfo.secondary_phone
+        except:
+            pass
         orders = models.Order.objects.filter(user_id=member_id, archived=False, product__distribution_date=today).prefetch_related('product').order_by('product__category__sort_order', 'product__id')
         
 
@@ -385,6 +398,20 @@ def member_payment(request):
             consumption.amount = total_price
             consumption.save()
 
+    member_payments = models.Payment.objects.filter(date__gte=libs.get_today()).prefetch_related('user').order_by('user__first_name', 'user__last_name')
+    
+    member_payment_index = 0
+    member_payment_status = []
+    
+    for i in range(0, len(member_orders)):
+        if member_payment_index < len(member_payments) and member_payments[member_payment_index].user.pk == member_orders[i].pk:
+            member_payment_status.append(True)
+            member_payment_index = member_payment_index+1
+        else:
+            member_payment_status.append(False)
+            
+    member_orders = zip(member_orders, member_payment_status)
+    
     payment_count = models.Payment.objects.filter(date__gte=today).count()
             
     return render(request, 'distribution/member_payment.html', {
@@ -407,6 +434,8 @@ def member_payment(request):
        'total_to_pay': total_to_pay,
        'paid_amount': paid_amount,
        'next_debt': next_debt,
+       
+       'member_phone': member_phone,
     })
 
 @login_required

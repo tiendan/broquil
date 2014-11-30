@@ -77,6 +77,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'chroniker',
     'suit_redactor',
+    'mathfilters',
 )
 
 MIDDLEWARE_CLASSES = (
