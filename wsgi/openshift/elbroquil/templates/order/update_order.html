@@ -10,11 +10,13 @@
 
 {% block extrahead %}
 <link rel="stylesheet" href="/static/styles/star-rating.min.css" type="text/css">
+<link rel="stylesheet" href="/static/styles/sco.message.css" type="text/css">
 {% endblock %}
 
 {% block scriptincludes %}
 <script type="text/javascript" src="/static/scripts/bootstrap-formhelpers-number.js"></script>
 <script type="text/javascript" src="/static/scripts/star-rating.js"></script>
+<script type="text/javascript" src="/static/scripts/sco.message.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -110,7 +112,7 @@
 		
 		// If text inputs are changed, highlight the table row depending on textbox contents
 		// When textbox is filled (product is ordered), row is highlighted with green color ('success' class)
-		$('input.product-order').change(function( event ) {
+		order_change_handler = function( event ) {
 			
 			parent_row = $('#' + event.target.id);
 			
@@ -124,32 +126,18 @@
 		
 			// If there is some new input, enable the save button		
 			$('#save_button').removeAttr('disabled');
-		});
-		
-		$('input.product-order').keyup(function( event ) {
+			$.scojs_message("{% trans "Don't forget to save your order!" %}", $.scojs_message.TYPE_WARNING);
 			
-			parent_row = $('#' + event.target.id);
 			
-			while(parent_row.prop("tagName").toLowerCase() != 'tr')
-				parent_row = parent_row.parent();
-			
-			if(event.target.value.trim() == '')
-				parent_row.removeClass('success');
-			else
-				parent_row.addClass('success');
+    		//window.onbeforeunload = function() {
+    		//     return "{% trans "You haven't saved your order. Do you want to close the page?" %}";
+    		//}
+		};
 		
-			// If there is some new input, enable the save button		
-			$('#save_button').removeAttr('disabled');
-		});
-		
-		//$('input.product-order').keydown(function( event ) {	
-		//	$('#save_button').removeAttr('disabled');
-		//});
+		$('input.product-order').change(order_change_handler);
+		$('input.product-order').keyup(order_change_handler);
 		
 		
-		//window.onbeforeunload = function() {
-		//     return "{% trans "You haven't saved your order. Do you want to close the page?" %}";
-		//}
 		//window.onbeforeunload = null;
 		
 		// If left and right arrow keys are pressed (outside input boxes), switch to next or previous
@@ -177,7 +165,7 @@
 		// Continue the site tour if it's in a middle step
 		{% include "order/tour.js" with order_first_page=1 order_last_page=category_count %}
 		
-		if (hopscotch.getState().lastIndexOf("hello-hopscotch", 0) === 0) {
+		if (hopscotch.getState() && hopscotch.getState().lastIndexOf("hello-hopscotch", 0) === 0) {
 		    hopscotch.startTour(tour);
 		}
 	  });	

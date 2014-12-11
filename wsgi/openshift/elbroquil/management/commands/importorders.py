@@ -21,7 +21,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write('Importando los pedidos del excel de Encarrecs ')
         
-        detach_dir = '/Users/onur/ultim/data/temp/'
+        detach_dir = '/Users/onur/github/broquil/data/temp/'
         
         if os.environ.has_key('OPENSHIFT_DATA_DIR'):
             detach_dir = os.path.join(os.environ['OPENSHIFT_DATA_DIR'], "temp")

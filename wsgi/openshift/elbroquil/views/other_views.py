@@ -17,6 +17,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.utils import translation
 from django.views.generic import FormView
+import elbroquil.libraries as libs
 
 
 import elbroquil.models as models
@@ -37,3 +38,21 @@ def set_language(request):
     #logger.error(reverse(current_url, args=()))
 
     return HttpResponseRedirect(reverse('site_root'))
+    
+    
+def test_email(request):
+    email_subject = '[BroquilGotic]Oferta d\'aquesta setmana'
+    
+
+    html_content = """<p>Thanks <a href="https://github.com/tiendan" class="user-mention">@tiendan</a>! I'm sure you noticed, but I fixed some small issues with this script in <a href="http://el-broquil.rhcloud.com" class="commit-link"><tt>dfdbece</tt></a> so you'll want to include that as well.</p>"""
+    
+    # Add the Gmail action link (yet to see if it works)
+    html_content += """<div itemscope itemtype="http://schema.org/EmailMessage">
+    <div itemprop="action" itemscope itemtype="http://schema.org/ViewAction">
+    <link itemprop="url" href="http://el-broquil.rhcloud.com"></link>
+    <meta itemprop="name" content="Fer Comanda"></meta>
+    </div>
+    <meta itemprop="description" content="Fer Comanda"></meta>
+    </div>"""
+    
+    result = libs.send_email_to_address(email_subject, html_content, ["yalanim@gmail.com"])
