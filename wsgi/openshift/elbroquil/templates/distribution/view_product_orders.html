@@ -54,8 +54,8 @@
 						<tr class="selectablerow" id="selectablerow_{{ order.id }}">
 							<td class="member_name_col">{{ order.user.first_name }} {{ order.user.last_name }}</td>
 							<td class="quantity"><input id="order_{{ order.id }}" name="order_{{ order.id }}" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-buttons="false" value="{{ order.quantity }}" disabled /></td>
-							<td class="quantity"><input id="order_arrived_{{ order.id }}" name="order_arrived_{{ order.id }}" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ order.arrived_quantity }}"/></td>
-							<td class="quantity"><label id="total_price_{{ order.id }}" class="form-control-static text-primary"></label>  <strong>&euro;</strong></td>
+							<td class="quantity"><input id="order_arrived_{{ order.id }}" name="order_arrived_{{ order.id }}" type="text" class="product-order form-control bfh-number arrived-quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ order.arrived_quantity }}"/></td>
+							<td class="quantity"><label id="total_price_{{ order.id }}" class="form-control-static text-primary calculated-price"></label>  <strong>&euro;</strong></td>
 						</tr>
 						{% endfor %}
 						<tr id="additional_row_entry">
@@ -94,8 +94,8 @@
 					</select>
 				</td>
 				<td class="quantity"></td>
-				<td class="quantity"><input name="additional_quantity[]" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false"/></td>
-				<td class="quantity"><label id="total_price_{{ order.id }}" class="form-control-static text-primary"></label>  <strong>&euro;</strong></td>
+				<td class="quantity"><input name="additional_quantity[]" type="text" class="product-order form-control bfh-number arrived-quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false"/></td>
+				<td class="quantity"><label id="additional_price[]" class="form-control-static text-primary calculated-price"></label>  <strong>&euro;</strong></td>
 			</tr>
 		</script>
 {% endblock %}
@@ -159,15 +159,26 @@
 		});
 		
 		amount_change_handler = function(e) {
-		    var order_id = e.target.id.substr(e.target.id.lastIndexOf("_")+1);
-		    var price = parseFloat($('#product_price').val().replace(',', '.'));
-		    var arrived_amount = parseFloat($('#order_arrived_' + order_id).val().replace(',', '.'));
-		     
-		    $('#total_price_' + order_id).text((price*arrived_amount).toFixed(2));
+		    var parent_row = $($(e.target).parent().parent()); 
+		    var arrived_text = parent_row.find('.arrived-quantity');
+		    var price_label = parent_row.find('.calculated-price'); 
+            
+            var price = parseFloat($('#product_price').val().replace(',', '.'));
+		    var arrived_amount = parseFloat(arrived_text.val().replace(',', '.'));
+		    
+		    var calculated_price = price*arrived_amount;
+		    
+		    if(isNaN(calculated_price)) {
+		        calculated_price = 0;
+		    }
+		    price_label.text(calculated_price.toFixed(2));
+		
 		};
 		
 		$('input.product-order').keyup(amount_change_handler);
 		$('input.product-order').change(amount_change_handler);
+		
+		$('input.product-order').trigger('change');
 		
 		// Read the cookie, highlight the rows contained in the saved selected row list
 		selected_rows = $.cookie(cookie_name);
@@ -199,6 +210,9 @@
 			$('input.product-order').keydown(function( event ) {
 				$('#save_button').removeAttr('disabled');
 			});
+			
+    		$('input.product-order').keyup(amount_change_handler);
+    		$('input.product-order').change(amount_change_handler);
 		})
 	  });
 </script>
