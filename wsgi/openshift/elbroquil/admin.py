@@ -11,6 +11,7 @@ from django.contrib.auth.models import Permission
 
 from django.db.models import Q
 import elbroquil.libraries as libs
+from django.core.urlresolvers import reverse
 
 import logging
 logger = logging.getLogger("custom")
@@ -63,7 +64,7 @@ class ProductAdmin(admin.ModelAdmin):
     
     # Override default queryset so that only relevant products are shown
     def queryset(self, request):
-        qs = super(ProductAdmin, self).queryset(request).filter(Q(distribution_date__gt=libs.get_today()) | Q(distribution_date=None)).order_by('category__sort_order', 'pk')
+        qs = super(ProductAdmin, self).queryset(request).filter(Q(distribution_date__gte=libs.get_today()) | Q(distribution_date=None)).order_by('category__sort_order', 'pk')
         
         return qs
 
@@ -86,7 +87,8 @@ class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(label = _(u"First name"))
     last_name = forms.CharField(label = _(u"Last name"))
     
-    phone = forms.CharField(label = _(u"Phone number"), max_length=15)
+    phone = forms.CharField(label = _(u"Phone number"), max_length=15,
+        help_text = _("This will be the initial password for the member."),)
     secondary_email = forms.EmailField(label = _(u"Alternative email"), required=False)
     secondary_phone = forms.CharField(label = _(u"Alt. phone number"), max_length=15, required=False)
     
@@ -136,6 +138,23 @@ class CustomUserCreationForm(UserCreationForm):
         extra = models.ExtraInfo(user=user, phone = self.cleaned_data["phone"], secondary_email=self.cleaned_data["secondary_email"], secondary_phone=self.cleaned_data["secondary_phone"])
         extra.save()
         
+        # Send welcome email to the user
+        email_subject = '[BroquilGoticTEST]Benvingut al Broquil!'
+        html_content = '<p style="text-align: center;"><strong><u>El Br&ograve;quil Del G&ograve;tic</u></strong></p>'
+        html_content += '<p style="text-align: left;">Hola broquilire!!!!</p>'
+        html_content += '<p style="text-align: left;">A partir d\'ara ja pots fer la teva comanda, per a aprendre com fer la comanda, pots mirar la ajuda en <a href="http://el-broquil.rhcloud.com">la pagina web</a></p>'
+        html_content += '<p>Salut!! amb el broquil :P</p>'
+        
+        # If there is an email template stored in DB, use it
+        email = models.EmailTemplate.objects.filter(email_code=models.EMAIL_ACCOUNT_CREATED).first()
+        
+        if email:
+            email_subject = email.full_subject()
+            html_content = email.body
+        
+        
+        result = libs.send_email_to_user(email_subject, html_content, user)
+
         logger.error("... and saved")
         
         return user
@@ -171,6 +190,7 @@ class EmailTemplateAdmin(admin.ModelAdmin):
       (_(u'Information'), {'classes': ('full-width',), 'fields': ('email_code','language',)}),
       (_(u'Email'), {'classes': ('full-width',), 'fields': ('subject', 'body',)}),
     ]
+    ordering = ['email_code', 'language']
 
 # Re-register UserAdmin
 admin.site.unregister(User)

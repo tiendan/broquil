@@ -27,6 +27,7 @@
     <div id="content-main" class="inner-two-columns">
         <form action="{% url 'elbroquil.views.view_product_orders' current_product_no %}" method="POST">
 	    	{% csrf_token %}
+	    	<input id="product_price" name="product_price" type="hidden" value="{{ current_product_price }}" />
 			<div>
 				<div>
 				<ul class="pager">
@@ -46,7 +47,7 @@
 				<div class="table-responsive col-md-offset-2 col-md-8">
 					<table id="table_product_order" class="product_order_table table table-striped table-condensed table-bordered" >
 					<thead>
-						<tr><th class="member_name_header">{% trans "Cooperative Member" %}</th><th class="product_order_header">{% trans "Order" %} ({{ product_orders.0.product.unit }})</th><th class="product_order_header">{% trans "Arrived" %} ({{ product_orders.0.product.unit }})</th></tr>
+						<tr><th class="member_name_header">{% trans "Cooperative Member" %}</th><th class="product_order_header">{% trans "Order" %} ({{ product_orders.0.product.unit }})</th><th class="product_order_header">{% trans "Arrived" %} ({{ product_orders.0.product.unit }})</th><th class="product_order_header">{% trans "Total" %}</th></tr>
 					</thead>
 					<tbody>
 						{% for order in product_orders %}
@@ -54,6 +55,7 @@
 							<td class="member_name_col">{{ order.user.first_name }} {{ order.user.last_name }}</td>
 							<td class="quantity"><input id="order_{{ order.id }}" name="order_{{ order.id }}" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-buttons="false" value="{{ order.quantity }}" disabled /></td>
 							<td class="quantity"><input id="order_arrived_{{ order.id }}" name="order_arrived_{{ order.id }}" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ order.arrived_quantity }}"/></td>
+							<td class="quantity"><label id="total_price_{{ order.id }}" class="form-control-static text-primary"></label>  <strong>&euro;</strong></td>
 						</tr>
 						{% endfor %}
 						<tr id="additional_row_entry">
@@ -93,6 +95,7 @@
 				</td>
 				<td class="quantity"></td>
 				<td class="quantity"><input name="additional_quantity[]" type="text" class="product-order form-control bfh-number" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false"/></td>
+				<td class="quantity"><label id="total_price_{{ order.id }}" class="form-control-static text-primary"></label>  <strong>&euro;</strong></td>
 			</tr>
 		</script>
 {% endblock %}
@@ -151,9 +154,20 @@
 		});
 		
 		// If text inputs are changed, enable the save button
-		$('input.product-order').keydown(function( event ) {
+		$('input.product-order').keydown(function( e ) {
 			$('#save_button').removeAttr('disabled');
 		});
+		
+		amount_change_handler = function(e) {
+		    var order_id = e.target.id.substr(e.target.id.lastIndexOf("_")+1);
+		    var price = parseFloat($('#product_price').val().replace(',', '.'));
+		    var arrived_amount = parseFloat($('#order_arrived_' + order_id).val().replace(',', '.'));
+		     
+		    $('#total_price_' + order_id).text((price*arrived_amount).toFixed(2));
+		};
+		
+		$('input.product-order').keyup(amount_change_handler);
+		$('input.product-order').change(amount_change_handler);
 		
 		// Read the cookie, highlight the rows contained in the saved selected row list
 		selected_rows = $.cookie(cookie_name);

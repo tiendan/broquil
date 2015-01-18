@@ -149,6 +149,7 @@ def view_product_orders(request, product_no=''):
     current_product = None
     next_product = None
     current_product_id = None
+    current_product_price = None
 
     log_messages = ''
 
@@ -171,6 +172,7 @@ def view_product_orders(request, product_no=''):
       raise Http404
       
     current_product_id = products[current_product-1].id
+    current_product_price = products[current_product-1].price
 
     if request.method == 'POST': # If the form has been submitted...
         #log_messages = log_messages + " " + request.POST.get('additional_member[1]') + " " + request.POST.get('additional_quantity[1]')
@@ -226,6 +228,7 @@ def view_product_orders(request, product_no=''):
     return render(request, 'distribution/view_product_orders.html', {
        'product_orders': product_orders,
        'current_product_id': current_product_id,
+       'current_product_price': current_product_price,
        
        'product_name': product_name,
        'prev_product_name': prev_product_name,

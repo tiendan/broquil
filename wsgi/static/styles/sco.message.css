@@ -4,7 +4,7 @@
   overflow: visible;
   text-align: center;
   left: 0;
-  top: 0;
+  top: 50px;
   /* place over all elements, also over modals */
   z-index: 10001;
   width: 100%;
