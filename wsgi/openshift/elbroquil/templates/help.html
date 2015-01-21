@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}El Broquil | {% trans "Help" %}{% endblock %}
+{% block content_title %}<h1>{% trans "Help" %}</h1>{% endblock %}
+
+{% block content %}
+<h3>{% trans "Com fer comanda" %}</h3>
+<iframe src="//player.vimeo.com/video/117320439?byline=0&amp;portrait=0" width="854" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+<h3>{% trans "Com fer la permanencia" %}</h3>
+<iframe src="//player.vimeo.com/video/117321849?byline=0&amp;portrait=0" width="854" height="480" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+{% endblock %}
+
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {
+		// Set selected menu item
+		$('#menu-item-help').addClass("active");
+	  });
+</script>
+{% endblock %}

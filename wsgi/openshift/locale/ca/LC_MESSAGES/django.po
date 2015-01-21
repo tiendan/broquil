@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-18 22:24+0100\n"
-"PO-Revision-Date: 2015-01-18 22:32+0000\n"
+"POT-Creation-Date: 2015-01-22 00:01+0100\n"
+"PO-Revision-Date: 2015-01-22 00:03+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,6 +33,10 @@ msgstr "Castellà"
 #: settings.py:183 elbroquil/models.py:59
 msgid "English"
 msgstr "Anglés"
+
+#: urls.py:14
+msgid "^help/"
+msgstr "^ajuda/"
 
 #: urls.py:17
 msgid "^dist/cash/$"
@@ -591,9 +595,18 @@ msgstr "plantilles de email"
 msgid "until"
 msgstr "fins"
 
-#: elbroquil/templates/about.html:4
-msgid "About"
-msgstr "Quant a"
+#: elbroquil/templates/help.html:4 elbroquil/templates/help.html.py:5
+#: templates/base.html:97
+msgid "Help"
+msgstr "Ajuda"
+
+#: elbroquil/templates/help.html:8
+msgid "Com fer comanda"
+msgstr "Com fer comanda"
+
+#: elbroquil/templates/help.html:11
+msgid "Com fer la permanencia"
+msgstr "Com fer la permanència"
 
 #: elbroquil/templates/distribution/account_summary.html:5
 msgid "Accounting summary"
@@ -607,8 +620,8 @@ msgid ""
 "expected amount."
 msgstr ""
 "<strong>Prepara els sobres</strong> per a cada productor, posant l'import de"
-" diners requerit.<br/>Compta el <strong>import final</strong> a la caixa i "
-"guardalo aquí. Assegura't de que sigui més o menys igual a l'expectativa."
+" diners requerit.<br/>Compta <strong>l'import final</strong> a la caixa i "
+"guarda'l. Assegura't de què sigui més o menys igual a l'expectativa."
 
 #: elbroquil/templates/distribution/account_summary.html:25
 msgid "The initial cash has not been entered!"
@@ -620,7 +633,7 @@ msgid ""
 "There are %(order_count - payment_count)s members who were not charged yet! "
 "If you continue, remaining amount will be saved as debt."
 msgstr ""
-"Hi ha %(order_count - payment_count)s membres sense cobrar! Si contínues, "
+"Hi ha %(order_count - payment_count)s membres sense cobrar! Si continues, "
 "els imports restants es guardaran com deutes."
 
 #: elbroquil/templates/distribution/account_summary.html:35
@@ -742,7 +755,7 @@ msgstr "Pagat:"
 #: elbroquil/templates/distribution/member_payment.html:121
 #: elbroquil/templates/order/order_history.html:91
 msgid "marked as debt for next week."
-msgstr "marcat com deute per a la setmana próxima."
+msgstr "marcat com deute per a la comanda següent."
 
 #: elbroquil/templates/distribution/member_payment.html:151
 #: elbroquil/templates/distribution/view_order_totals.html:51
@@ -1097,7 +1110,7 @@ msgstr "La teva comanda"
 
 #: elbroquil/templates/order/view_order.html:6
 msgid "Start help tour"
-msgstr "Començar la ajuda"
+msgstr "Començar l'ajuda"
 
 #: elbroquil/templates/order/view_order.html:6
 msgid "Update your order"
@@ -1233,31 +1246,31 @@ msgstr "Veure Estat de Quota"
 msgid "Create Fees"
 msgstr "Crear Quotes"
 
-#: templates/base.html:100
+#: templates/base.html:99
 msgid "Admin"
 msgstr "Admin"
 
-#: templates/base.html:127
+#: templates/base.html:126
 msgid "Change password"
 msgstr "Canviar contrasenya"
 
-#: templates/base.html:129
+#: templates/base.html:128
 msgid "Log out"
 msgstr "Finalitzar sessió"
 
-#: templates/base.html:138 templates/login.html:18
+#: templates/base.html:137 templates/login.html:18
 msgid "Username"
 msgstr "Nom d'usuari"
 
-#: templates/base.html:141 templates/login.html:19
+#: templates/base.html:140 templates/login.html:19
 msgid "Password"
 msgstr "Contrasenya"
 
-#: templates/base.html:143 templates/login.html:24
+#: templates/base.html:142 templates/login.html:24
 msgid "Sign in"
 msgstr "Entra"
 
-#: templates/base.html:145 templates/login.html:26
+#: templates/base.html:144 templates/login.html:26
 msgid "Forgot password"
 msgstr "He oblidad la contrasenya "
 
@@ -1287,6 +1300,9 @@ msgstr "Si us plau, aneu a la següent pàgina i trieu una nova contrasenya:"
 #: templates/registration/password_reset_email.html:8
 msgid "Your username, in case you've forgotten:"
 msgstr "El seu nom d'usuari, en el cas que s'hagi oblidat:"
+
+#~ msgid "About"
+#~ msgstr "Quant a"
 
 #~ msgid "Phone"
 #~ msgstr "Telèfon"
@@ -1413,9 +1429,6 @@ msgstr "El seu nom d'usuari, en el cas que s'hagi oblidat:"
 
 #~ msgid "Update Order"
 #~ msgstr "Modificar Comanda"
-
-#~ msgid "Make Permanencia"
-#~ msgstr "Fer Permanència"
 
 #~ msgid "Checking arrived products"
 #~ msgstr "Verificant productes arribats"

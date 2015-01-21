@@ -94,7 +94,7 @@
 		        </li>
 				{% endif %}
 		
-				{% comment %}<li id="menu-item-about"><a href="{% url 'about' %}">{% trans "About" %}</a></li>{% endcomment %}
+				<li id="menu-item-help"><a href="{% url 'help' %}">{% trans "Help" %}</a></li>
 				{% if user.is_staff %}
 				<li id="menu-item-admin"><a href="/admin/">{% trans "Admin" %}</a></li>
 				{% endif %}

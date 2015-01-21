@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-18 22:24+0100\n"
-"PO-Revision-Date: 2015-01-18 22:36+0000\n"
+"POT-Creation-Date: 2015-01-22 00:01+0100\n"
+"PO-Revision-Date: 2015-01-22 00:04+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,6 +33,10 @@ msgstr "Castellano"
 #: settings.py:183 elbroquil/models.py:59
 msgid "English"
 msgstr "Inglés"
+
+#: urls.py:14
+msgid "^help/"
+msgstr "^ayuda/"
 
 #: urls.py:17
 msgid "^dist/cash/$"
@@ -592,9 +596,18 @@ msgstr "plantillas de email"
 msgid "until"
 msgstr "hasta"
 
-#: elbroquil/templates/about.html:4
-msgid "About"
-msgstr "Sobre"
+#: elbroquil/templates/help.html:4 elbroquil/templates/help.html.py:5
+#: templates/base.html:97
+msgid "Help"
+msgstr "Ayuda"
+
+#: elbroquil/templates/help.html:8
+msgid "Com fer comanda"
+msgstr "Como hacer pedido"
+
+#: elbroquil/templates/help.html:11
+msgid "Com fer la permanencia"
+msgstr "Como hacer la permanencia"
 
 #: elbroquil/templates/distribution/account_summary.html:5
 msgid "Accounting summary"
@@ -1234,31 +1247,31 @@ msgstr "Ver Estado de Cuotas"
 msgid "Create Fees"
 msgstr "Crear Cuotas"
 
-#: templates/base.html:100
+#: templates/base.html:99
 msgid "Admin"
 msgstr "Admin"
 
-#: templates/base.html:127
+#: templates/base.html:126
 msgid "Change password"
 msgstr "Cambiar contraseña"
 
-#: templates/base.html:129
+#: templates/base.html:128
 msgid "Log out"
 msgstr "Terminar sesión"
 
-#: templates/base.html:138 templates/login.html:18
+#: templates/base.html:137 templates/login.html:18
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: templates/base.html:141 templates/login.html:19
+#: templates/base.html:140 templates/login.html:19
 msgid "Password"
 msgstr "Contraseña"
 
-#: templates/base.html:143 templates/login.html:24
+#: templates/base.html:142 templates/login.html:24
 msgid "Sign in"
 msgstr "Entra"
 
-#: templates/base.html:145 templates/login.html:26
+#: templates/base.html:144 templates/login.html:26
 msgid "Forgot password"
 msgstr "He olvidado la contraseña"
 
@@ -1288,6 +1301,9 @@ msgstr "Por favor, vaya a la siguiente página y elija una nueva contraseña:"
 #: templates/registration/password_reset_email.html:8
 msgid "Your username, in case you've forgotten:"
 msgstr "Tu nombre de usuario, en caso de que se haya olvidado:"
+
+#~ msgid "About"
+#~ msgstr "Sobre"
 
 #~ msgid "Phone"
 #~ msgstr "Teléfono"
@@ -1414,9 +1430,6 @@ msgstr "Tu nombre de usuario, en caso de que se haya olvidado:"
 
 #~ msgid "Update Order"
 #~ msgstr "Modificar Pedido"
-
-#~ msgid "Make Permanencia"
-#~ msgstr "Hacer Permanencia"
 
 #~ msgid "Checking arrived products"
 #~ msgstr "Verificando productos llegados"

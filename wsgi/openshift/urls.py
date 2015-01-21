@@ -11,7 +11,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', 'elbroquil.views.view_order', name='site_root'),
     
-    #url(_(r'^about/'), TemplateView.as_view(template_name="about.html"), name='about'),
+    url(_(r'^help/'), TemplateView.as_view(template_name="help.html"), name='help'),
     
     # Distribution related URLs
     url(_(r'^dist/cash/$'), 'elbroquil.views.count_initial_cash', name='count_initial_cash'),
