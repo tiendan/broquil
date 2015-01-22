@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 00:01+0100\n"
+"POT-Creation-Date: 2015-01-22 21:58+0100\n"
 "PO-Revision-Date: 2015-01-22 00:03+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Translated-Using: django-rosetta 0.7.4\n"
 
 #: settings.py:180 elbroquil/models.py:56
@@ -615,12 +615,12 @@ msgstr "Resum de comptabilitat"
 #: elbroquil/templates/distribution/account_summary.html:22
 msgid ""
 "<strong>Prepare the envelopes</strong> for each producer, placing the "
-"required amount of money inside.<br/>Count the <strong>final amount</strong>"
-" in the drawer and save it here. Make sure it more or less equals the "
+"required amount of money inside.<br/>Count the <strong>final amount</strong> "
+"in the drawer and save it here. Make sure it more or less equals the "
 "expected amount."
 msgstr ""
-"<strong>Prepara els sobres</strong> per a cada productor, posant l'import de"
-" diners requerit.<br/>Compta <strong>l'import final</strong> a la caixa i "
+"<strong>Prepara els sobres</strong> per a cada productor, posant l'import de "
+"diners requerit.<br/>Compta <strong>l'import final</strong> a la caixa i "
 "guarda'l. Assegura't de què sigui més o menys igual a l'expectativa."
 
 #: elbroquil/templates/distribution/account_summary.html:25
@@ -705,14 +705,14 @@ msgstr "Pagaments dels members"
 
 #: elbroquil/templates/distribution/member_payment.html:24
 msgid ""
-"Choose the member and charge him the required amount. In case the user wants"
-" to pay the quarterly fee, mark the box to add it to the total amount. If "
-"you or the member does not have change, just enter the paid amount and the "
-"rest will be saved as debt."
+"Choose the member and charge him the required amount. In case the user wants "
+"to pay the quarterly fee, mark the box to add it to the total amount. If you "
+"or the member does not have change, just enter the paid amount and the rest "
+"will be saved as debt."
 msgstr ""
 "Tria el membre y cóbra-li l'import necessari. En el cas de que el membre "
-"vulgui pagar la quota trimestral, marca la casella per a sumar-lo a l'import"
-" total. Si tu o el membre no teniu canvi, només introdueix l'import pagat i "
+"vulgui pagar la quota trimestral, marca la casella per a sumar-lo a l'import "
+"total. Si tu o el membre no teniu canvi, només introdueix l'import pagat i "
 "la resta será guardada com a deute."
 
 #: elbroquil/templates/distribution/member_payment.html:30
@@ -815,8 +815,8 @@ msgstr "Final"
 
 #: elbroquil/templates/distribution/view_basket_counts.html:23
 msgid ""
-"Prepare the baskets for each member. Place an extra basket for the indicated"
-" members (with more products)."
+"Prepare the baskets for each member. Place an extra basket for the indicated "
+"members (with more products)."
 msgstr ""
 "Prepara les cistelles per a cada membre. Posa-li una extra pels membres "
 "indicats (amb més productes)."
@@ -1057,6 +1057,110 @@ msgstr "Guardar valoracións"
 msgid "No products to rate!"
 msgstr "No productes a valorar!"
 
+#: elbroquil/templates/order/tour.js:6
+msgid "Next"
+msgstr "Següent"
+
+#: elbroquil/templates/order/tour.js:7
+msgid "Previous"
+msgstr "Anterior"
+
+#: elbroquil/templates/order/tour.js:8
+msgid "Done"
+msgstr "Fet"
+
+#: elbroquil/templates/order/tour.js:9
+msgid "Skip"
+msgstr "Salta"
+
+#: elbroquil/templates/order/tour.js:10
+msgid "Close"
+msgstr "Tanca"
+
+#: elbroquil/templates/order/tour.js:15
+#, fuzzy
+msgid "Order Summary"
+msgstr "Resum"
+
+#: elbroquil/templates/order/tour.js:16
+msgid "Here you can see your order summary"
+msgstr "Aquí pots veure el resum de la teva comanda"
+
+#: elbroquil/templates/order/tour.js:21
+msgid "No Order Yet"
+msgstr "Encara No Tens Comanda"
+
+#: elbroquil/templates/order/tour.js:22
+msgid "Your order summary would appear here"
+msgstr "El resum de la teva comanda apareixería aquí"
+
+#: elbroquil/templates/order/tour.js:27
+msgid "Make an Order"
+msgstr "Fer Comanda"
+
+#: elbroquil/templates/order/tour.js:28
+msgid "Click here to start making your order"
+msgstr "Feu click aquí per a començar a fer la teva comanda"
+
+#: elbroquil/templates/order/tour.js:38 elbroquil/templates/order/tour.js:45
+msgid "Order a Product"
+msgstr "Demana un Producte"
+
+#: elbroquil/templates/order/tour.js:39
+msgid "Enter the amount of product you want here."
+msgstr "Introdueix la quantitat del producte que vulguis aquí."
+
+#: elbroquil/templates/order/tour.js:46
+msgid ""
+"Some products are ordered in units. You can use the up/down buttons to "
+"adjust the quantity you want."
+msgstr ""
+"Alguns productes es demanen en unitats. En aquest cas, pots fer servir els "
+"botons de més/menys per a marcar la quantitat que vulguis."
+
+#: elbroquil/templates/order/tour.js:52
+msgid "Save the Changes"
+msgstr "Guarda els Canvis"
+
+#: elbroquil/templates/order/tour.js:53
+msgid "When you make changes to your order, don't forget to save it!"
+msgstr "Quan fas algun canvi en la teva comanda, no t'oblidis de guardar-lo!"
+
+#: elbroquil/templates/order/tour.js:60 elbroquil/templates/order/tour.js:67
+msgid "Browse by Categories"
+msgstr "Navegar pels Categories"
+
+#: elbroquil/templates/order/tour.js:61
+msgid ""
+"Here you can see the name of product category. Below, the order limit date "
+"for these products is shown. The color shows how much time you have left to "
+"update your order (green: much time, orange: one day, red: few hours)."
+msgstr ""
+"Aquí pots veure el nom de la categoria del producte. Abaix, pots trobar la "
+"data limit de comanda per a aquests productes. El color mostra quan de temps "
+"tens per a modificar la teva comanda (vert: molt de temps, taronja: un dia, "
+"vermell: unes hores)."
+
+#: elbroquil/templates/order/tour.js:68
+msgid ""
+"Click on these links to switch between product categories. You can also use "
+"the keyboard left and right arrow keys."
+msgstr ""
+"Feu clic en aquests enllaços per a navegar entre categories de productes. "
+"També pots fer servir les tecles de fletxa esquerra y dreta."
+
+#: elbroquil/templates/order/tour.js:79 elbroquil/templates/order/tour.js:86
+msgid "View Your Order"
+msgstr "Veure la teva Comanda"
+
+#: elbroquil/templates/order/tour.js:80
+msgid "When you are finished, check the order summary."
+msgstr "Quan t'acabis, comproveu el resum de la comanda."
+
+#: elbroquil/templates/order/tour.js:87
+msgid "You can also view your order from the top menu."
+msgstr "També pots veure la teva comanda al menu superior."
+
 #: elbroquil/templates/order/update_order.html:7
 msgid "Update order"
 msgstr "Modificar comanda"
@@ -1154,8 +1258,8 @@ msgid ""
 "correct, <strong>save the products</strong>. If there is an error, inform "
 "the administrator."
 msgstr ""
-"Verifica que la informació dels productes se hagin procesat correctament. Si"
-" tot está correcte, <strong>guarda els productes</strong>. Si hi ha algun "
+"Verifica que la informació dels productes se hagin procesat correctament. Si "
+"tot está correcte, <strong>guarda els productes</strong>. Si hi ha algun "
 "error, informa l'administrador."
 
 #: elbroquil/templates/product/check_product_info.html:30
@@ -1203,8 +1307,7 @@ msgstr "No hi ha productes definits per al productor!"
 #: elbroquil/views/fee_views.py:132
 msgid ""
 "Someone has alread paid the fee for this quarter! You cannot delete them!"
-msgstr ""
-"Algú ja ha pagar la quota per a aquest trimestre! No pots esborrar-lo."
+msgstr "Algú ja ha pagar la quota per a aquest trimestre! No pots esborrar-lo."
 
 #: elbroquil/views/fee_views.py:134
 msgid "Please choose members"
@@ -1324,84 +1427,6 @@ msgstr "El seu nom d'usuari, en el cas que s'hagi oblidat:"
 
 #~ msgid "Account Summary"
 #~ msgstr "Resum de Comptabilitat"
-
-#~ msgid "Next"
-#~ msgstr "Següent"
-
-#~ msgid "Previous"
-#~ msgstr "Anterior"
-
-#~ msgid "Done"
-#~ msgstr "Fet"
-
-#~ msgid "Skip"
-#~ msgstr "Salta"
-
-#~ msgid "Close"
-#~ msgstr "Tanca"
-
-#~ msgid "Here you can see your order summary"
-#~ msgstr "Aquí pots veure el resum de la teva comanda"
-
-#~ msgid "No Order Yet"
-#~ msgstr "Encara No Tens Comanda"
-
-#~ msgid "Your order summary would appear here"
-#~ msgstr "El resum de la teva comanda apareixería aquí"
-
-#~ msgid "Make an Order"
-#~ msgstr "Fer Comanda"
-
-#~ msgid "Click here to start making your order"
-#~ msgstr "Feu click aquí per a començar a fer la teva comanda"
-
-#~ msgid "Order a Product"
-#~ msgstr "Demana un Producte"
-
-#~ msgid "Enter the amount of product you want here."
-#~ msgstr "Introdueix la quantitat del producte que vulguis aquí."
-
-#~ msgid ""
-#~ "Some products are ordered in units. You can use the up/down buttons to "
-#~ "adjust the quantity you want."
-#~ msgstr ""
-#~ "Alguns productes es demanen en unitats. En aquest cas, pots fer servir els "
-#~ "botons de més/menys per a marcar la quantitat que vulguis."
-
-#~ msgid "Save the Changes"
-#~ msgstr "Guarda els Canvis"
-
-#~ msgid "When you make changes to your order, don't forget to save it!"
-#~ msgstr "Quan fas algun canvi en la teva comanda, no t'oblidis de guardar-lo!"
-
-#~ msgid "Browse by Categories"
-#~ msgstr "Navegar pels Categories"
-
-#~ msgid ""
-#~ "Here you can see the name of product category. Below, the order limit date "
-#~ "for these products is shown. The color shows how much time you have left to "
-#~ "update your order (green: much time, orange: one day, red: few hours)."
-#~ msgstr ""
-#~ "Aquí pots veure el nom de la categoria del producte. Abaix, pots trobar la "
-#~ "data limit de comanda per a aquests productes. El color mostra quan de temps"
-#~ " tens per a modificar la teva comanda (vert: molt de temps, taronja: un dia,"
-#~ " vermell: unes hores)."
-
-#~ msgid ""
-#~ "Click on these links to switch between product categories. You can also use "
-#~ "the keyboard left and right arrow keys."
-#~ msgstr ""
-#~ "Feu clic en aquests enllaços per a navegar entre categories de productes. "
-#~ "També pots fer servir les tecles de fletxa esquerra y dreta."
-
-#~ msgid "View Your Order"
-#~ msgstr "Veure la teva Comanda"
-
-#~ msgid "When you are finished, check the order summary."
-#~ msgstr "Quan t'acabis, comproveu el resum de la comanda."
-
-#~ msgid "You can also view your order from the top menu."
-#~ msgstr "També pots veure la teva comanda al menu superior."
 
 #~ msgid "^email/$"
 #~ msgstr "^email/$"

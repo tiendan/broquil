@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 00:01+0100\n"
+"POT-Creation-Date: 2015-01-22 21:58+0100\n"
 "PO-Revision-Date: 2014-05-11 23:05+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1088,6 +1088,108 @@ msgstr "notları gönder"
 #, fuzzy
 msgid "No products to rate!"
 msgstr "Bu hafta (henüz) sunulan ürün yok!"
+
+#: elbroquil/templates/order/tour.js:6
+msgid "Next"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:7
+msgid "Previous"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:8
+msgid "Done"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:9
+msgid "Skip"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:10
+msgid "Close"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:15
+#, fuzzy
+msgid "Order Summary"
+msgstr "sipariş günü"
+
+#: elbroquil/templates/order/tour.js:16
+msgid "Here you can see your order summary"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:21
+#, fuzzy
+msgid "No Order Yet"
+msgstr "sıra"
+
+#: elbroquil/templates/order/tour.js:22
+msgid "Your order summary would appear here"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:27
+#, fuzzy
+msgid "Make an Order"
+msgstr "Siparişi güncelle"
+
+#: elbroquil/templates/order/tour.js:28
+msgid "Click here to start making your order"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:38 elbroquil/templates/order/tour.js:45
+#, fuzzy
+msgid "Order a Product"
+msgstr "Ürünleri kaydet"
+
+#: elbroquil/templates/order/tour.js:39
+msgid "Enter the amount of product you want here."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:46
+msgid ""
+"Some products are ordered in units. You can use the up/down buttons to "
+"adjust the quantity you want."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:52
+#, fuzzy
+msgid "Save the Changes"
+msgstr "Değişiklikleri kaydet"
+
+#: elbroquil/templates/order/tour.js:53
+msgid "When you make changes to your order, don't forget to save it!"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:60 elbroquil/templates/order/tour.js:67
+#, fuzzy
+msgid "Browse by Categories"
+msgstr "Kategoriler"
+
+#: elbroquil/templates/order/tour.js:61
+msgid ""
+"Here you can see the name of product category. Below, the order limit date "
+"for these products is shown. The color shows how much time you have left to "
+"update your order (green: much time, orange: one day, red: few hours)."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:68
+msgid ""
+"Click on these links to switch between product categories. You can also use "
+"the keyboard left and right arrow keys."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:79 elbroquil/templates/order/tour.js:86
+#, fuzzy
+msgid "View Your Order"
+msgstr "sipariş"
+
+#: elbroquil/templates/order/tour.js:80
+msgid "When you are finished, check the order summary."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:87
+msgid "You can also view your order from the top menu."
+msgstr ""
 
 #: elbroquil/templates/order/update_order.html:7
 msgid "Update order"

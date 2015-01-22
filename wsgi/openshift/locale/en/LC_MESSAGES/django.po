@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 00:01+0100\n"
+"POT-Creation-Date: 2015-01-22 21:58+0100\n"
 "PO-Revision-Date: 2015-01-22 00:04+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Translated-Using: django-rosetta 0.7.4\n"
 
 #: settings.py:180 elbroquil/models.py:56
@@ -614,8 +614,8 @@ msgstr ""
 #: elbroquil/templates/distribution/account_summary.html:22
 msgid ""
 "<strong>Prepare the envelopes</strong> for each producer, placing the "
-"required amount of money inside.<br/>Count the <strong>final amount</strong>"
-" in the drawer and save it here. Make sure it more or less equals the "
+"required amount of money inside.<br/>Count the <strong>final amount</strong> "
+"in the drawer and save it here. Make sure it more or less equals the "
 "expected amount."
 msgstr ""
 
@@ -699,10 +699,10 @@ msgstr ""
 
 #: elbroquil/templates/distribution/member_payment.html:24
 msgid ""
-"Choose the member and charge him the required amount. In case the user wants"
-" to pay the quarterly fee, mark the box to add it to the total amount. If "
-"you or the member does not have change, just enter the paid amount and the "
-"rest will be saved as debt."
+"Choose the member and charge him the required amount. In case the user wants "
+"to pay the quarterly fee, mark the box to add it to the total amount. If you "
+"or the member does not have change, just enter the paid amount and the rest "
+"will be saved as debt."
 msgstr ""
 
 #: elbroquil/templates/distribution/member_payment.html:30
@@ -805,8 +805,8 @@ msgstr ""
 
 #: elbroquil/templates/distribution/view_basket_counts.html:23
 msgid ""
-"Prepare the baskets for each member. Place an extra basket for the indicated"
-" members (with more products)."
+"Prepare the baskets for each member. Place an extra basket for the indicated "
+"members (with more products)."
 msgstr ""
 
 #: elbroquil/templates/distribution/view_basket_counts.html:30
@@ -1039,6 +1039,101 @@ msgstr ""
 
 #: elbroquil/templates/order/rate_products.html:50
 msgid "No products to rate!"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:6
+msgid "Next"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:7
+msgid "Previous"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:8
+msgid "Done"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:9
+msgid "Skip"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:10
+msgid "Close"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:15
+msgid "Order Summary"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:16
+msgid "Here you can see your order summary"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:21
+msgid "No Order Yet"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:22
+msgid "Your order summary would appear here"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:27
+msgid "Make an Order"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:28
+msgid "Click here to start making your order"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:38 elbroquil/templates/order/tour.js:45
+msgid "Order a Product"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:39
+msgid "Enter the amount of product you want here."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:46
+msgid ""
+"Some products are ordered in units. You can use the up/down buttons to "
+"adjust the quantity you want."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:52
+msgid "Save the Changes"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:53
+msgid "When you make changes to your order, don't forget to save it!"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:60 elbroquil/templates/order/tour.js:67
+msgid "Browse by Categories"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:61
+msgid ""
+"Here you can see the name of product category. Below, the order limit date "
+"for these products is shown. The color shows how much time you have left to "
+"update your order (green: much time, orange: one day, red: few hours)."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:68
+msgid ""
+"Click on these links to switch between product categories. You can also use "
+"the keyboard left and right arrow keys."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:79 elbroquil/templates/order/tour.js:86
+msgid "View Your Order"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:80
+msgid "When you are finished, check the order summary."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:87
+msgid "You can also view your order from the top menu."
 msgstr ""
 
 #: elbroquil/templates/order/update_order.html:7
