@@ -116,13 +116,13 @@
 					        </tr>
 					    </thead>
 					    <tbody>
-					    {% for order, total in orders_with_totals %}
+					    {% for order in counted_product_list %}
     	    				<tr>
                                 <td>{{ order.product.name }}</td>
         						<td class="price">{{ order.product.price|floatformat:2 }}</td>
         						<td class="quantity">{{ order.arrived_quantity }}</td>
         						<td>{{ order.product.unit }}</td>
-        						<td class="total">{{ total|floatformat:2 }}</td>
+        						<td class="total">{{ order.arrived_quantity|mul:order.product.price|floatformat:2 }} &euro;</td>
         					</tr>
 						{% endfor %}
 						</tbody>

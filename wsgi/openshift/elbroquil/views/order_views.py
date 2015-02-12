@@ -74,8 +74,8 @@ def order_history(request):
                     if order.arrived_quantity != order.quantity:
                         amount_changed_product_list.append(order)
                     
-                    orders.append(order)
-                    totals.append(total_price)
+                    #orders.append(order)
+                    #totals.append((order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
                 elif order.status == models.STATUS_DID_NOT_ARRIVE:
                     not_arrived_product_list.append(order)
                 elif order.status == models.STATUS_MIN_ORDER_NOT_MET:
