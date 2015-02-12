@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 21:58+0100\n"
-"PO-Revision-Date: 2015-01-22 00:03+0000\n"
+"POT-Creation-Date: 2015-02-12 23:21+0100\n"
+"PO-Revision-Date: 2015-02-12 23:23+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Translated-Using: django-rosetta 0.7.4\n"
 
 #: settings.py:180 elbroquil/models.py:56
@@ -39,32 +39,32 @@ msgid "^help/"
 msgstr "^ajuda/"
 
 #: urls.py:17
+msgid "^dist/$"
+msgstr "^dist/$"
+
+#: urls.py:18
 msgid "^dist/cash/$"
 msgstr "^dist/partida/$"
 
-#: urls.py:18
+#: urls.py:19
 msgid "^dist/baskets/$"
 msgstr "^dist/cistelles/$"
 
-#: urls.py:19
-msgid "^dist/payment/$"
-msgstr "^dist/pagament/$"
-
 #: urls.py:20
-msgid "^dist/account/$"
-msgstr "^dist/caixa/$"
-
-#: urls.py:21
 msgid "^dist/([0-9]+)/$"
 msgstr "^dist/([0-9]+)/$"
 
-#: urls.py:22
+#: urls.py:21
 msgid "^dist/product/([0-9]+)/$"
-msgstr "^dist/([0-9]+)/$"
+msgstr "^dist/producte/([0-9]+)/$"
+
+#: urls.py:22
+msgid "^dist/payment/$"
+msgstr "^dist/pagament/$"
 
 #: urls.py:23
-msgid "^dist/$"
-msgstr "^dist/$"
+msgid "^dist/account/$"
+msgstr "^dist/caixa/$"
 
 #: urls.py:26
 msgid "^order/rate/$"
@@ -615,12 +615,12 @@ msgstr "Resum de comptabilitat"
 #: elbroquil/templates/distribution/account_summary.html:22
 msgid ""
 "<strong>Prepare the envelopes</strong> for each producer, placing the "
-"required amount of money inside.<br/>Count the <strong>final amount</strong> "
-"in the drawer and save it here. Make sure it more or less equals the "
+"required amount of money inside.<br/>Count the <strong>final amount</strong>"
+" in the drawer and save it here. Make sure it more or less equals the "
 "expected amount."
 msgstr ""
-"<strong>Prepara els sobres</strong> per a cada productor, posant l'import de "
-"diners requerit.<br/>Compta <strong>l'import final</strong> a la caixa i "
+"<strong>Prepara els sobres</strong> per a cada productor, posant l'import de"
+" diners requerit.<br/>Compta <strong>l'import final</strong> a la caixa i "
 "guarda'l. Assegura't de què sigui més o menys igual a l'expectativa."
 
 #: elbroquil/templates/distribution/account_summary.html:25
@@ -705,14 +705,14 @@ msgstr "Pagaments dels members"
 
 #: elbroquil/templates/distribution/member_payment.html:24
 msgid ""
-"Choose the member and charge him the required amount. In case the user wants "
-"to pay the quarterly fee, mark the box to add it to the total amount. If you "
-"or the member does not have change, just enter the paid amount and the rest "
-"will be saved as debt."
+"Choose the member and charge him the required amount. In case the user wants"
+" to pay the quarterly fee, mark the box to add it to the total amount. If "
+"you or the member does not have change, just enter the paid amount and the "
+"rest will be saved as debt."
 msgstr ""
 "Tria el membre y cóbra-li l'import necessari. En el cas de que el membre "
-"vulgui pagar la quota trimestral, marca la casella per a sumar-lo a l'import "
-"total. Si tu o el membre no teniu canvi, només introdueix l'import pagat i "
+"vulgui pagar la quota trimestral, marca la casella per a sumar-lo a l'import"
+" total. Si tu o el membre no teniu canvi, només introdueix l'import pagat i "
 "la resta será guardada com a deute."
 
 #: elbroquil/templates/distribution/member_payment.html:30
@@ -775,48 +775,49 @@ msgstr "Quantitat"
 
 #: elbroquil/templates/distribution/member_payment.html:151
 #: elbroquil/templates/distribution/view_product_orders.html:50
+#: elbroquil/templates/order/order_history.html:115
 #: elbroquil/templates/order/view_order.html:23
 msgid "Total"
 msgstr "Total"
 
 #: elbroquil/templates/distribution/member_payment.html:169
 #: elbroquil/templates/management/view_distribution_detail.html:131
-#: elbroquil/templates/order/order_history.html:133
+#: elbroquil/templates/order/order_history.html:139
 msgid "INCIDENTS"
 msgstr "INCIDÈNCIES"
 
 #: elbroquil/templates/distribution/member_payment.html:180
-#: elbroquil/templates/order/order_history.html:144
+#: elbroquil/templates/order/order_history.html:150
 msgid "Not Ordered"
 msgstr "No Demanat"
 
 #: elbroquil/templates/distribution/member_payment.html:198
 #: elbroquil/templates/management/view_distribution_detail.html:143
-#: elbroquil/templates/order/order_history.html:162
+#: elbroquil/templates/order/order_history.html:168
 msgid "Not Arrived"
 msgstr "No Arribat"
 
 #: elbroquil/templates/distribution/member_payment.html:216
 #: elbroquil/templates/management/view_distribution_detail.html:161
-#: elbroquil/templates/order/order_history.html:180
+#: elbroquil/templates/order/order_history.html:186
 msgid "Amount Changed"
 msgstr "Quantitat Canviada"
 
 #: elbroquil/templates/distribution/member_payment.html:220
 #: elbroquil/templates/management/view_distribution_detail.html:165
-#: elbroquil/templates/order/order_history.html:184
+#: elbroquil/templates/order/order_history.html:190
 msgid "Ordered"
 msgstr "Demanat"
 
 #: elbroquil/templates/distribution/member_payment.html:220
-#: elbroquil/templates/order/order_history.html:184
+#: elbroquil/templates/order/order_history.html:190
 msgid "Final"
 msgstr "Final"
 
 #: elbroquil/templates/distribution/view_basket_counts.html:23
 msgid ""
-"Prepare the baskets for each member. Place an extra basket for the indicated "
-"members (with more products)."
+"Prepare the baskets for each member. Place an extra basket for the indicated"
+" members (with more products)."
 msgstr ""
 "Prepara les cistelles per a cada membre. Posa-li una extra pels membres "
 "indicats (amb més productes)."
@@ -841,6 +842,10 @@ msgstr "Comanda total"
 #: elbroquil/templates/distribution/view_order_totals.html:6
 msgid "This week's order"
 msgstr "Comanda d'aquesta setmana"
+
+#: elbroquil/templates/distribution/view_order_totals.html:8
+msgid "No orders"
+msgstr "No hi ha comanda"
 
 #: elbroquil/templates/distribution/view_order_totals.html:28
 msgid ""
@@ -1078,9 +1083,8 @@ msgid "Close"
 msgstr "Tanca"
 
 #: elbroquil/templates/order/tour.js:15
-#, fuzzy
 msgid "Order Summary"
-msgstr "Resum"
+msgstr "Resum de Comanda"
 
 #: elbroquil/templates/order/tour.js:16
 msgid "Here you can see your order summary"
@@ -1137,9 +1141,9 @@ msgid ""
 "update your order (green: much time, orange: one day, red: few hours)."
 msgstr ""
 "Aquí pots veure el nom de la categoria del producte. Abaix, pots trobar la "
-"data limit de comanda per a aquests productes. El color mostra quan de temps "
-"tens per a modificar la teva comanda (vert: molt de temps, taronja: un dia, "
-"vermell: unes hores)."
+"data limit de comanda per a aquests productes. El color mostra quan de temps"
+" tens per a modificar la teva comanda (vert: molt de temps, taronja: un dia,"
+" vermell: unes hores)."
 
 #: elbroquil/templates/order/tour.js:68
 msgid ""
@@ -1258,8 +1262,8 @@ msgid ""
 "correct, <strong>save the products</strong>. If there is an error, inform "
 "the administrator."
 msgstr ""
-"Verifica que la informació dels productes se hagin procesat correctament. Si "
-"tot está correcte, <strong>guarda els productes</strong>. Si hi ha algun "
+"Verifica que la informació dels productes se hagin procesat correctament. Si"
+" tot está correcte, <strong>guarda els productes</strong>. Si hi ha algun "
 "error, informa l'administrador."
 
 #: elbroquil/templates/product/check_product_info.html:30
@@ -1307,7 +1311,8 @@ msgstr "No hi ha productes definits per al productor!"
 #: elbroquil/views/fee_views.py:132
 msgid ""
 "Someone has alread paid the fee for this quarter! You cannot delete them!"
-msgstr "Algú ja ha pagar la quota per a aquest trimestre! No pots esborrar-lo."
+msgstr ""
+"Algú ja ha pagar la quota per a aquest trimestre! No pots esborrar-lo."
 
 #: elbroquil/views/fee_views.py:134
 msgid "Please choose members"

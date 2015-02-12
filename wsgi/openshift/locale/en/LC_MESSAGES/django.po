@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 21:58+0100\n"
+"POT-Creation-Date: 2015-02-12 23:21+0100\n"
 "PO-Revision-Date: 2015-01-22 00:04+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,31 +39,31 @@ msgid "^help/"
 msgstr ""
 
 #: urls.py:17
-msgid "^dist/cash/$"
+msgid "^dist/$"
 msgstr ""
 
 #: urls.py:18
-msgid "^dist/baskets/$"
+msgid "^dist/cash/$"
 msgstr ""
 
 #: urls.py:19
-msgid "^dist/payment/$"
+msgid "^dist/baskets/$"
 msgstr ""
 
 #: urls.py:20
-msgid "^dist/account/$"
-msgstr ""
-
-#: urls.py:21
 msgid "^dist/([0-9]+)/$"
 msgstr ""
 
-#: urls.py:22
+#: urls.py:21
 msgid "^dist/product/([0-9]+)/$"
 msgstr ""
 
+#: urls.py:22
+msgid "^dist/payment/$"
+msgstr ""
+
 #: urls.py:23
-msgid "^dist/$"
+msgid "^dist/account/$"
 msgstr ""
 
 #: urls.py:26
@@ -765,41 +765,42 @@ msgstr ""
 
 #: elbroquil/templates/distribution/member_payment.html:151
 #: elbroquil/templates/distribution/view_product_orders.html:50
+#: elbroquil/templates/order/order_history.html:115
 #: elbroquil/templates/order/view_order.html:23
 msgid "Total"
 msgstr ""
 
 #: elbroquil/templates/distribution/member_payment.html:169
 #: elbroquil/templates/management/view_distribution_detail.html:131
-#: elbroquil/templates/order/order_history.html:133
+#: elbroquil/templates/order/order_history.html:139
 msgid "INCIDENTS"
 msgstr ""
 
 #: elbroquil/templates/distribution/member_payment.html:180
-#: elbroquil/templates/order/order_history.html:144
+#: elbroquil/templates/order/order_history.html:150
 msgid "Not Ordered"
 msgstr ""
 
 #: elbroquil/templates/distribution/member_payment.html:198
 #: elbroquil/templates/management/view_distribution_detail.html:143
-#: elbroquil/templates/order/order_history.html:162
+#: elbroquil/templates/order/order_history.html:168
 msgid "Not Arrived"
 msgstr ""
 
 #: elbroquil/templates/distribution/member_payment.html:216
 #: elbroquil/templates/management/view_distribution_detail.html:161
-#: elbroquil/templates/order/order_history.html:180
+#: elbroquil/templates/order/order_history.html:186
 msgid "Amount Changed"
 msgstr ""
 
 #: elbroquil/templates/distribution/member_payment.html:220
 #: elbroquil/templates/management/view_distribution_detail.html:165
-#: elbroquil/templates/order/order_history.html:184
+#: elbroquil/templates/order/order_history.html:190
 msgid "Ordered"
 msgstr ""
 
 #: elbroquil/templates/distribution/member_payment.html:220
-#: elbroquil/templates/order/order_history.html:184
+#: elbroquil/templates/order/order_history.html:190
 msgid "Final"
 msgstr ""
 
@@ -828,6 +829,10 @@ msgstr ""
 
 #: elbroquil/templates/distribution/view_order_totals.html:6
 msgid "This week's order"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_order_totals.html:8
+msgid "No orders"
 msgstr ""
 
 #: elbroquil/templates/distribution/view_order_totals.html:28

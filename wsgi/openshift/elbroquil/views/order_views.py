@@ -32,7 +32,7 @@ import settings
 
 @login_required
 def order_history(request):
-    if request.user.is_superuser:
+    if request.user.username.find("@") == -1:
         return HttpResponseRedirect(reverse('elbroquil.views.view_order_totals', args=()))
         
     today = libs.get_today()
@@ -62,7 +62,7 @@ def order_history(request):
         only_latest_dates = request.POST.get("only-latest") is not None
         
         if selected_date != "-1":
-            user_orders = models.Order.objects.filter(user=request.user, archived=False, product__distribution_date=selected_date).prefetch_related('product').order_by('product__category__sort_order', 'pk')
+            user_orders = models.Order.objects.filter(user=request.user, archived=False, product__distribution_date=selected_date).prefetch_related('product').order_by('product__category__sort_order', 'product__pk')
             
             # Separate the orders according to their status and calculate the order sum
             # using only the orders which are OK (that arrived)
@@ -70,8 +70,12 @@ def order_history(request):
                 if order.status == models.STATUS_NORMAL:
                     counted_product_list.append(order)
                     total_price += (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
+                    
                     if order.arrived_quantity != order.quantity:
                         amount_changed_product_list.append(order)
+                    
+                    orders.append(order)
+                    totals.append(total_price)
                 elif order.status == models.STATUS_DID_NOT_ARRIVE:
                     not_arrived_product_list.append(order)
                 elif order.status == models.STATUS_MIN_ORDER_NOT_MET:
@@ -145,7 +149,7 @@ def order_history(request):
 '''Page to enable users update/place their orders'''
 @login_required
 def update_order(request, category_no=''):
-    if request.user.is_superuser:
+    if request.user.username.find("@") == -1:
         return HttpResponseRedirect(reverse('elbroquil.views.view_order_totals', args=()))
     # Choose the available categories:
     #    - having products with order limit date in the future
@@ -256,11 +260,11 @@ def update_order(request, category_no=''):
 
 @login_required
 def view_order(request):
-    if request.user.is_superuser:
+    if request.user.username.find("@") == -1:
         return HttpResponseRedirect(reverse('elbroquil.views.view_order_totals', args=()))
     
     today = libs.get_today()
-    all_orders = models.Order.objects.filter(user=request.user, archived=False, product__distribution_date__gte=today).prefetch_related('product').order_by('product__category__sort_order', 'pk')
+    all_orders = models.Order.objects.filter(user=request.user, archived=False, product__distribution_date__gte=today).prefetch_related('product').order_by('product__category__sort_order', 'product__pk')
     next_dist_date = libs.get_next_distribution_date()
     totals = []
     orders = []
@@ -324,7 +328,7 @@ def rate_products(request):
     # Only rate products that were distributed in the last 5 days
     today = libs.get_today()
     limit_date = today - timedelta(days=5)
-
+    
     orders = models.Order.objects.filter(user=request.user, archived=False, status=models.STATUS_NORMAL, product__distribution_date__gte=limit_date, product__distribution_date__lte=today).prefetch_related('product').order_by('product__category__sort_order', 'product__name')
 
     if request.method == 'POST': # If the form has been submitted...

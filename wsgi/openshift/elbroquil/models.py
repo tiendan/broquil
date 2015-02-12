@@ -281,7 +281,7 @@ class EmailTemplate(models.Model):
     body = models.TextField(_(u'body'), blank=True, default='', help_text=_(u"<em>(Do not remove the [[CONTENT]] parts.)</em>"))
     
     def full_subject(self):
-        return "[BroquilGoticTEST]" + self.subject
+        return "[BroquilGotic]" + self.subject
 
     def get_language_name(self):
         for code, name in LANGUAGE_CHOICES:

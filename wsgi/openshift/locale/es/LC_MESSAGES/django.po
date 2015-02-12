@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 21:58+0100\n"
-"PO-Revision-Date: 2015-01-22 00:04+0000\n"
+"POT-Creation-Date: 2015-02-12 23:21+0100\n"
+"PO-Revision-Date: 2015-02-12 23:22+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Translated-Using: django-rosetta 0.7.4\n"
 
 #: settings.py:180 elbroquil/models.py:56
@@ -39,32 +39,32 @@ msgid "^help/"
 msgstr "^ayuda/"
 
 #: urls.py:17
+msgid "^dist/$"
+msgstr "^dist/$"
+
+#: urls.py:18
 msgid "^dist/cash/$"
 msgstr "^dist/partida/$"
 
-#: urls.py:18
+#: urls.py:19
 msgid "^dist/baskets/$"
 msgstr "^dist/cestas/$"
 
-#: urls.py:19
-msgid "^dist/payment/$"
-msgstr "^dist/pago/$"
-
 #: urls.py:20
-msgid "^dist/account/$"
-msgstr "^dist/caja/$"
-
-#: urls.py:21
 msgid "^dist/([0-9]+)/$"
 msgstr "^dist/([0-9]+)/$"
 
-#: urls.py:22
+#: urls.py:21
 msgid "^dist/product/([0-9]+)/$"
-msgstr "^dist/([0-9]+)/$"
+msgstr "^dist/producto([0-9]+)/$"
+
+#: urls.py:22
+msgid "^dist/payment/$"
+msgstr "^dist/pago/$"
 
 #: urls.py:23
-msgid "^dist/$"
-msgstr "^dist/$"
+msgid "^dist/account/$"
+msgstr "^dist/caja/$"
 
 #: urls.py:26
 msgid "^order/rate/$"
@@ -468,7 +468,8 @@ msgstr "producto nuevo"
 
 #: elbroquil/models.py:176
 msgid "<em>(To highlight this product as NEW in the order pages.)</em>"
-msgstr "<em>(Para poner la etiqueta de ¡NUEVO! en las páginas de pedido.)</em>"
+msgstr ""
+"<em>(Para poner la etiqueta de ¡NUEVO! en las páginas de pedido.)</em>"
 
 #: elbroquil/models.py:177
 msgid "sent to producer"
@@ -615,13 +616,14 @@ msgstr "Resumen de contabilidad"
 #: elbroquil/templates/distribution/account_summary.html:22
 msgid ""
 "<strong>Prepare the envelopes</strong> for each producer, placing the "
-"required amount of money inside.<br/>Count the <strong>final amount</strong> "
-"in the drawer and save it here. Make sure it more or less equals the "
+"required amount of money inside.<br/>Count the <strong>final amount</strong>"
+" in the drawer and save it here. Make sure it more or less equals the "
 "expected amount."
 msgstr ""
-"<strong>Prepara los sobres</strong> para cada productor, poniendo el importe "
-"de dinero requerido.<br/>Cuenta el <strong>importe final</strong> en la caja "
-"y guardalo aquí. Asegúrate de que sea mas o menos igual a la expectativa."
+"<strong>Prepara los sobres</strong> para cada productor, poniendo el importe"
+" de dinero requerido.<br/>Cuenta el <strong>importe final</strong> en la "
+"caja y guardalo aquí. Asegúrate de que sea mas o menos igual a la "
+"expectativa."
 
 #: elbroquil/templates/distribution/account_summary.html:25
 msgid "The initial cash has not been entered!"
@@ -705,10 +707,10 @@ msgstr "Pagos de miembros"
 
 #: elbroquil/templates/distribution/member_payment.html:24
 msgid ""
-"Choose the member and charge him the required amount. In case the user wants "
-"to pay the quarterly fee, mark the box to add it to the total amount. If you "
-"or the member does not have change, just enter the paid amount and the rest "
-"will be saved as debt."
+"Choose the member and charge him the required amount. In case the user wants"
+" to pay the quarterly fee, mark the box to add it to the total amount. If "
+"you or the member does not have change, just enter the paid amount and the "
+"rest will be saved as debt."
 msgstr ""
 "Elige el miembro y cóbrale el importe necesario. En el caso de que el "
 "miembro quiera pagar la cuota trimestral, marca la casilla para sumarlo al "
@@ -775,48 +777,49 @@ msgstr "Cantidad"
 
 #: elbroquil/templates/distribution/member_payment.html:151
 #: elbroquil/templates/distribution/view_product_orders.html:50
+#: elbroquil/templates/order/order_history.html:115
 #: elbroquil/templates/order/view_order.html:23
 msgid "Total"
 msgstr "Total"
 
 #: elbroquil/templates/distribution/member_payment.html:169
 #: elbroquil/templates/management/view_distribution_detail.html:131
-#: elbroquil/templates/order/order_history.html:133
+#: elbroquil/templates/order/order_history.html:139
 msgid "INCIDENTS"
 msgstr "INCIDÉNCIAS"
 
 #: elbroquil/templates/distribution/member_payment.html:180
-#: elbroquil/templates/order/order_history.html:144
+#: elbroquil/templates/order/order_history.html:150
 msgid "Not Ordered"
 msgstr "No Pedido"
 
 #: elbroquil/templates/distribution/member_payment.html:198
 #: elbroquil/templates/management/view_distribution_detail.html:143
-#: elbroquil/templates/order/order_history.html:162
+#: elbroquil/templates/order/order_history.html:168
 msgid "Not Arrived"
 msgstr "No Llegado"
 
 #: elbroquil/templates/distribution/member_payment.html:216
 #: elbroquil/templates/management/view_distribution_detail.html:161
-#: elbroquil/templates/order/order_history.html:180
+#: elbroquil/templates/order/order_history.html:186
 msgid "Amount Changed"
 msgstr "Cantidad Cambiada"
 
 #: elbroquil/templates/distribution/member_payment.html:220
 #: elbroquil/templates/management/view_distribution_detail.html:165
-#: elbroquil/templates/order/order_history.html:184
+#: elbroquil/templates/order/order_history.html:190
 msgid "Ordered"
 msgstr "Pedido"
 
 #: elbroquil/templates/distribution/member_payment.html:220
-#: elbroquil/templates/order/order_history.html:184
+#: elbroquil/templates/order/order_history.html:190
 msgid "Final"
 msgstr "Final"
 
 #: elbroquil/templates/distribution/view_basket_counts.html:23
 msgid ""
-"Prepare the baskets for each member. Place an extra basket for the indicated "
-"members (with more products)."
+"Prepare the baskets for each member. Place an extra basket for the indicated"
+" members (with more products)."
 msgstr ""
 "Prepara las cestas para cada miembro. Pon una extra para los miembros "
 "indicados (con más productos)."
@@ -841,6 +844,10 @@ msgstr "Importe del pedido"
 #: elbroquil/templates/distribution/view_order_totals.html:6
 msgid "This week's order"
 msgstr "Pedido de esta semana"
+
+#: elbroquil/templates/distribution/view_order_totals.html:8
+msgid "No orders"
+msgstr "No hay pedido"
 
 #: elbroquil/templates/distribution/view_order_totals.html:28
 msgid ""
@@ -1078,9 +1085,8 @@ msgid "Close"
 msgstr "Cerrar"
 
 #: elbroquil/templates/order/tour.js:15
-#, fuzzy
 msgid "Order Summary"
-msgstr "Resumen"
+msgstr "Resumen de Pedido"
 
 #: elbroquil/templates/order/tour.js:16
 msgid "Here you can see your order summary"
@@ -1115,8 +1121,8 @@ msgid ""
 "Some products are ordered in units. You can use the up/down buttons to "
 "adjust the quantity you want."
 msgstr ""
-"Algunos productos se piden en unidades. Puedes utilizar los botones de más/"
-"menos para indicar la cantidad que quieres."
+"Algunos productos se piden en unidades. Puedes utilizar los botones de "
+"más/menos para indicar la cantidad que quieres."
 
 #: elbroquil/templates/order/tour.js:52
 msgid "Save the Changes"
@@ -1138,8 +1144,8 @@ msgid ""
 msgstr ""
 "Aquí puedes ver el nombre de la categoría de producto. Abajo, puedes "
 "encontrar la fecha límite de pedido para estos productos. El color indica "
-"cuanto tiempo tienes para modificar tu pedido (verde: mucho tiempo, naranja: "
-"un día, rojo: unas horas)."
+"cuanto tiempo tienes para modificar tu pedido (verde: mucho tiempo, naranja:"
+" un día, rojo: unas horas)."
 
 #: elbroquil/templates/order/tour.js:68
 msgid ""
@@ -1259,8 +1265,8 @@ msgid ""
 "the administrator."
 msgstr ""
 "Verifica que la información de los productos se hayan procesado "
-"correctamente. Si todo está correcto, <strong>guarda los productos</strong>. "
-"Si hay algún error, informe el administrador."
+"correctamente. Si todo está correcto, <strong>guarda los productos</strong>."
+" Si hay algún error, informe el administrador."
 
 #: elbroquil/templates/product/check_product_info.html:30
 msgid "Order limit date"
@@ -1380,7 +1386,8 @@ msgstr "He olvidado la contraseña"
 #: templates/login.html:11
 msgid "Your username and password didn't match. Please try again."
 msgstr ""
-"Tu nombre de usuario y contraseña no coinciden. Por favor intentalo otra vez."
+"Tu nombre de usuario y contraseña no coinciden. Por favor intentalo otra "
+"vez."
 
 #: templates/login.html:17
 msgid "Please sign in"

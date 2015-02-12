@@ -14,13 +14,13 @@ urlpatterns = patterns('',
     url(_(r'^help/'), TemplateView.as_view(template_name="help.html"), name='help'),
     
     # Distribution related URLs
+    url(_(r'^dist/$'), 'elbroquil.views.view_order_totals', name='view_order_totals'),
     url(_(r'^dist/cash/$'), 'elbroquil.views.count_initial_cash', name='count_initial_cash'),
     url(_(r'^dist/baskets/$'), 'elbroquil.views.view_basket_counts', name='view_basket_counts'),
-    url(_(r'^dist/payment/$'), 'elbroquil.views.member_payment', name='member_payment'),
-    url(_(r'^dist/account/$'), 'elbroquil.views.account_summary', name='account_summary'),
     url(_(r'^dist/([0-9]+)/$'), 'elbroquil.views.view_product_orders', name='view_product_orders'),
     url(_(r'^dist/product/([0-9]+)/$'), 'elbroquil.views.view_product_orders_with_id', name='view_product_orders_with_id'),
-    url(_(r'^dist/$'), 'elbroquil.views.view_order_totals', name='view_order_totals'),
+    url(_(r'^dist/payment/$'), 'elbroquil.views.member_payment', name='member_payment'),
+    url(_(r'^dist/account/$'), 'elbroquil.views.account_summary', name='account_summary'),
     
     # Order related URLs
     url(_(r'^order/rate/$'), 'elbroquil.views.rate_products', name='rate_products'),

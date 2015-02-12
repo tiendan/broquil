@@ -61,7 +61,7 @@
 			<ul class="nav navbar-nav">
 				{% block menuitems %}
 				<!--<li id="menu-item-order"><a href="{% url 'elbroquil.views.view_order' %}">{% trans "Order" %}</a></li>-->
-				{% if not request.user.is_superuser %}
+				{% if '@' in request.user.username %}
 				<li id="menu-item-order" class="dropdown">
 				  <a href="{% url 'elbroquil.views.view_order' %}" class="dropdown-toggle" data-toggle="dropdown">{% trans "Order" %} <span class="caret"></span></a>
 		          <ul class="dropdown-menu" role="menu">

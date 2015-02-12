@@ -112,14 +112,20 @@
 					<table class="table table-striped">
 						<thead>
 					    	<tr>
-					        	<th></th><th class="quantity">{% trans "Price" %}</th><th class="quantity">{% trans "Quantity" %}</th>
+					        	<th></th><th class="quantity">{% trans "Price" %}</th><th class="quantity">{% trans "Quantity" %}</th><th> </th><th class="quantity">{% trans "Total" %}</th>
 					        </tr>
 					    </thead>
 					    <tbody>
-						{% for pr in counted_product_list %}
-			        		<tr><td>{{ pr.product.name }}</td><td class="quantity">{{ pr.product.price|floatformat:2 }} &euro;</td><td class="quantity">{{ pr.arrived_quantity }} {{ pr.product.unit }}</td></tr>
+					    {% for order, total in orders_with_totals %}
+    	    				<tr>
+                                <td>{{ order.product.name }}</td>
+        						<td class="price">{{ order.product.price|floatformat:2 }}</td>
+        						<td class="quantity">{{ order.arrived_quantity }}</td>
+        						<td>{{ order.product.unit }}</td>
+        						<td class="total">{{ total|floatformat:2 }}</td>
+        					</tr>
 						{% endfor %}
-							</tbody>
+						</tbody>
 					</table>
 			      </div>
 			    </div>	

@@ -81,7 +81,7 @@ class ExtraInfoInline(admin.StackedInline):
 
 
 class CustomUserCreationForm(UserCreationForm):
-    username = forms.RegexField(label=_("Email"), max_length=30, regex=r'^[\w.@+-]+$',
+    username = forms.RegexField(label=_("Email"), max_length=75, regex=r'^[\w.@+-]+$',
         help_text = _("Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."),
         error_messages = {'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")})
     first_name = forms.CharField(label = _(u"First name"))
@@ -139,7 +139,7 @@ class CustomUserCreationForm(UserCreationForm):
         extra.save()
         
         # Send welcome email to the user
-        email_subject = '[BroquilGoticTEST]Benvingut al Broquil!'
+        email_subject = '[BroquilGotic]Benvingut al Broquil!'
         html_content = '<p style="text-align: center;"><strong><u>El Br&ograve;quil Del G&ograve;tic</u></strong></p>'
         html_content += '<p style="text-align: left;">Hola broquilire!!!!</p>'
         html_content += '<p style="text-align: left;">A partir d\'ara ja pots fer la teva comanda, per a aprendre com fer la comanda, pots mirar la ajuda en <a href="http://el-broquil.rhcloud.com">la pagina web</a></p>'
