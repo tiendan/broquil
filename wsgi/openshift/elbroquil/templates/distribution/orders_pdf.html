@@ -24,17 +24,16 @@ http://www.htmltopdf.org/doc/pisa-en.html for reference
     margin: 2cm;
 }
 @page {
-    @frame {
+    @frame header_frame {
         -pdf-frame-content: notes;
-        -pdf-frame-border: 1;
+        /*-pdf-frame-border: 1;*/
         left: 1cm;
         right: 1cm;
         top: 1cm;
 		height: 2cm;
     }
-    @frame {
-        -pdf-frame-content: main_text;
-        -pdf-frame-border: 1;
+    @frame content_frame {
+        /*-pdf-frame-border: 1;*/
         right: 1cm;
         left: 1cm;
         top: 3cm;
@@ -44,27 +43,62 @@ http://www.htmltopdf.org/doc/pisa-en.html for reference
 h1, h2, h3, h4 { /* Don't add an outline to the document */
     -pdf-outline: false;
 }
+th {
+	font-weight: bold;
+}
+td {
+	border: 2px solid black;
+}
+td.products {
+	padding-top: 5px;
+	padding-left: 3px;
+	font-size: 125%;
+}
+td.orders {
+	text-align: center;
+	padding-top: 5px;
+	font-weight: bolder;
+	font-size: 130%;
+}
+tr.alternate {
+	background: #DDD;
+}
+.separator {
+	background: #000;
+	width: 5px;
+}
+
 </style>
 <body>
-<div id="notes" class="compact">
-    Test Inc.<br />
-    Test street 1<br />
-    CH-8022 Zürich<br />
-    Whatever<br />
-</div>
-<div id="main_text">
-    <h1>Document title</h1>
+	<div id="notes" class="compact">
+    	<p style="font-size: 170%; font-weight: bolder;">Broquil del Gotic - Comanda de {{ distribution_date }}</p>
+	    <p style="font-size: 130%;">No us oblideu d'actualitzar les quantitats en el sistema.</p>
+	</div>
     <div>
-        <h3> Whatever </h3>
-        <!-- cannot make borders span several p tags.... -->
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pretium dignissim eros, posuere venenatis purus varius vitae. Suspendisse quis elit ligula. Cras vulputate metus vitae lectus iaculis nec adipiscing est fermentum. Praesent ac urna ante. Cras semper malesuada sapien at consectetur. Vivamus arcu sapien, dignissim sit amet mollis quis, scelerisque nec nibh. In hac habitasse platea dictumst. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam rutrum interdum felis, quis suscipit justo malesuada at. Mauris luctus justo id nulla placerat et pharetra mi interdum. Mauris rhoncus augue eu tortor luctus convallis. Nulla facilisi. Morbi ut arcu enim. Nullam in leo arcu, sed ultrices felis. Etiam scelerisque rhoncus ultrices. Nulla in elit ut dolor luctus semper. In eleifend consectetur eros, et pellentesque nulla vehicula non. Nam nec lorem ut dui pellentesque dapibus. Etiam condimentum vulputate lectus.</p>
-        <p>Fusce tempus ullamcorper magna, vitae placerat ligula convallis eget. Phasellus sed ullamcorper felis. Vivamus sit amet purus eu mi pretium tempus. Aenean tristique purus id justo suscipit fringilla. Nam egestas felis non velit luctus volutpat. Aliquam interdum congue elementum. Mauris pulvinar fermentum nisl at dignissim. Ut ornare, dolor vitae consectetur iaculis, augue diam porttitor dolor, ut lobortis lorem sem a tellus. Praesent blandit sem in arcu hendrerit ornare. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin non nibh nulla, sed lacinia ante. In viverra congue sapien, ut aliquet justo sagittis vitae. Morbi dictum venenatis eros, et pulvinar enim pretium eu.</p>
+        <table repeat="1">
+			<tr style="height: 2cm;">
+				<th style="width: 4cm; height: 2cm;"></th>
+				{% for member in members %}
+					<th style="border: 2px solid black; height: 2cm;">{{ member.first_name }} {{ member.last_name }}</th>
+					{% if forloop.counter|divisibleby:5 and not forloop.last %}
+					<th class="separator" style="border: 2px solid black;"></th>
+					{% endif %}
+				{% endfor %}
+				<th style="width: 4cm;"></th>
+			</tr>
+			{% for product, orders in products_with_orders %}
+			<tr {% if forloop.counter0|divisibleby:2 %}class="alternate"{% endif %} >
+				<td style="width: 4cm;" class="products">{{ product.name }}</td>
+				{% for order in orders %}
+					<td class="orders">{{ order|floatformat:-2}}</td>
+					{% if forloop.counter|divisibleby:5 and not forloop.last %}
+					<td class="separator"></td>
+					{% endif %}
+				{% endfor %}
+				<td style="width: 4cm;" class="products">{{ product.name }}</td>
+			</tr>
+			{% endfor %}
+		</table>
     </div>
-    <div>
-        <p>Etiam metus nisl, porttitor et convallis sit amet, imperdiet non lectus. Nam nec tincidunt nibh. Nullam dignissim lacus nec nisi adipiscing id euismod nunc pretium. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris in velit risus. Nulla vulputate vehicula diam, eu porta dolor mattis id. Pellentesque sed lacus non erat pharetra dignissim. Aenean lorem tellus, volutpat vitae aliquet ac, imperdiet at risus. Etiam condimentum, quam tempor porttitor bibendum, metus magna hendrerit turpis, ac dapibus nisl leo id massa. In a nisi ante, id mollis ligula. Sed ante erat, ultricies id lacinia sit amet, sollicitudin nec eros. Phasellus sem elit, lobortis pharetra ullamcorper tempor, volutpat sed lorem. Donec sed suscipit velit. Integer tincidunt adipiscing enim, vitae placerat urna venenatis nec.</p>
-        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris nec nulla lorem. Sed cursus erat in dui mollis lobortis. Fusce interdum facilisis risus, sed pretium ligula suscipit vel. Duis tincidunt cursus ipsum et tristique. Sed placerat hendrerit pretium. Vestibulum porttitor porttitor faucibus. Aliquam erat volutpat. Nam elementum leo eu ante fringilla cursus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam eleifend odio a magna hendrerit congue. Sed in fermentum ligula. Maecenas interdum, velit ut bibendum sollicitudin, magna mauris cursus ligula, in condimentum neque nisl vitae dui. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec vel dignissim felis. Aenean vitae orci eu lacus ornare tristique eu nec neque. Etiam eleifend interdum mollis. Morbi id risus est, in vehicula nisi.</p>
-        <p>Nunc vestibulum, lacus quis euismod posuere, nibh enim commodo tortor, eget suscipit sapien mauris quis tortor. Curabitur arcu velit, placerat non consectetur non, tristique in erat. Aliquam sagittis rhoncus mollis. In vitae tortor sapien. Pellentesque ac augue ullamcorper eros fringilla vehicula. Donec lectus urna, sodales quis sollicitudin vitae, bibendum nec ante. Etiam tortor enim, pretium in pulvinar vel, tincidunt non mauris. Nullam leo elit, varius eu pretium at, adipiscing sit amet sapien. Mauris aliquet, augue id sollicitudin viverra, nunc neque gravida arcu, ut pharetra lacus nibh quis lacus. Sed imperdiet rhoncus sapien eu accumsan. Pellentesque nec mi id mauris consequat placerat. Nunc tempus tristique justo sit amet sollicitudin. Phasellus accumsan, tellus sit amet dictum ultricies, dui nulla fermentum eros, quis venenatis sapien leo sit amet est. Sed et turpis justo. Fusce eget tellus sollicitudin sem elementum tempor. Aliquam ac nisi justo, vulputate feugiat leo. Phasellus non nulla ullamcorper arcu laoreet ornare. Suspendisse tristique volutpat auctor. </p>
-    </div>
-</div>
 </body>
 </html>

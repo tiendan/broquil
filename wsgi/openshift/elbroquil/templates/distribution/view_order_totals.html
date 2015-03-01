@@ -29,14 +29,16 @@
 	{% endif %}
 	
     <div id="content-main" class="inner-two-columns">
-		{% if products %}		
+		{% if products %}
         <form action="{% url 'elbroquil.views.view_order_totals' %}" method="POST" class="form-inline">
 	    	{% csrf_token %}
 			<div>
 				<div>
 					<ul class="pager">
 					  <li class="previous blankpreviouspager"></li>
-					  <li><h2 class="fillSpace"></h2></li>
+					  <li>
+						<h3 class="fillSpace"><a href="{% url 'elbroquil.views.download_orders_pdf' %}" target="_blank"><span class="glyphicon glyphicon-download-alt green-icon"></span> {% trans "Download PDF (excluding products &euro;/kg)"%}</a></h3>
+					  </li>
 					  <li class="next"><a href="{% url 'elbroquil.views.count_initial_cash' %}">{% trans "Count initial cash "%} &rarr;</a></li>
 					</ul>
 				</div>

@@ -17,6 +17,7 @@ from django.db import transaction
 
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
+from django.template.context import Context
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.utils import translation
@@ -40,24 +41,69 @@ logger = logging.getLogger("custom")
 @login_required
 @permission_required('elbroquil.prepare_baskets')
 def download_orders_pdf(request):
-	return None
-#	distribution_date = libs.get_today()
+	distribution_date = libs.get_today()	#TODO libs.get_next_distribution_date()
+	only_unit_products = True
+	page_break_before_row = -1
 	
+	#distribution_date_str = 
+
+	# Dictionaries to map IDs to matrix row/column numbers
+	member_indices = {}
+	product_indices = {}
+
 	# Get the list of members who have an order for this date
-#	member_orders = models.User.objects.filter(order__product__distribution_date=distribution_date).distinct().order_by('first_name', 'last_name')
-	
+	members = list(models.User.objects.filter(order__product__distribution_date=distribution_date).distinct().order_by('first_name', 'last_name'))
+
 	# Get the list of products which were ordered for this date
-#	products = models.Product.objects.filter(archived=False, distribution_date=distribution_date,total_quantity__gt=0).order_by('category__sort_order', 'id')
+	products_query = models.Product.objects.extra(select={'is_unit': "unit != 'kg'"}, where=["elbroquil_product.archived=0 AND elbroquil_product.distribution_date='" + str(distribution_date) + "' AND elbroquil_product.total_quantity > 0"])
 	
+	if only_unit_products:
+		products_query = products_query.extra(where=["unit != 'kg'"])
+	
+	products_query = products_query.extra(order_by = ['-is_unit', 'category__sort_order', 'id'])
+	products = list(products_query)
+	
+	# Get all the orders for this date
+	orders = list(models.Order.objects.filter(product__distribution_date=distribution_date, status=models.STATUS_NORMAL))
+
+
 	# Create an empty array-of-arrays to store the order matrix
-#	member_orders_matrix = [[None for i in range(member_orders.count())] for j in range(products.count())]
+	member_orders_matrix = [[None for i in range(len(members))] for j in range(len(products))]
+
+	for idx, member in enumerate(members):
+		member_indices[member.pk] = idx
+
+	for idx, product in enumerate(products):
+		product_indices[product.pk] = idx
+		
+		if page_break_before_row == -1 and product.unit == 'kg':
+			page_break_before_row = idx
+
+	for order in orders:
+		try:
+			member_index = member_indices[order.user_id]
+			product_index = product_indices[order.product_id]
 	
-	#for 
+			member_orders_matrix[product_index][member_index] = order.arrived_quantity
+		except KeyError:
+			continue
 	
-#	resp = HttpResponse(content_type='application/pdf')
-#	result = generate_pdf('distribution/orders_pdf.html', file_object=resp)
-#	return result
+	products_with_orders = zip(products, member_orders_matrix)
 	
+	context = Context({
+		'members': members,
+		'products_with_orders': products_with_orders,
+		'page_break_before_row': page_break_before_row,
+		'distribution_date': distribution_date
+	})
+	
+	
+	#return render(request, 'distribution/orders_pdf.html', context)
+
+	resp = HttpResponse(content_type='application/pdf')
+	result = generate_pdf('distribution/orders_pdf.html', context=context, file_object=resp)
+	return result
+
 @login_required
 @permission_required('elbroquil.prepare_baskets')
 def view_order_totals(request):
