@@ -20,14 +20,14 @@
 
 
 {% block content %}
-	{% include "distribution/wizard.html" with step=2 current_product=current_product total_products=total_products %}
+	{% include "distribution/wizard.html" with step=2 current_product_no=current_product_no total_products=total_products %}
 	<br/>
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "In case the product quantity/weight has to be changed, make the changes and don't forget to save them." %}</div>
 	
     <div id="content-main" class="inner-two-columns">
         <form action="{% url 'elbroquil.views.view_product_orders' current_product_no %}" method="POST">
 	    	{% csrf_token %}
-	    	<input id="product_price" name="product_price" type="hidden" value="{{ current_product_price }}" />
+	    	<input id="product_price" name="product_price" type="hidden" value="{{ current_product.price }}" />
 			<div>
 				<div>
 				<ul class="pager">
@@ -36,7 +36,7 @@
 				{% else %}	
 				  <li class="previous"><a href="{% url 'elbroquil.views.view_basket_counts' %}">&larr; {% trans "Prepare baskets" %}</a></li>
 				{% endif %}
-				  <li><h2 class="fillSpace">{{ product_name }}</h2></li>
+				  <li><h3 class="fillSpace">{{ current_product.name }}{% if current_product.stock_product %} <span class="label label-primary">{% trans "STOCK" %}</span>{% endif %}</h3></li>
 				{% if next_product_no %}
 				  <li class="next"><a href="{% url 'elbroquil.views.view_product_orders' next_product_no %}">{{ next_product_name }} &rarr;</a></li>
 				{% else %}	
@@ -47,7 +47,7 @@
 				<div class="table-responsive col-md-offset-2 col-md-8">
 					<table id="table_product_order" class="product_order_table table table-striped table-condensed table-bordered" >
 					<thead>
-						<tr><th class="member_name_header">{% trans "Cooperative Member" %}</th><th class="product_order_header">{% trans "Order" %} ({{ product_orders.0.product.unit }})</th><th class="product_order_header">{% trans "Arrived" %} ({{ product_orders.0.product.unit }})</th><th class="product_order_header">{% trans "Total" %}</th></tr>
+						<tr><th class="member_name_header">{% trans "Cooperative Member" %}</th><th class="product_order_header">{% trans "Order" %} ({{ current_product.unit }})</th><th class="product_order_header">{% trans "Arrived" %} ({{ current_product.unit }})</th><th class="product_order_header">{% trans "Total" %}</th></tr>
 					</thead>
 					<tbody>
 						{% for order in product_orders %}
@@ -67,8 +67,8 @@
 						</tr>
 						<tr {% if product_order %}class="success"{% endif %}>
 							<td class="total-info">{% trans "TOTAL:" %}</td>
-							<td class="success total-lg" style="border: 2px solid green;">{{ total_quantity|floatformat:-2 }} {{ product_orders.0.product.unit }}</td>
-							<td class="success total-lg" style="border: 2px solid green;">{{ total_arrived_quantity|floatformat:-2 }} {{ product_orders.0.product.unit }}</td>
+							<td class="success total-lg" style="border: 2px solid green;">{{ total_quantity|floatformat:-2 }} {{ current_product.unit }}</td>
+							<td class="success total-lg" style="border: 2px solid green;">{{ total_arrived_quantity|floatformat:-2 }} {{ current_product.unit }}</td>
 						</tr>
 					</tbody>
 					</table>
@@ -108,7 +108,7 @@
 		$('#menu-item-distribution').addClass("active");
 		
 		// Cookie parameters for this page
-		var cookie_name = 'selected_person_rows_'+{{ current_product_id }};
+		var cookie_name = 'selected_person_rows_'+{{ current_product.id }};
 		var cookie_expires = 2;
 		
 		// On row clicked, add/remove highlight ('success' class) to the person row

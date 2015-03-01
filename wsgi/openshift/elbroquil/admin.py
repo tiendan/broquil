@@ -58,7 +58,7 @@ class ProductAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('name', 'category', 'origin', 'comments', 'price', 'unit', 'integer_demand', 'new_product', 'distribution_date', 'order_limit_date')}
+            'fields': ('name', 'category', 'origin', 'comments', 'price', 'unit', 'integer_demand', 'stock_product', 'new_product', 'distribution_date', 'order_limit_date')}
         ),
     )
     

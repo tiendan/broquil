@@ -17,7 +17,7 @@
 
 
 {% block content %}
-	{% include "distribution/wizard.html" with step=4 current_product=0 total_products=0 %}
+	{% include "distribution/wizard.html" with step=4 current_product_no=0 total_products=0 %}
 	<br/>
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "<strong>Prepare the envelopes</strong> for each producer, placing the required amount of money inside.<br/>Count the <strong>final amount</strong> in the drawer and save it here. Make sure it more or less equals the expected amount." %}</div>
 	
@@ -59,16 +59,6 @@
 						</div>
 					</div>
 				</div>
-				<!--
-				<div class="form-group">
-			    	<label for="debt-balance" class="control-label col-md-4">{% trans "Debt balance:" %}</label>
-			    	<div class="col-md-4">
-				    	<div class="input-group"> 
-							<input id="debt-balance" name="debt-balance" type="text" class="form-control bfh-number input-sm quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ debt_balance }}" data-trailingzeros="true" data-min="-9999" disabled/>
-				      		<div class="input-group-addon"><strong>&euro;</strong></div>
-						</div>
-					</div>
-				</div>-->
 				<div class="thumbnail producer-group">
 				<h3><span class="glyphicon glyphicon-envelope"></span> {% trans "Pay to Producers" %}</h3>
 				{% for producer, payment in producer_payments %}

@@ -196,8 +196,8 @@ class Command(BaseCommand):
         limit = datetime.now() - timedelta(days=5)
 
         # Connect to the Gmail IMAP server
-        user = settings.EMAIL_HOST_SECONDARY_USER       # TODO CHANGE TO PRIMARY
-        pwd = settings.EMAIL_HOST_SECONDARY_PASSWORD 
+        user = settings.EMAIL_HOST_USER       # TODO CHANGE TO PRIMARY
+        pwd = settings.EMAIL_HOST_PASSWORD 
         
         self.stdout.write('>Connectando a GMAIL')
         m = imaplib.IMAP4_SSL("imap.gmail.com")

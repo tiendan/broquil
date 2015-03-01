@@ -23,7 +23,7 @@
 
 {% block content %}
 	{% if products %}
-	{% include "distribution/wizard.html" with step=1 current_product=0 total_products=0 %}
+	{% include "distribution/wizard.html" with step=1 current_product_no=0 total_products=0 %}
 	<br/>
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "Check that all the products has arrived. You can mark the products you have checked by clicking on them." %}</div>
 	{% endif %}

@@ -93,13 +93,13 @@ class Producer(models.Model):
     send_ratings = models.BooleanField(_(u'send ratings'), default=False)
     order_day = models.SmallIntegerField(_(u'order day'), choices=DAY_OF_WEEK_CHOICES, default=MONDAY)
     order_hour = models.SmallIntegerField(_(u'order hour'), validators=[MaxValueValidator(23), MinValueValidator(0)])
-    minimum_order = models.DecimalField(_(u'minimum order'), decimal_places=2, max_digits=5, null=True, blank=True)
+    minimum_order = models.DecimalField(_(u'minimum order'), decimal_places=2, max_digits=7, null=True, blank=True)
     fixed_products = models.BooleanField(_(u'fixed products'), default=False)
     limited_availability = models.BooleanField(_(u'limited availability'), default=False)
     excel_format = models.SmallIntegerField(_(u'excel format'), choices=EXCEL_FORMAT_CHOICES, default=STANDARD)
     default_category_name = models.CharField(_(u'default category name'), max_length=50, null=True, blank=True)
     active = models.BooleanField(_(u'active'), default=True, help_text=_(u"<em>(Disable the producer by clearing this option.)</em>"))
-    transportation_cost = models.DecimalField(_(u'transportation cost'), decimal_places=2, max_digits=5, default=0)
+    transportation_cost = models.DecimalField(_(u'transportation cost'), decimal_places=2, max_digits=7, default=0)
     
     short_product_explanation = models.CharField(_(u'short product explanation'), max_length=80, null=False, blank=False, default="", help_text=_(u"<em>(Will be shown on the 'offer created' emails.)</em>"))
     
@@ -162,19 +162,21 @@ class Product(models.Model):
     category = models.ForeignKey(Category)
     origin = models.CharField(_(u'origin'), max_length=100, null=True, blank=True)
     comments = models.CharField(_(u'comments'), max_length=100, null=True, blank=True)
-    price = models.DecimalField(_(u'price'), decimal_places=4, max_digits=7)
+    price = models.DecimalField(_(u'price'), decimal_places=4, max_digits=9)
     unit = models.CharField(_(u'unit'), max_length=20, help_text=_(u"<em>(without the &euro; sign or / character.)</em>"))
     integer_demand = models.BooleanField(_(u'integer demand'), default=False)
     distribution_date = models.DateField(_(u'distribution date'), null=True, blank=True, help_text=_(u"<em>(Only fill for products that are offered just once.)</em>"))
     archived = models.BooleanField(_(u'archived'), default=False)
     
-    total_quantity = models.DecimalField(_(u'total quantity'), decimal_places=2, max_digits=5, default=0)
-    arrived_quantity = models.DecimalField(_(u'arrived quantity'), decimal_places=2, max_digits=5, default=0)
+    total_quantity = models.DecimalField(_(u'total quantity'), decimal_places=2, max_digits=7, default=0)
+    arrived_quantity = models.DecimalField(_(u'arrived quantity'), decimal_places=2, max_digits=7, default=0)
     order_limit_date = models.DateTimeField(_(u'order limit date'), null=True, blank=True, help_text=_(u"<em>(Only fill for products that are offered just once.)</em>"))
     average_rating = models.DecimalField(_(u'average rating'), decimal_places=1, max_digits=5, default=0)
     
     new_product = models.BooleanField(_(u'new product'), default=False, help_text=_(u"<em>(To highlight this product as NEW in the order pages.)</em>"))
     sent_to_producer = models.BooleanField(_(u'sent to producer'), default=False)
+	
+    stock_product = models.BooleanField(_(u'stock product'), default=False)
     
     def active(self):
         return self.distribution_date >= timezone.now().date() and not self.archived 
@@ -191,15 +193,15 @@ class Product(models.Model):
 class Order(models.Model):
     product = models.ForeignKey(Product)
     user = models.ForeignKey(User)
-    quantity = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=5)
+    quantity = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7)
     rating = models.SmallIntegerField(_(u'rating'), null=True, blank=True, default=None)
     
-    arrived = models.BooleanField(_(u'arrived'), default=True)  # TODO REMOVE
-    canceled = models.BooleanField(_(u'canceled'), default=False)   # TODO REMOVE
+    #arrived = models.BooleanField(_(u'arrived'), default=True)  # TODO REMOVE
+    #canceled = models.BooleanField(_(u'canceled'), default=False)   # TODO REMOVE
     
     archived = models.BooleanField(_(u'archived'), default=False)
     status = models.SmallIntegerField(_(u'status'), choices=STATUS_CHOICES, default=STATUS_NORMAL)
-    arrived_quantity = models.DecimalField(_(u'arrived quantity'), decimal_places=2, max_digits=5)
+    arrived_quantity = models.DecimalField(_(u'arrived quantity'), decimal_places=2, max_digits=7)
 
     class Meta:
         verbose_name = _('order')
@@ -213,14 +215,14 @@ class Order(models.Model):
 class Payment(models.Model):
     user = models.ForeignKey(User)
     date = models.DateTimeField(_(u'date'), default=timezone.now)
-    amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=5, default=0)
+    amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7, default=0)
 
 # Consumption model
 # Holds the part of the payment which is due to the consumption (orders)
 class Consumption(models.Model):
     user = models.ForeignKey(User)
     payment = models.ForeignKey(Payment)
-    amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=5, default=0)
+    amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7, default=0)
 
 # Debt model
 # Holds the debt of the member when the related payment is made. For each payment, the debt
@@ -228,7 +230,7 @@ class Consumption(models.Model):
 # cooperative to the member
 class Debt(models.Model):
     user = models.ForeignKey(User)
-    amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=5, default=0)
+    amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7, default=0)
 
     payment = models.ForeignKey(Payment)
 
@@ -240,7 +242,7 @@ class Quarterly(models.Model):
     year = models.SmallIntegerField(_(u'year'))
     quarter = models.SmallIntegerField(_(u'quarter'))
     created_date = models.DateTimeField(_(u'created date'), default=timezone.now)
-    amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=5, default=0)
+    amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7, default=0)
 
     payment = models.ForeignKey(Payment, null=True)
 
@@ -256,21 +258,21 @@ class ExtraInfo(models.Model):
 # Holds the financial summary of the distribution day
 class DistributionAccountDetail(models.Model):
     date = models.DateField(_(u'distribution date'), default=timezone.now)
-    initial_amount = models.DecimalField(_(u'initial amount'), decimal_places=2, max_digits=5, default=0)
-    member_consumed_amount = models.DecimalField(_(u'member consumed amount'), decimal_places=2, max_digits=5, default=0)
-    total_member_payment_amount = models.DecimalField(_(u'total member payment amount'), decimal_places=2, max_digits=5, default=0)
-    #producer_paid_amount = models.DecimalField(_(u'producer paid amount'), decimal_places=2, max_digits=5, default=0)
-    debt_balance_amount= models.DecimalField(_(u'debt balance amount'), decimal_places=2, max_digits=5, default=0)
-    quarterly_fee_collected_amount = models.DecimalField(_(u'collected fee amount'), decimal_places=2, max_digits=5, default=0)
-    final_amount = models.DecimalField(_(u'final amount'), decimal_places=2, max_digits=5, default=0)
-    expected_final_amount = models.DecimalField(_(u'expected final amount'), decimal_places=2, max_digits=5, default=0)
+    initial_amount = models.DecimalField(_(u'initial amount'), decimal_places=2, max_digits=7, default=0)
+    member_consumed_amount = models.DecimalField(_(u'member consumed amount'), decimal_places=2, max_digits=7, default=0)
+    total_member_payment_amount = models.DecimalField(_(u'total member payment amount'), decimal_places=2, max_digits=7, default=0)
+    #producer_paid_amount = models.DecimalField(_(u'producer paid amount'), decimal_places=2, max_digits=7, default=0)
+    debt_balance_amount= models.DecimalField(_(u'debt balance amount'), decimal_places=2, max_digits=7, default=0)
+    quarterly_fee_collected_amount = models.DecimalField(_(u'collected fee amount'), decimal_places=2, max_digits=7, default=0)
+    final_amount = models.DecimalField(_(u'final amount'), decimal_places=2, max_digits=7, default=0)
+    expected_final_amount = models.DecimalField(_(u'expected final amount'), decimal_places=2, max_digits=7, default=0)
 
 # Producer Paymnet model
 # Holds the information of a payment made to a producer
 class ProducerPayment(models.Model):
     date = models.DateField(_(u'distribution date'), default=timezone.now)
     producer = models.ForeignKey(Producer)
-    amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=5, default=0)
+    amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7, default=0)
 
 # Email Template model
 # Contains editable email templates

@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     
     # Distribution related URLs
     url(_(r'^dist/$'), 'elbroquil.views.view_order_totals', name='view_order_totals'),
+    url(_(r'^dist/pdf/$'), 'elbroquil.views.download_orders_pdf', name='download_orders_pdf'),
     url(_(r'^dist/cash/$'), 'elbroquil.views.count_initial_cash', name='count_initial_cash'),
     url(_(r'^dist/baskets/$'), 'elbroquil.views.view_basket_counts', name='view_basket_counts'),
     url(_(r'^dist/([0-9]+)/$'), 'elbroquil.views.view_product_orders', name='view_product_orders'),
