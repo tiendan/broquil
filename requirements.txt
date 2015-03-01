@@ -32,6 +32,7 @@ requests==2.2.1
 six==1.7.3
 sqlparse==0.1.11
 static==1.0.2
+wsgiref==0.1.2
 xlrd==0.9.3
 xlutils==1.7.0
 xlwt==0.7.5

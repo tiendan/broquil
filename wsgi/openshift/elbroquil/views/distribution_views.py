@@ -40,6 +40,7 @@ logger = logging.getLogger("custom")
 @login_required
 @permission_required('elbroquil.prepare_baskets')
 def download_orders_pdf(request):
+	return None
 #	distribution_date = libs.get_today()
 	
 	# Get the list of members who have an order for this date
