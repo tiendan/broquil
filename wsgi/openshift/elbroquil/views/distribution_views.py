@@ -37,11 +37,11 @@ from django_xhtml2pdf.utils import generate_pdf
 # Get an instance of a logger
 logger = logging.getLogger("custom")
 
+#TODO ADD TO PDF GENERATION @permission_required('elbroquil.prepare_baskets')
 
 @login_required
-@permission_required('elbroquil.prepare_baskets')
 def download_orders_pdf(request):
-	distribution_date = libs.get_today()	#TODO libs.get_next_distribution_date()
+	distribution_date = libs.get_next_distribution_date()
 	only_unit_products = True
 	page_break_before_row = -1
 	
@@ -62,6 +62,10 @@ def download_orders_pdf(request):
 	
 	products_query = products_query.extra(order_by = ['-is_unit', 'category__sort_order', 'id'])
 	products = list(products_query)
+	
+	# If there are no products, raise 404 error
+	if len(products) == 0:
+		raise Http404
 	
 	# Get all the orders for this date
 	orders = list(models.Order.objects.filter(product__distribution_date=distribution_date, status=models.STATUS_NORMAL))
