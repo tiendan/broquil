@@ -51,7 +51,16 @@ def parse_cal_rosset(book):
             # Else it is product info
             else:
                 # Create the array containing product info and append it to product list
-                product = [category_name, sheet.cell_value(rowx=current_row, colx=product_name_column), sheet.cell_value(rowx=current_row, colx=price_column), sheet.cell_value(rowx=current_row, colx=unit_column), sheet.cell_value(rowx=current_row, colx=origin_column), sheet.cell_value(rowx=current_row, colx=comments_column)]
+                price = sheet.cell_value(rowx=current_row, colx=price_column)
+                origin = sheet.cell_value(rowx=current_row, colx=origin_column)
+                
+                # Add VAT depending on product (10% for processed food, 4% for others)
+                if "elaborat" in origin.lower() or "elaborad" in origin.lower():
+                    price = price * 1.10
+                else:
+                    price = price * 1.04
+                
+                product = [category_name, sheet.cell_value(rowx=current_row, colx=product_name_column), price, sheet.cell_value(rowx=current_row, colx=unit_column), origin, sheet.cell_value(rowx=current_row, colx=comments_column)]
                 
                 #logger.error("PRODUCT: ")
                 #logger.error(product)

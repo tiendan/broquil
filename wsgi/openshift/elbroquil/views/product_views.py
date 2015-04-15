@@ -105,8 +105,14 @@ def confirm_products(request):
         table_data = ast.literal_eval(form.cleaned_data['table_data'])
         producer_id = form.cleaned_data['producer_id']
         producer = models.Producer.objects.get(id=producer_id)
-        distribution_date = form.cleaned_data['distribution_date'].strip() or None
-        order_limit_date = form.cleaned_data['order_limit_date'].strip() or None
+        distribution_date = None
+        order_limit_date = None
+
+        if form.cleaned_data.get('distribution_date'):
+            distribution_date = form.cleaned_data['distribution_date'].strip()
+
+        if form.cleaned_data.get('order_limit_date'):
+            order_limit_date = form.cleaned_data['order_limit_date'].strip()
         
         # If distribution date is passed, parse the strings and create DateTime objects with timezone info
         if distribution_date and order_limit_date:
