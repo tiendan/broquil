@@ -18,7 +18,7 @@ class UploadProductsForm(forms.Form):
             'fields': ('producer', 'excel_file')
         }),
     )
-    
+
 
 class CheckProductsForm(forms.Form):
     table_data = forms.CharField()
