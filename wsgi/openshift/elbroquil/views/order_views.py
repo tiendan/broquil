@@ -300,8 +300,9 @@ def view_order(request):
         
     overall_sum = products_sum + debt + quarterly_fee
     
-    if not request.session.get('order_total'):
-        libs.calculate_order_summary(request)
+    # Calculate order summary every time this page is shown
+    #if not request.session.get('order_total'):
+    libs.calculate_order_summary(request)
         
     categories = models.Category.objects.filter(product__archived=False, product__order_limit_date__gt=libs.get_now()).distinct()
     

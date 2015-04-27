@@ -110,7 +110,7 @@ class Command(BaseCommand):
                 self.stdout.write('El productor tiene ' + str(len(products)) + ' productos...')
                 
                 # Add information of these products to the offer summary included in the email sent to members
-                offer_summary += "<li>" + producer.short_product_explanation + " (" + _(u'until') + " " + timezone.localtime(limit_date).strftime("%d/%m/%Y %H:%M") + ")</li>"
+                offer_summary += "<li>" + producer.short_product_explanation + " (fins " + timezone.localtime(limit_date).strftime("%d/%m/%Y %H:%M") + ")</li>"
                 
                 # Delete all products already copied for this week
                 models.Product.objects.filter(category__producer=producer, distribution_date=next_dist_date).delete()
@@ -204,7 +204,10 @@ class Command(BaseCommand):
         m.login(user,pwd)
         
         # Choose the default mailbox (Inbox)
-        m.select()
+        #m.select()
+
+        # Choose the "All mail" folder
+        m.select('"[Gmail]/Tots els missatges"')
         
         # Search for the offer emails (subject='oferta cal rosset' and sent in the last few days)
         resp, items = m.search(None, '(SUBJECT "'+email_subject+'") (SINCE "'+limit.strftime('%d-%b-%Y')+'")')
