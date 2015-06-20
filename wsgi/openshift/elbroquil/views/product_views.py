@@ -79,7 +79,7 @@ def check_products(request):
                 products, distribution_date, order_limit_date = parser.parse_standard(book)
             
             # If dates are entered, check if there is a problem with it (whether they are past dates)
-            if distribution_date != "":
+            if distribution_date != "": 
                 zone = pytztimezone(settings.TIME_ZONE)
 
                 distribution_date = parse_date(distribution_date)
