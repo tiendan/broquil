@@ -34,17 +34,16 @@ class Command(BaseCommand):
         
         # For each producer defined in the system
         for producer in producers:
-            self.stdout.write('Comprobando el productor: ' + producer.company_name + "...")
-            
             # Get the products which have exceeded their order limit dates 
             # and which are not yet sent to the producer
             products = models.Product.objects.filter(order_limit_date__lt=libs.get_now(), sent_to_producer=False, category__producer=producer).order_by('category__sort_order', 'id')
             
             # If there are no products, continue
             if len(products) == 0:
-                self.stdout.write('No hay productos para este productor.')
+                #self.stdout.write('No hay productos para este productor.')
                 continue
             
+            self.stdout.write('Productor: ' + producer.company_name + "...")
             self.stdout.write('%d productos pendientes de enviar al productor...' % len(products))
                     
             # If these products belong to the next distribution date

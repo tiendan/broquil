@@ -54,6 +54,7 @@ def check_products(request):
     distribution_date = ""
     order_limit_date = ""
     producer_id = ""
+    date_error = False
     
     '''If the form is submitted, parse the Excel file and show on page'''
     if request.method == 'POST':
@@ -77,11 +78,22 @@ def check_products(request):
             elif excel_format == models.STANDARD:
                 products, distribution_date, order_limit_date = parser.parse_standard(book)
             
+            # If dates are entered, check if there is a problem with it (whether they are past dates)
+            if distribution_date != "":
+                zone = pytztimezone(settings.TIME_ZONE)
+
+                distribution_date = parse_date(distribution_date)
+                order_limit_date = parse_datetime(order_limit_date)
+
+                if distribution_date < libs.get_today() or order_limit_date < libs.get_now().replace(tzinfo=None):
+                    date_error = True
+
             return render(request, 'product/check_product_info.html', {
                 'products': products,
                 'producer': producer_id,
                 'distribution_date': distribution_date,
                 'order_limit_date': order_limit_date,
+                'date_error': date_error,
             })
         else:
             '''If form not valid, render the form page again'''

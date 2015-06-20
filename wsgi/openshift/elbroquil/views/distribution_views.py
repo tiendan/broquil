@@ -473,7 +473,8 @@ def member_payment(request):
             consumption.amount = total_price
             consumption.save()
 
-    member_payments = models.Payment.objects.filter(date__gte=libs.get_today()).prefetch_related('user').order_by('user__first_name', 'user__last_name')
+    # June 2015: Do not show + for members who have a payment of 0 euros
+    member_payments = models.Payment.objects.filter(date__gte=libs.get_today(), amount__gt=0).prefetch_related('user').order_by('user__first_name', 'user__last_name')
     
     member_payment_index = 0
     member_payment_status = []
@@ -487,7 +488,7 @@ def member_payment(request):
             
     member_orders = zip(member_orders, member_payment_status)
     
-    payment_count = models.Payment.objects.filter(date__gte=today).count()
+    payment_count = models.Payment.objects.filter(date__gte=today, amount__gt=0).count()
             
     return render(request, 'distribution/member_payment.html', {
        'member_orders': member_orders,

@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content_title %}
-<h1>{% trans "Check the product information" %} <button id="confirm_button" type="button" class="btn btn-lg btn-success pull-right">{% trans "Save products" %}</button></h1>
+<h1>{% trans "Check the product information" %} {% if date_error == False %}<button id="confirm_button" type="button" class="btn btn-lg btn-success pull-right">{% trans "Save products" %}</button>{% endif %}</h1>
 {% endblock %}
 
 {% block content %}
@@ -20,7 +20,8 @@
 	            <div class="form-group">
                     <label class="control-label col-sm-2 col-lg-2 ">{% trans "Distribution date" %}</label>
                     <div class=" col-sm-10 col-lg-10 ">
-                        <label>{{ distribution_date }}</label>
+                        {% if date_error %}<span class="glyphicon glyphicon-warning-sign"></span>{% endif %}
+                        <label {% if date_error %}class="bg-danger"{% endif %}>{{ distribution_date }}</label>
                     </div>
                 </div>
                 {% endif %}
@@ -28,7 +29,8 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2 col-lg-2 ">{% trans "Order limit date" %}</label>
                     <div class=" col-sm-10 col-lg-10 ">
-                        <label>{{ order_limit_date }}</label>
+                        {% if date_error %}<span class="glyphicon glyphicon-warning-sign"></span>{% endif %}
+                        <label {% if date_error %}class="bg-danger"{% endif %}>{{ order_limit_date }}</label>
                     </div>
                 </div>
                 {% endif %}

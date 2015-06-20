@@ -13,8 +13,12 @@ class Command(BaseCommand):
     help = 'Envia el correo recordatorio a los miembros activos'
 
     def handle(self, *args, **options):
-        self.stdout.write('Enviando el recordatoria a los miembros...')
-    
+        self.stdout.write('Enviando el recordatorio a los miembros...')
+        
+        if models.Product.objects.filter(distribution_date=libs.get_next_wednesday()).count() == 0:
+            self.stdout.write('No productos en oferta para este miercoles, no se enviara ningun correo...')
+            return
+        
         # Send the reminder email to the active members
         email_subject = '[BroquilGotic]No t\'oblidis de fer la comanda'
         html_content = "Hola broquilire!!!!<br/>\

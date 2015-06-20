@@ -87,8 +87,8 @@ class CustomUserCreationForm(UserCreationForm):
     first_name = forms.CharField(label = _(u"First name"))
     last_name = forms.CharField(label = _(u"Last name"))
     
-    phone = forms.CharField(label = _(u"Phone number"), max_length=15,
-        help_text = _("This will be the initial password for the member."),)
+    phone = forms.RegexField(label = _(u"Phone number"), max_length=15, regex=r'^[0-9]+$',
+        help_text = _("This will be the initial password for the member.") + " " + _("Numbers only."),)
     secondary_email = forms.EmailField(label = _(u"Alternative email"), required=False)
     secondary_phone = forms.CharField(label = _(u"Alt. phone number"), max_length=15, required=False)
     
@@ -204,3 +204,4 @@ admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Product, ProductAdmin)
 admin.site.register(models.SkippedDistributionDate)
 admin.site.register(models.EmailTemplate, EmailTemplateAdmin)
+admin.site.register(models.AccountMovement)
