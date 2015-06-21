@@ -204,4 +204,4 @@ admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Product, ProductAdmin)
 admin.site.register(models.SkippedDistributionDate)
 admin.site.register(models.EmailTemplate, EmailTemplateAdmin)
-admin.site.register(models.AccountMovement)
+#admin.site.register(models.AccountMovement)	# TODO ONUR Removed new model admin for now
