@@ -82,10 +82,10 @@ def check_products(request):
             if distribution_date != "": 
                 zone = pytztimezone(settings.TIME_ZONE)
 
-                distribution_date = parse_date(distribution_date)
-                order_limit_date = parse_datetime(order_limit_date)
+                distribution_date_parsed = parse_date(distribution_date)
+                order_limit_date_parsed = parse_datetime(order_limit_date)
 
-                if distribution_date < libs.get_today() or order_limit_date < libs.get_now().replace(tzinfo=None):
+                if distribution_date_parsed < libs.get_today() or order_limit_date_parsed < libs.get_now().replace(tzinfo=None):
                     date_error = True
 
             return render(request, 'product/check_product_info.html', {
