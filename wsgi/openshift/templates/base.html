@@ -12,18 +12,18 @@
     <title>{% block title %}El Broquil del Gotic{% endblock %}</title>
 	<link rel="shortcut icon" href="/static/images/favicon.ico">
 	<link rel="apple-touch-icon" href="/static/images/apple-touch-icon.png">
-	
-	<!-- TODO Uncomment CDN files --> 
-    <!-- Bootstrap core CSS 
+
+	<!-- TODO Uncomment CDN files -->
+    <!-- Bootstrap core CSS
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 	-->
-	<!-- Optional theme 
+	<!-- Optional theme
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 	-->
-	
+
     <!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="/static/styles/bootstrap.min.css">
-	
+
 	<!-- Optional theme -->
 	<link rel="stylesheet" href="/static/styles/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
@@ -31,7 +31,7 @@
 	<link rel="stylesheet" href="/static/styles/fuelux.css" type="text/css">
 	<link rel="stylesheet" href="/static/styles/hopscotch.css" type="text/css">
 	{% block extrahead %}{% endblock %}
-	
+
     <!-- Custom styles for this template
     <link href="jumbotron.css" rel="stylesheet"> -->
 
@@ -61,8 +61,8 @@
         <div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				{% block menuitems %}
-				<!--<li id="menu-item-order"><a href="{% url 'elbroquil.views.view_order' %}">{% trans "Order" %}</a></li>-->
-				{% if '@' in request.user.username %}
+
+        {% if '@' in request.user.username %}
 				<li id="menu-item-order" class="dropdown">
 				  <a href="{% url 'elbroquil.views.view_order' %}" class="dropdown-toggle" data-toggle="dropdown">{% trans "Order" %} <span class="caret"></span></a>
 		          <ul class="dropdown-menu" role="menu">
@@ -72,39 +72,41 @@
 		          </ul>
 		        </li>
 				{% endif %}
-				{% if perms.elbroquil.prepare_baskets %}
+
+        {% if perms.elbroquil.prepare_baskets %}
 				<li id="menu-item-distribution"><a href="{% url 'elbroquil.views.view_order_totals' %}">{% trans "Prepare Baskets" %}</a></li>
 				{% endif %}
-				{% if perms.elbroquil.modify_products %}
-				<li id="menu-item-product" class="dropdown">
-				  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Products" %} <span class="caret"></span></a>
-		          <ul class="dropdown-menu" role="menu">
+
+        <li id="menu-item-accounting"><a href="{% url 'elbroquil.views.view_distribution_detail' %}">{% trans "Accounting" %}</a></li>
+				<li id="menu-item-help"><a href="{% url 'help' %}">{% trans "Help" %}</a></li>
+
+				{% if user.is_staff or perms.elbroquil.modify_products or perms.elbroquil.accounting %}
+				<li id="menu-item-admin" class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Admin" %} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+    				  {% if perms.elbroquil.modify_products %}
 		            <li><a href="{% url 'elbroquil.views.upload_products' %}">{% trans "Upload products excel" %}</a></li>
 		            <li><a href="{% url 'elbroquil.views.view_products' %}">{% trans "View products" %}</a></li>
-		          </ul>
-		        </li>
+                <li role="separator" class="divider"></li>
+    				  {% endif %}
+              {% if perms.elbroquil.accounting %}
+      				  <li><a href="{% url 'elbroquil.views.view_fees' %}">{% trans "View Fee Status" %}</a></li>
+      		      <li><a href="{% url 'elbroquil.views.create_fees' %}">{% trans "Create Fees" %}</a></li>
+                <li role="separator" class="divider"></li>
+    				  {% endif %}
+              {% if user.is_staff %}
+                <li><a href="/admin/">{% trans "Admin Panel" %}</a></li>
+              {% endif %}
+            </ul>
+        </li>
 				{% endif %}
-				<li id="menu-item-accounting"><a href="{% url 'elbroquil.views.view_distribution_detail' %}">{% trans "Accounting" %}</a></li>
-				{% if perms.elbroquil.accounting %}
-				<li id="menu-item-fee" class="dropdown">
-				  <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Quarterly Fees" %} <span class="caret"></span></a>
-		          <ul class="dropdown-menu" role="menu">
-		            <li><a href="{% url 'elbroquil.views.view_fees' %}">{% trans "View Fee Status" %}</a></li>
-		            <li><a href="{% url 'elbroquil.views.create_fees' %}">{% trans "Create Fees" %}</a></li>
-		          </ul>
-		        </li>
-				{% endif %}
-		
-				<li id="menu-item-help"><a href="{% url 'help' %}">{% trans "Help" %}</a></li>
-				{% if user.is_staff %}
-				<li id="menu-item-admin"><a href="/admin/">{% trans "Admin" %}</a></li>
-				{% endif %}
-				{% endblock %}
-			</ul>
-			
-			
-			<ul class="nav navbar-nav navbar-right">
 				
+        {% endblock %}
+			</ul>
+
+
+			<ul class="nav navbar-nav navbar-right">
+
 				{% if order_total %}
 		        <li id="order-total-dropdown" class="dropdown">
                 	<a href="#" class="dropdown-toggle larger-text" data-toggle="dropdown">
@@ -116,7 +118,7 @@
 	                </div>
 	              </li>
 				{% endif %}
-				
+
 				{% if user.is_authenticated %}
 	              <li class="dropdown">
 	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -155,13 +157,13 @@
 					</div>
 				</li>
 			</ul>
-			
-			
-			
-			<!-- 
-			
+
+
+
+			<!--
+
 			{% if request.user.is_authenticated %}
-			
+
 			<ul class="nav navbar-nav navbar-right">
 		        <li><a href="#">{{ request.user.username }}</a></li>
 		      </ul>
@@ -232,7 +234,7 @@
     <script src="/static/scripts/bootstrap.min.js"></script>
 	<script src="/static/scripts/jquery.cookie.min.js"></script>
 	<script src="/static/scripts/hopscotch.js"></script>
-	
+
 	{% block scriptincludes %}{% endblock %}
 	{% block extrascripts %}{% endblock %}
   </body>
