@@ -36,7 +36,17 @@
 				{% else %}	
 				  <li class="previous"><a href="{% url 'elbroquil.views.view_basket_counts' %}">&larr; {% trans "Prepare baskets" %}</a></li>
 				{% endif %}
-				  <li><h3 class="fillSpace">{{ current_product.name }}{% if current_product.stock_product %} <span class="label label-primary">{% trans "STOCK" %}</span>{% endif %}</h3></li>
+				  <li>
+                      <h3 class="fillSpace">{{ current_product.name }}{% if current_product.stock_product %} <span class="label label-primary">{% trans "STOCK" %}</span>{% endif %}</h3>
+                        <div class="btn-group">
+                          <select class="form-control" id="jump_to_product">
+				  		    <option value="-1">{% trans "JUMP" %}</option>
+                            {% for single_product in all_products %}
+                              <option value="{{ single_product.id }}" data-url="{% url 'elbroquil.views.view_product_orders_with_id' single_product.id %}">{{ single_product.name }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                  </li>
 				{% if next_product_no %}
 				  <li class="next"><a href="{% url 'elbroquil.views.view_product_orders' next_product_no %}">{{ next_product_name }} &rarr;</a></li>
 				{% else %}	
@@ -214,6 +224,10 @@
     		$('input.product-order').keyup(amount_change_handler);
     		$('input.product-order').change(amount_change_handler);
 		})
+        
+        $("#jump_to_product").change(function() {
+            window.location.href = $("#jump_to_product>option:selected").data('url');
+        });
 	  });
 </script>
 {% endblock %}

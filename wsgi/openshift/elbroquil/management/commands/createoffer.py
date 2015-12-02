@@ -125,7 +125,7 @@ class Command(BaseCommand):
                 offer_summary += "<li>" + producer.short_product_explanation + " (fins " + timezone.localtime(limit_date).strftime("%d/%m/%Y %H:%M") + ")</li>"
 
                 # Delete all products already copied for this week
-                models.Product.objects.filter(category__producer=producer, distribution_date=next_dist_date).delete()
+                models.Product.objects.filter(category__producer=producer, distribution_date=next_dist_date,sent_to_producer=False).delete()
 
                 # Update fields and save as new record
                 with transaction.atomic():

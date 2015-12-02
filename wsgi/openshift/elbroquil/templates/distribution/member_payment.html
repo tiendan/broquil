@@ -97,6 +97,13 @@
 				</div>
 				{% endif %}
 				<hr>
+                {% if has_dairy_products %}
+				<div class="form-group has-success">
+			    	<div class="col-md-4 col-md-offset-4 cow-image">
+                        <img src="/static/images/cow.png"/>
+					</div>
+				</div>
+                {% endif %}
 				<div class="form-group has-success">
 			    	<label for="amount-total" class="control-label col-md-4">{% trans "TOTAL TO PAY:" %}</label>
 			    	<div class="col-md-4">

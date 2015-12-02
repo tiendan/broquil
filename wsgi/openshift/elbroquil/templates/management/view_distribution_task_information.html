@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load admin_urls %}
+
+{% block content_title %}
+<h1>{% trans "View distribution task summary" %}</h1>
+{% endblock %}
+
+
+{% block content %}
+    {% if update_log %}
+	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {{ update_log|safe }}</div>
+    {% endif %}
+
+    <div id="content-main" class="inner-two-columns">
+		<div class="row">
+			<div class="col-md-12">
+				
+                <div class="form-group col-md-12">
+                    <form id="year_form" role="form"  action="{% url 'elbroquil.views.view_distribution_task_information' %}" method="POST"  class="form-horizontal">
+                      {% csrf_token %}	
+                        <input name="form-name" type="hidden" value="year-form"/>
+                        <label for="year" class="control-label col-md-3">{% trans "Year"%}</label>
+                        <div class="col-md-3">
+                            <select id="year" name="year" class="form-control" value="{{ selected_year }}">
+                                <option value="-1">{% trans "CHOOSE YEAR" %}</option>
+                                {% for year in available_years %}
+                                    <option value="{{ year }}" {% if year == selected_year %}selected{% endif %}>{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                    {% if selected_year %} <!-- TODO Show only if user has permission -->
+                    <form id="update_form" role="form"  action="{% url 'elbroquil.views.view_distribution_task_information' %}" method="POST"  class="form-horizontal">
+                      {% csrf_token %}	
+                        <input name="form-name" type="hidden" value="update-form"/>
+                        <input name="year" type="hidden" value="{{ selected_year }}"/>
+                        <div class="col-md-3">
+                            <button id="update_button" type="submit" class="btn btn-lg btn-warning pull-right">{% trans "Read from calendar" %}</button>
+                        </div>
+                    </form>
+                    {% endif %}
+                </div>
+			</div>
+		</div>
+		{% if selected_year %}
+		<div class="row">
+			<div class="col-md-8">
+				<table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>{% trans "Date"%}</th><th>{% trans "Members"%}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for task, add_month_row in yearly_tasks %}
+                        {% if add_month_row %}
+                        <tr>
+                            <td class="category-row info" colspan="2">{{ task.0|date:"F"|title }}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td><strong>{{ task.0|date:"j M" }}</strong></td>
+                            <td>
+                                {% for member_name in task.1 %}
+                                    <span class="label label-color-{{ forloop.counter }}">{{ member_name }}</span>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                      {% endfor %}
+                  </tbody>
+                </table>
+			</div>
+            <div class="form-group col-md-4">
+				<table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>{% trans "Member"%}</th><th>{% trans "Distribution task count"%}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for member, count in member_summary %}
+                        <tr>
+                            <td>{{ member }}</td>
+                            <td>{{ count }}</td>
+                        </tr>
+                      {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+		</div>	
+		{% endif %}
+    </div>
+{% endblock %}
+
+
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {	
+		// Set selected menu item
+		//$('#menu-item-accounting').addClass("active");
+		
+		// Bind the event so that when form items change, form is submitted
+		$("#year").change(function(e) {
+			$("#year_form").submit();
+		});
+	  });	
+</script>
+{% endblock %}

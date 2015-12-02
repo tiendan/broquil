@@ -303,3 +303,9 @@ class EmailTemplate(models.Model):
     class Meta:
         verbose_name = _('email template')
         verbose_name_plural = _('email templates')
+
+# Distribution Task model
+# Contains the information for the members' obligatory distribution tasks
+class DistributionTask(models.Model):
+    user = models.ForeignKey(User)
+    distribution_date = models.DateField(_(u'distribution date'))

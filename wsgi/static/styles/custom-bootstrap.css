@@ -237,3 +237,39 @@ div.panel-heading.incident-panel {
     font-size: 18px;
     font-weight: bolder;
 }
+
+#page_message.fixed-message {
+    position: fixed;
+    right: 0px;
+    top: 0px;
+}
+
+.label-color-1{
+    background-color: #337ab7;
+}
+
+.label-color-2{
+    background-color: #5cb85c;
+}
+
+.label-color-3{
+    background-color: #5bc0de;
+}
+
+.label-color-4{
+    background-color: #f0ad4e;
+}
+
+.label-color-5{
+    background-color: #d9534f;
+}
+
+.cow-image {
+    text-align: center;
+}
+
+#jump_to_product {
+    background-color: #f0ad4e;
+    width: 100px;
+    font-weight: bold;
+}

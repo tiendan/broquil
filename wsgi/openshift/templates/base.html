@@ -6,27 +6,28 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Cooperativa de consumo El Broquil del Gotic, Barcelona.">
+    <meta name="author" content="Onur Ferhat">
 
     <title>{% block title %}El Broquil del Gotic{% endblock %}</title>
 	<link rel="shortcut icon" href="/static/images/favicon.ico">
 	<link rel="apple-touch-icon" href="/static/images/apple-touch-icon.png">
 
-	<!-- TODO Uncomment CDN files -->
-    <!-- Bootstrap core CSS
+	<!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-	-->
-	<!-- Optional theme
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-	-->
-
-    <!-- Bootstrap core CSS -->
-	<link rel="stylesheet" href="/static/styles/bootstrap.min.css">
-
+	
 	<!-- Optional theme -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+	
+
+    <!-- Bootstrap core CSS 
+	<link rel="stylesheet" href="/static/styles/bootstrap.min.css">
+    -->
+	<!-- Optional theme 
 	<link rel="stylesheet" href="/static/styles/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
+    -->
+	
+    <link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
 	<link rel="stylesheet" href="/static/styles/bootstrap-formhelpers.min.css" type="text/css">
 	<link rel="stylesheet" href="/static/styles/fuelux.css" type="text/css">
 	<link rel="stylesheet" href="/static/styles/hopscotch.css" type="text/css">
@@ -158,31 +159,6 @@
 				</li>
 			</ul>
 
-
-
-			<!--
-
-			{% if request.user.is_authenticated %}
-
-			<ul class="nav navbar-nav navbar-right">
-		        <li><a href="#">{{ request.user.username }}</a></li>
-		      </ul>
-            {% else %}
-	          <form class="navbar-form navbar-right" role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}">
-			    {% csrf_token %}
-	            <div class="form-group">
-	              <input id="id_username" name="username" type="text" placeholder="Email" class="form-control">
-	            </div>
-	            <div class="form-group">
-	              <input id="id_password" name="password" type="password" placeholder="Password" class="form-control">
-	            </div>
-				<input type="hidden" name="next" value="/" />
-	            <button type="submit" class="btn btn-success">Sign in</button>
-	          </form>
-            {% endif %}
-
--->
-
         </div><!--/.navbar-collapse -->
       </div>
     </div>
@@ -199,27 +175,6 @@
 
     <div class="container">
       <!-- Example row of columns -->
-<!--
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div>
-      </div>
-      <hr>
--->
-
       <footer>
         <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Llicència de Creative Commons" style="border-width:0" src="/static/images/by-nc-sa-88x31.png" /></a></p>
       </footer>

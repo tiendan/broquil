@@ -127,6 +127,12 @@
 			// If there is some new input, enable the save button		
 			$('#save_button').removeAttr('disabled');
 			$.scojs_message("{% trans "Don't forget to save your order!" %}", $.scojs_message.TYPE_WARNING);
+                            
+            if ($(document).scrollTop() > 50) {
+                $('#page_message').addClass('fixed-message');
+            } else {
+                $('#page_message').removeClass('fixed-message');
+            }
 			
 			
     		//window.onbeforeunload = function() {
@@ -137,7 +143,15 @@
 		$('input.product-order').change(order_change_handler);
 		$('input.product-order').keyup(order_change_handler);
 		
-		
+        // Enable the resizing header
+        $(window).scroll(function() {
+            if ($(document).scrollTop() > 50) {
+                $('#page_message').addClass('fixed-message');
+            } else {
+                $('#page_message').removeClass('fixed-message');
+            }
+        });
+            
 		//window.onbeforeunload = null;
 		
 		// If left and right arrow keys are pressed (outside input boxes), switch to next or previous

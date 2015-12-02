@@ -37,7 +37,6 @@ from django_xhtml2pdf.utils import generate_pdf
 # Get an instance of a logger
 logger = logging.getLogger("custom")
 
-#TODO ADD TO PDF GENERATION @permission_required('elbroquil.prepare_baskets')
 
 @login_required
 def download_orders_pdf(request):
@@ -139,9 +138,9 @@ def view_order_totals(request):
                 
                 # Depending on the arrived quantity, set the product orders status
                 if product.arrived_quantity == 0:
-                    models.Order.objects.filter(product_id=product.id).update(status=models.STATUS_DID_NOT_ARRIVE) #arrived_quantity=0, 
+                    models.Order.objects.filter(product_id=product.id).update(status=models.STATUS_DID_NOT_ARRIVE)
                 else:
-                    models.Order.objects.filter(product_id=product.id).update(status=models.STATUS_NORMAL) #arrived_quantity=F('quantity'), 
+                    models.Order.objects.filter(product_id=product.id).update(status=models.STATUS_NORMAL) 
 	
     for prod in products:
         if prod.category.name != prev_category:
@@ -153,7 +152,7 @@ def view_order_totals(request):
     products = zip(products, add_category_row)
     return render(request, 'distribution/view_order_totals.html', {
           'products': products,
-          'show_product_links': show_product_links,
+          'show_product_links': True,
       })
 
 
@@ -301,6 +300,7 @@ def view_product_orders(request, product_no=''):
         next_product_name = products[next_product-1].name
     
     return render(request, 'distribution/view_product_orders.html', {
+       'all_products': products,
        'product_orders': product_orders,
        'current_product': current_product,
        
@@ -329,6 +329,7 @@ def view_product_orders_with_id(request, product_id):
             return HttpResponseRedirect(reverse('elbroquil.views.view_product_orders', args=(idx+1,)))
 
     raise Http404
+
 
 @login_required
 @permission_required('elbroquil.prepare_baskets')
@@ -360,6 +361,7 @@ def member_payment(request):
     posted_quarterly_fee_paid = ""
     
     member_phone = None
+    has_dairy_products = False
     
     if request.method == 'POST':
         form_name = request.POST.get("form-name").strip()
@@ -382,6 +384,9 @@ def member_payment(request):
         # Separate the orders according to their status and calculate the order sum
         # using only the orders which are OK (that arrived)
         for order in orders:
+            # If the member has a product from La Selvatana (category_id=13), show the cow!
+            has_dairy_products = has_dairy_products or order.product.category_id == 13
+            
             if order.status == models.STATUS_NORMAL:
                 counted_product_list.append(order)
                 
@@ -512,6 +517,7 @@ def member_payment(request):
        'next_debt': next_debt,
        
        'member_phone': member_phone,
+       'has_dairy_products': has_dairy_products,
     })
 
 @login_required

@@ -11,7 +11,7 @@
   border-bottom: 1px solid;
   color: white;
   padding: 15px;
-  position: fixed;
+  position: absolute;
   text-shadow: 3px 3px 5px rgba(100, 100, 100, 1);
 }
 

@@ -132,11 +132,21 @@ if ON_OPENSHIFT:
      }
 else:
      DATABASES = {
-         'default':{
-             'ENGINE': 'django.db.backends.sqlite3',
-             'NAME': './broquil.db',
-	    }
-	}
+         'default': {
+             'ENGINE': 'django.db.backends.mysql',
+             'NAME': os.environ['DB_NAME'],
+             'USER': os.environ['DB_USERNAME'],             # Not used with sqlite3.
+             'PASSWORD': os.environ['DB_PASSWORD'],         # Not used with sqlite3.
+             'HOST': '127.0.0.1',             # Set to empty string for localhost. Not used with sqlite3.
+             'PORT': '3306',             # Set to empty string for default. Not used with sqlite3.
+         }
+     }
+     #DATABASES = {
+     #    'default':{
+     #        'ENGINE': 'django.db.backends.sqlite3',
+     #        'NAME': './broquil.db',
+	 #   }
+	#}
     #DATABASES = {
     #    'default': {
     #        'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -154,9 +164,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = 587
-
-EMAIL_HOST_SECONDARY_USER = EMAIL_HOST_USER     # TODO REMOVE
-EMAIL_HOST_SECONDARY_PASSWORD = EMAIL_HOST_PASSWORD # TODO REMOVE
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

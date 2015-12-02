@@ -42,8 +42,7 @@ urlpatterns = patterns('',
     
     # Management related URLs
     url(_(r'^dist/view/$'), 'elbroquil.views.view_distribution_detail', name='view_distribution_detail'),
-    
-#    url(_(r'^email/$'), 'elbroquil.views.test_email', name='test_email'),
+    url(_(r'^perm/$'), 'elbroquil.views.view_distribution_task_information', name='view_distribution_task_information'),
     
     # Admin and account URLs
     url(r'^admin/', include(admin.site.urls)),
