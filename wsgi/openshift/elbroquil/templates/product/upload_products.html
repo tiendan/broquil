@@ -8,6 +8,9 @@
 {% endblock %}
 
 {% block content %}
+    {% if error_message %}
+	<div class="alert alert-danger"><span class="glyphicon glyphicon-info-sign"></span> {{ error_message }}</div>
+    {% endif %}
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "Choose the producer and upload the products excel." %}</div>
 	<div class="row">
     	<div class="span12">

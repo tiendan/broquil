@@ -12,6 +12,9 @@ from pydrive.drive import GoogleDrive
 
 import json
 
+from django.utils.translation import ugettext as _
+import re
+
 # Parse the excel for Cal Rosset producer
 def parse_cal_rosset(book):
     # Define the corresponding column numbers in Excel sheet for each type of information
@@ -158,9 +161,17 @@ def parse_standard(book):
     # Read distribution date and order limit date&hour info
     distribution_date = sheet.cell_value(rowx=3, colx=1)
     order_limit_date = sheet.cell_value(rowx=4, colx=1)
+    
+    if (type(distribution_date) is not str and type(distribution_date) is not unicode) or (type(order_limit_date) is not str and type(order_limit_date) is not unicode):
+        raise ValueError(_(u"Distribution date and order limit date should be in text format!" + type(distribution_date).__name__ + ", " + type(order_limit_date).__name__))
 
+    r = re.compile('([0-9]){4}-([0-9]){2}-([0-9]){2}')
+
+    if r.match(distribution_date) is None or r.match(order_limit_date) is None:
+        raise ValueError(_(u"Distribution date and order limit date should be in YYYY-MM-DD format!"))
+    
     if order_limit_date:
-        order_limit_date += " " + str(sheet.cell_value(rowx=5, colx=1)) + ":00"
+        order_limit_date += " " + str(sheet.cell_value(rowx=5, colx=1)).zfill(2) + ":00"
 
     # Loop over the sheet rows
     while current_row < row_count:

@@ -128,80 +128,79 @@ def view_distribution_detail(request):
 @login_required
 def view_distribution_task_information(request):
     # Form fields
-    selected_year = None
+    selected_year = libs.get_today().year
     yearly_tasks = []
     member_task_names = []
     member_task_counts = []
     member_summary = []
     add_month_row = []
-    available_years = range(2015, libs.get_today().year+1)
+    available_years = range(2015, (libs.get_today() + datetime.timedelta(60)).year+1)
     update_log = ""
+    form_name = ""
     
     # Read post variables
     if request.method == 'POST':
         selected_year = int(request.POST.get("year"))
         form_name = request.POST.get("form-name").strip()
-        
-        if selected_year != "-1":
-            
-            # If "update-form" is submitted, re-read task information from calendar
-            if form_name == "update-form":
-                # TODO, only do this if user has permission
-                update_log = update_distribution_task_information(selected_year)
-            
-            # Choose the list of tasks for the selected year
-            distribution_tasks = models.DistributionTask.objects.filter(distribution_date__year = selected_year).prefetch_related('user').order_by('distribution_date')
-        
-            # Separate the products according to their status
-            current_distribution_date = None
-            current_task_members = []
-            
-            # Prepare the array containing [dist_date, members] pairs
-            for task in distribution_tasks:
-                member_full_name = task.user.first_name + " " + task.user.last_name
-                
-                # if member_full_name exists in member_task_names, update count in member_task_counts
-                # else, append it to member_task_names and append count=1 to member_task_counts
-                if member_full_name in member_task_names:
-                    member_index = member_task_names.index(member_full_name)
-                    member_task_counts[member_index] = member_task_counts[member_index] + 1
-                else:
-                    member_task_names.append(member_full_name)
-                    member_task_counts.append(1)
-                
-                if task.distribution_date != current_distribution_date:
-                    if current_task_members:
-                        yearly_tasks.append([current_distribution_date, current_task_members])
-                        
-                    if current_distribution_date is None or current_distribution_date.month != task.distribution_date.month:
-                        add_month_row.append(True)
-                    else:
-                        add_month_row.append(False)
-                    
-                    current_task_members = []
-                    current_distribution_date = task.distribution_date
-                
-                current_task_members.append(member_full_name)
-            
-            # If there is one item still waiting to be added, append it
+
+    # If "update-form" is submitted, re-read task information from calendar
+    if form_name == "update-form":
+        # TODO, only do this if user has permission
+        update_log = update_distribution_task_information(selected_year)
+
+    # Choose the list of tasks for the selected year
+    distribution_tasks = models.DistributionTask.objects.filter(distribution_date__year = selected_year).prefetch_related('user').order_by('distribution_date')
+
+    # Separate the products according to their status
+    current_distribution_date = None
+    current_task_members = []
+
+    # Prepare the array containing [dist_date, members] pairs
+    for task in distribution_tasks:
+        member_full_name = task.user.first_name + " " + task.user.last_name
+
+        # if member_full_name exists in member_task_names, update count in member_task_counts
+        # else, append it to member_task_names and append count=1 to member_task_counts
+        if member_full_name in member_task_names:
+            member_index = member_task_names.index(member_full_name)
+            member_task_counts[member_index] = member_task_counts[member_index] + 1
+        else:
+            member_task_names.append(member_full_name)
+            member_task_counts.append(1)
+
+        if task.distribution_date != current_distribution_date:
             if current_task_members:
                 yearly_tasks.append([current_distribution_date, current_task_members])
 
-                if current_distribution_date.month != yearly_tasks[-1][0].month:
-                    add_month_row.append(True)
-                else:
-                    add_month_row.append(False)
-            
-            # order and zip member_task_names and member_task_counts
-            indexes = range(len(member_task_counts))
-            indexes.sort(key=member_task_counts.__getitem__, reverse=True)
-            
-            member_task_names2 = map(member_task_names.__getitem__, indexes)
-            member_task_counts2 = map(member_task_counts.__getitem__, indexes)
+            if current_distribution_date is None or current_distribution_date.month != task.distribution_date.month:
+                add_month_row.append(True)
+            else:
+                add_month_row.append(False)
 
-            member_summary = zip(member_task_names2, member_task_counts2)
-            
-            yearly_tasks = zip(yearly_tasks, add_month_row)
+            current_task_members = []
+            current_distribution_date = task.distribution_date
+
+        current_task_members.append(member_full_name)
+
+    # If there is one item still waiting to be added, append it
+    if current_task_members:
+        yearly_tasks.append([current_distribution_date, current_task_members])
+
+        if current_distribution_date.month != yearly_tasks[-1][0].month:
+            add_month_row.append(True)
+        else:
+            add_month_row.append(False)
+
+    # order and zip member_task_names and member_task_counts
+    indexes = range(len(member_task_counts))
+    indexes.sort(key=member_task_counts.__getitem__, reverse=True)
+
+    member_task_names2 = map(member_task_names.__getitem__, indexes)
+    member_task_counts2 = map(member_task_counts.__getitem__, indexes)
+
+    member_summary = zip(member_task_names2, member_task_counts2)
+
+    yearly_tasks = zip(yearly_tasks, add_month_row)
             
     return render(request, 'management/view_distribution_task_information.html', {
         'selected_year': selected_year,

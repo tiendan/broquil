@@ -50,73 +50,81 @@ def upload_products(request):
 @login_required
 @permission_required('elbroquil.modify_products')
 def check_products(request):
-    products = []
-    distribution_date = ""
-    order_limit_date = ""
-    producer_id = ""
-    date_error = False
+    try:
+        products = []
+        distribution_date = ""
+        order_limit_date = ""
+        producer_id = ""
+        date_error = False
 
-    '''If the form is submitted, parse the Excel file and show on page'''
-    if request.method == 'POST':
-        '''Read posted form'''
-        form = UploadProductsForm(request.POST, request.FILES)
+        '''If the form is submitted, parse the Excel file and show on page'''
+        if request.method == 'POST':
+            '''Read posted form'''
+            form = UploadProductsForm(request.POST, request.FILES)
 
-        if form.is_valid():
-            '''Open Excel workbook and read the related parameters (producer and Excel file format)'''
-            # Directory where to save attachments (default: current)
-            detach_dir = '/Users/onur/github/broquil/data/temp/'
+            if form.is_valid():
+                '''Open Excel workbook and read the related parameters (producer and Excel file format)'''
+                # Directory where to save attachments (default: current)
+                detach_dir = '/Users/onur/github/broquil/data/temp/'
 
-            if os.environ.has_key('OPENSHIFT_DATA_DIR'):
-                detach_dir = os.path.join(os.environ['OPENSHIFT_DATA_DIR'], "temp")
+                if os.environ.has_key('OPENSHIFT_DATA_DIR'):
+                    detach_dir = os.path.join(os.environ['OPENSHIFT_DATA_DIR'], "temp")
 
-            file_path = os.path.join(detach_dir, 'uploade_products.xls')
+                file_path = os.path.join(detach_dir, 'uploade_products.xls')
 
-            fp = open(file_path, 'wb')
-            fp.write(form.cleaned_data['excel_file'].read())
-            fp.close()
+                fp = open(file_path, 'wb')
+                fp.write(form.cleaned_data['excel_file'].read())
+                fp.close()
 
-            book = xlrd.open_workbook(file_path)
+                book = xlrd.open_workbook(file_path)
 
-            producer_id = form.cleaned_data['producer'].id
-            excel_format = form.cleaned_data['producer'].excel_format
-            logger.error("Check Products")
-            logger.error("PRODUCER ID: " + str(producer_id))
-            logger.error("EXCEL FORMAT: " + str(excel_format))
-            '''Choose the appropriate parsing function depending on file format'''
-            if excel_format == models.CAL_ROSSET:
-                products = parser.parse_cal_rosset(book)
-            elif excel_format == models.CAN_PIPI:
-                products = parser.parse_can_pipirimosca(book)
-            elif excel_format == models.STANDARD:
-                products, distribution_date, order_limit_date = parser.parse_standard(book)
-            elif excel_format == models.CAN_PEROL:
-                products = parser.parse_can_perol(file_path)
+                producer_id = form.cleaned_data['producer'].id
+                excel_format = form.cleaned_data['producer'].excel_format
+                logger.error("Check Products")
+                logger.error("PRODUCER ID: " + str(producer_id))
+                logger.error("EXCEL FORMAT: " + str(excel_format))
+                '''Choose the appropriate parsing function depending on file format'''
+                if excel_format == models.CAL_ROSSET:
+                    products = parser.parse_cal_rosset(book)
+                elif excel_format == models.CAN_PIPI:
+                    products = parser.parse_can_pipirimosca(book)
+                elif excel_format == models.STANDARD:
+                    products, distribution_date, order_limit_date = parser.parse_standard(book)
+                elif excel_format == models.CAN_PEROL:
+                    products = parser.parse_can_perol(file_path)
 
-            # If dates are entered, check if there is a problem with it (whether they are past dates)
-            if distribution_date != "":
-                zone = pytztimezone(settings.TIME_ZONE)
+                # If dates are entered, check if there is a problem with it (whether they are past dates)
+                if distribution_date != "":
+                    zone = pytztimezone(settings.TIME_ZONE)
 
-                distribution_date_parsed = parse_date(distribution_date)
-                order_limit_date_parsed = parse_datetime(order_limit_date)
+                    distribution_date_parsed = parse_date(distribution_date)
+                    order_limit_date_parsed = parse_datetime(order_limit_date)
 
-                if distribution_date_parsed < libs.get_today() or order_limit_date_parsed < libs.get_now().replace(tzinfo=None):
-                    date_error = True
+                    if distribution_date_parsed < libs.get_today() or order_limit_date_parsed < libs.get_now().replace(tzinfo=None):
+                        date_error = True
 
-            return render(request, 'product/check_product_info.html', {
-                'products': products,
-                'producer': producer_id,
-                'distribution_date': distribution_date,
-                'order_limit_date': order_limit_date,
-                'date_error': date_error,
-            })
+                return render(request, 'product/check_product_info.html', {
+                    'products': products,
+                    'producer': producer_id,
+                    'distribution_date': distribution_date,
+                    'order_limit_date': order_limit_date,
+                    'date_error': date_error,
+                })
+            else:
+                '''If form not valid, render the form page again'''
+                return render(request, 'product/upload_products.html', {
+                    'form': form,
+                })
         else:
-            '''If form not valid, render the form page again'''
-            return render(request, 'product/upload_products.html', {
-                'form': form,
-            })
-    else:
-        '''If nothing is posted, redirect to Excel upload page'''
-        return HttpResponseRedirect(reverse('elbroquil.views.upload_products', args=()))
+            '''If nothing is posted, redirect to Excel upload page'''
+            return HttpResponseRedirect(reverse('elbroquil.views.upload_products', args=()))
+    except ValueError as e:
+        form = UploadProductsForm()
+
+        return render(request, 'product/upload_products.html', {
+            'form': form,
+            'error_message': e,
+        })
 
 '''After parsed product information is verified, this view adds them to database'''
 @login_required
