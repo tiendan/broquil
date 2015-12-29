@@ -62,7 +62,7 @@
                             <td><strong>{{ task.0|date:"j M" }}</strong></td>
                             <td>
                                 {% for member_name in task.1 %}
-                                    <span class="label label-color-{{ forloop.counter }}">{{ member_name }}</span>
+                                    <span class="label label-color-{% cycle '1' '2' '3' '4' '5' %}">{{ member_name }}</span>
                                 {% endfor %}
                             </td>
                         </tr>

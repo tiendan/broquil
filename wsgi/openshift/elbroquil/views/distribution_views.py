@@ -159,13 +159,27 @@ def view_order_totals(request):
 @login_required
 @permission_required('elbroquil.prepare_baskets')
 def count_initial_cash(request):
+    initial_cash = 0
+    today = libs.get_today()
+    
     if request.method == 'POST':
-        request.session['initial_cash'] = request.POST.get("initial-cash").strip()
-    
-    initial_cash = ''
-    
-    if request.session.get('initial_cash'):
-        initial_cash = request.session['initial_cash']
+        initial_cash = Decimal(request.POST.get("initial-cash").strip())
+        
+        account_detail = models.DistributionAccountDetail.objects.filter(date__gte=today).first()
+        
+        # If there is no previously saved record for today,
+        # create one
+        if not account_detail:
+            account_detail = models.DistributionAccountDetail()
+        
+        # Insert or update the initial amount
+        account_detail.initial_amount = initial_cash
+        account_detail.save()
+    else:
+        account_detail = models.DistributionAccountDetail.objects.filter(date__gte=today).first()
+        
+        if account_detail:
+            initial_cash = account_detail.initial_amount
     
     return render(request, 'distribution/count_initial_cash.html', {
           'initial_cash': initial_cash,
@@ -224,6 +238,7 @@ def view_product_orders(request, product_no=''):
     current_product_no = None
     next_product = None
     current_product = None
+    update_weights = False
     
     log_messages = ''
 
@@ -299,6 +314,9 @@ def view_product_orders(request, product_no=''):
     if next_product:
         next_product_name = products[next_product-1].name
     
+    # If product was marked for "integer demand" but is sold in kg's, need to update its weight
+    update_weights = (current_product.integer_demand and current_product.unit.lower() == "kg")
+    
     return render(request, 'distribution/view_product_orders.html', {
        'all_products': products,
        'product_orders': product_orders,
@@ -313,6 +331,7 @@ def view_product_orders(request, product_no=''):
        
        'total_quantity': total_quantity,
        'total_arrived_quantity': total_arrived_quantity,
+       'update_weights': update_weights,
        
        'total_products': len(products),
        'all_members': all_members,
@@ -529,11 +548,7 @@ def account_summary(request):
     debt_balance = 0
     final_amount = 0
     expected_final_amount = 0
-
-    # Read initial cash from session
-    if request.session.get('initial_cash'):
-        initial_cash = Decimal(request.session['initial_cash'])
-
+    notes = ''
 
     # If form was posted, check if there are any members that have not paid yet
     if request.method == 'POST':
@@ -618,7 +633,9 @@ def account_summary(request):
     account_detail = models.DistributionAccountDetail.objects.filter(date__gte=today).first()
     
     if account_detail:
+        initial_cash = account_detail.initial_amount
         final_amount = account_detail.final_amount
+        notes = account_detail.notes
     
 
     # Calculate producer-required payment amount pairs
@@ -654,12 +671,12 @@ def account_summary(request):
     if request.method == 'POST':
         # Get posted final amount
         final_amount = Decimal(request.POST.get("final-amount").strip())
+        notes = request.POST.get("notes").strip()
     
         # Write the calculated values and create/update the DB record
         if not account_detail:
             account_detail = models.DistributionAccountDetail()
     
-        account_detail.initial_amount = initial_cash
         account_detail.member_consumed_amount = member_consumed_amount
         account_detail.total_member_payment_amount = collected_amount
         #account_detail.producer_paid_amount = overall_producer_payment
@@ -668,6 +685,7 @@ def account_summary(request):
         account_detail.expected_final_amount = expected_final_amount    
     
         account_detail.final_amount = final_amount
+        account_detail.notes = notes
     
         account_detail.save()
     
@@ -692,6 +710,7 @@ def account_summary(request):
    
        'order_count': order_count,
        'payment_count': payment_count,
+       'notes': notes,
    
        #'progress': progress
     })

@@ -192,6 +192,18 @@ class EmailTemplateAdmin(admin.ModelAdmin):
     ]
     ordering = ['email_code', 'language']
 
+# Producer availability model is shown inline in the producer admin pages
+#class EmailListAdmin(admin.ModelAdmin):
+#    verbose_name_plural = _(u"Email Lists")
+#    list_display = ('name',)
+#    list_display_links = ('name',)
+#    fieldsets = (
+#        (None, {
+#            'classes': ('wide',),
+#            'fields': ('name', 'email_addresses', 'cc_task_reminders', 'cc_incidents')}
+#        ),
+#    )
+    
 # Re-register UserAdmin
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
@@ -204,4 +216,5 @@ admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Product, ProductAdmin)
 admin.site.register(models.SkippedDistributionDate)
 admin.site.register(models.EmailTemplate, EmailTemplateAdmin)
+#admin.site.register(models.EmailList, EmailListAdmin)
 #admin.site.register(models.AccountMovement)	# TODO ONUR Removed new model admin for now

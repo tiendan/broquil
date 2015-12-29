@@ -264,6 +264,7 @@ class DistributionAccountDetail(models.Model):
     quarterly_fee_collected_amount = models.DecimalField(_(u'collected fee amount'), decimal_places=2, max_digits=7, default=0)
     final_amount = models.DecimalField(_(u'final amount'), decimal_places=2, max_digits=7, default=0)
     expected_final_amount = models.DecimalField(_(u'expected final amount'), decimal_places=2, max_digits=7, default=0)
+    notes = models.TextField(_(u'notes'), blank=True, default='')
 
 # Producer Paymnet model
 # Holds the information of a payment made to a producer
@@ -309,3 +310,10 @@ class EmailTemplate(models.Model):
 class DistributionTask(models.Model):
     user = models.ForeignKey(User)
     distribution_date = models.DateField(_(u'distribution date'))
+    
+# Email List model
+class EmailList(models.Model):
+    name = models.CharField(_(u'name'), max_length=80)
+    email_addresses = models.TextField(_(u'email addresses'), blank=True, default='')
+    cc_task_reminders = models.BooleanField(_(u'cc task reminders'), default=False)
+    cc_incidents = models.BooleanField(_(u'cc incidents'), default=False)

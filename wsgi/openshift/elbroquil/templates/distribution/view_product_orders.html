@@ -37,7 +37,7 @@
 				  <li class="previous"><a href="{% url 'elbroquil.views.view_basket_counts' %}">&larr; {% trans "Prepare baskets" %}</a></li>
 				{% endif %}
 				  <li>
-                      <h3 class="fillSpace">{{ current_product.name }}{% if current_product.stock_product %} <span class="label label-primary">{% trans "STOCK" %}</span>{% endif %}</h3>
+                      <h3 class="fillSpace">{{ current_product.name }}{% if current_product.stock_product %} <span class="label label-primary">{% trans "STOCK" %}</span>{% endif %} {% if update_weights %}<img class="scale-image" src="/static/images/scale.png"/>{% endif %}</h3>
                         <div class="btn-group">
                           <select class="form-control" id="jump_to_product">
 				  		    <option value="-1">{% trans "JUMP" %}</option>

@@ -273,3 +273,8 @@ div.panel-heading.incident-panel {
     width: 100px;
     font-weight: bold;
 }
+
+.scale-image{
+        height: 40px;
+    margin-top: -5px;
+}
