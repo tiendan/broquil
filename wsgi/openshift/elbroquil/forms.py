@@ -26,5 +26,4 @@ class CheckProductsForm(forms.Form):
     distribution_date = forms.CharField()
     order_limit_date = forms.CharField()
 
-#class ContactForm(forms.Form):
-#    
+        

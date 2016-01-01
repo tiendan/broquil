@@ -17,7 +17,7 @@
 			<div class="col-md-12">
 				
                 <div class="form-group col-md-12">
-                    <form id="year_form" role="form"  action="{% url 'elbroquil.views.view_distribution_task_information' %}" method="POST"  class="form-horizontal">
+                    <form id="year_form" role="form"  action="{% url 'view_distribution_task_information' %}" method="POST"  class="form-horizontal">
                       {% csrf_token %}	
                         <input name="form-name" type="hidden" value="year-form"/>
                         <label for="year" class="control-label col-md-3">{% trans "Year"%}</label>
@@ -30,7 +30,7 @@
                         </div>
                     </form>
                     {% if selected_year %} <!-- TODO Show only if user has permission -->
-                    <form id="update_form" role="form"  action="{% url 'elbroquil.views.view_distribution_task_information' %}" method="POST"  class="form-horizontal">
+                    <form id="update_form" role="form"  action="{% url 'view_distribution_task_information' %}" method="POST"  class="form-horizontal">
                       {% csrf_token %}	
                         <input name="form-name" type="hidden" value="update-form"/>
                         <input name="year" type="hidden" value="{{ selected_year }}"/>

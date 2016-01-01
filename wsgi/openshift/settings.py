@@ -42,8 +42,6 @@ if ON_OPENSHIFT:
 else:
      DEBUG = True
 
-TEMPLATE_DEBUG = DEBUG
-
 if DEBUG:
      ALLOWED_HOSTS = ['ultim-broquil.rhcloud.com']
 else:
@@ -57,13 +55,13 @@ DEBUG_TOOLBAR_CONFIG = {
 # Application definition
 
 INSTALLED_APPS = (
-    #'suit',
-    'django_admin_bootstrapped.bootstrap3',
+    #'django_admin_bootstrapped.bootstrap3',
     'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
@@ -112,10 +110,6 @@ ROOT_URLCONF = 'urls'
 
 WSGI_APPLICATION = 'wsgi.application'
 
-TEMPLATE_DIRS = (
-     os.path.join(BASE_DIR,'templates'),
-     os.path.join(BASE_DIR,'elbroquil/templates'),
-)
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -208,12 +202,23 @@ else:
         os.path.join(BASE_DIR, '..', 'static'),
     )
 
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
-
-TEMPLATE_CONTEXT_PROCESSORS = TCP + (
-    'django.core.context_processors.request',
-    'django.core.context_processors.i18n',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(BASE_DIR,'templates'),
+            os.path.join(BASE_DIR,'elbroquil/templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.core.context_processors.request',
+                'django.core.context_processors.i18n',
+                'django.contrib.auth.context_processors.auth',
+            ],
+        },
+    },
+]
 
 if ON_OPENSHIFT:
     LOGGING = {

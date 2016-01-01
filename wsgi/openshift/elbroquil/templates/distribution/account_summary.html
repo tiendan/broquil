@@ -32,13 +32,13 @@
     <div id="content-main" class="inner-two-columns">
 		<div>
 			<ul class="pager">	
-				<li class="previous"><a href="{% url 'elbroquil.views.member_payment' %}">&larr; {% trans "Payment" %}</a></li>
-			  	<!--<li class="next"><a href="{% url 'elbroquil.views.update_order' 2 %}">{{ "next_category_name" }} &rarr;</a></li>-->
+				<li class="previous"><a href="{% url 'member_payment' %}">&larr; {% trans "Payment" %}</a></li>
+			  	<!--<li class="next"><a href="{% url 'update_order' 2 %}">{{ "next_category_name" }} &rarr;</a></li>-->
 			</ul>
 		</div>
 		
 		<div class="row">
-        <form id="account-form" role="form"  action="{% url 'elbroquil.views.account_summary' %}" method="POST"  class="form-horizontal col-md-offset-2 col-md-10">
+        <form id="account-form" role="form"  action="{% url 'account_summary' %}" method="POST"  class="form-horizontal col-md-offset-2 col-md-10">
             	{% csrf_token %}
 			<div class="col-md-10">
 				<div class="form-group {% if initial_amount == 0 %}has-error{% endif %}">

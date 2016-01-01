@@ -17,7 +17,7 @@
 		{% if alert_message %}
 		<div class="alert alert-{{ alert_type }}" role="alert">{{ alert_message }}</div>
 		{% endif %}
-		<form id="producer_form" role="form"  action="{% url 'elbroquil.views.view_products' %}" method="POST"  class="form-horizontal">
+		<form id="producer_form" role="form"  action="{% url 'view_products' %}" method="POST"  class="form-horizontal">
             	{% csrf_token %}
 
 			  <div class="form-group">

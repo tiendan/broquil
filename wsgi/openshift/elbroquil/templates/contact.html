@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap %}
+
+{% block content_title %}
+<h1>{% trans "Contact" %} <button id="send-button" type="button" class="btn btn-lg btn-success pull-right">{% trans "Enviar" %}</button></h1>
+{% endblock %}
+
+{% block content %}
+    {% if result_message %}
+	<div class="alert alert-success"><span class="glyphicon glyphicon-info-sign"></span> {{ result_message }}</div>
+    {% endif %}
+	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "Choose your contact and send your message." %}</div>
+	<div class="row">
+    	<div class="span12">
+        <form action="{% url 'contact' %}" method="POST" class="form-horizontal">
+            	{% csrf_token %}
+                <div class="form-group col-md-12">
+                    <label for="to-list" class="control-label col-md-3">{% trans "To"%}</label>
+                    <div class="col-md-6">
+                        <select id="to-list" name="to-list" class="form-control" value="{{ selected_date }}">
+                            <option value="-1" data-enable-dates="true">{% trans "Incidents" %}</option>
+                            {% for to_list in to_lists %}
+                                <option value="{{ to_list.id }}">{{ to_list.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div id="date-div" class="form-group col-md-12">
+                    <label for="date" class="control-label col-md-3">{% trans "Distribution date"%}</label>
+                    <div class="col-md-6">
+                        <select id="date" name="date" class="form-control" value="{{ selected_date }}">
+                            {% for text, value in last_distribution_dates %}
+                                <option value="{{ value }}">{{ text }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+				<div class="form-group col-md-12">
+			    	<label for="message" class="control-label col-md-3">{% trans "Message" %}</label>
+			    	<div class="col-md-6">
+				    	<div class="input-group">
+							<textarea id="message" name="message" rows="8" cols="60" class="form-control input-lg"></textarea>
+						</div>
+					</div>
+				</div>	
+        </form>
+		</div>
+    </div>
+{% endblock %}
+
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {	
+		// Set selected menu item
+		$('#menu-item-help').addClass("active");
+		
+		// Activate the upload button's form submit
+		$("#send-button").click(function(e) {
+			$("form").submit();
+		});
+         
+         
+        $("#to-list").change(function(e) {
+           if($("#to_list").val() == "-1") {
+               $("#date-div").css("display", "block");
+           } 
+           else {
+               $("#date-div").css("display", "none");
+           }
+        });
+	  });	
+</script>
+{% endblock %}

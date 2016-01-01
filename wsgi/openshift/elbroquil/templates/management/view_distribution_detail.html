@@ -11,7 +11,7 @@
     <div id="content-main" class="inner-two-columns">
 		<div class="row">
 			<div class="col-md-12">
-				<form id="distribution_date" role="form"  action="{% url 'elbroquil.views.view_distribution_detail' %}" method="POST"  class="form-horizontal">
+				<form id="distribution_date" role="form"  action="{% url 'view_distribution_detail' %}" method="POST"  class="form-horizontal">
 		         {% csrf_token %}	
 					<div class="form-group col-md-12">
 			      		<label for="date" class="control-label col-md-3">{% trans "Distribution date"%}</label>

@@ -20,7 +20,7 @@
 		{% if alert_message %}
 		<div class="alert alert-danger" role="alert">{{ alert_message }}</div>
 		{% endif %}
-		<form id="create_fee_form" role="form"  action="{% url 'elbroquil.views.create_fees' %}" method="POST"  class="form-horizontal">
+		<form id="create_fee_form" role="form"  action="{% url 'create_fees' %}" method="POST"  class="form-horizontal">
          {% csrf_token %}
 		  <!-- <div class="form-group"> -->
 			<div class="form-group">

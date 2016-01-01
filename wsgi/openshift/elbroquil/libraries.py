@@ -53,7 +53,7 @@ def calculate_order_summary(request):
             if i <= shown_item_count:
                 order_summary = order_summary + "<tr><td>" + order.product.name + "</td></tr>"
             elif i == shown_item_count + 1:
-                order_summary = order_summary + "<tr><td><a href='" + reverse('elbroquil.views.view_order') + "'>" + _(u'And') + " " + str(len(orders)-shown_item_count) + " " + _(u'more products') + "</a></td></tr>"
+                order_summary = order_summary + "<tr><td><a href='" + reverse('view_order') + "'>" + _(u'And') + " " + str(len(orders)-shown_item_count) + " " + _(u'more products') + "</a></td></tr>"
             
             # Accumulate the total price to be shown in the dropdown toggle menu item
             order_total += total_price
@@ -225,6 +225,12 @@ def send_email_to_active_users(subject, content):
 def send_email_to_address(subject, content, to):
     text_content = html2text.html2text(content)
     email = EmailMultiAlternatives(subject, text_content, to=to)
+    email.attach_alternative(content, "text/html")
+    email.send()
+
+def send_email_with_cc(subject, content, to, cc):
+    text_content = html2text.html2text(content)
+    email = EmailMultiAlternatives(subject, text_content, to=to, cc=cc)
     email.attach_alternative(content, "text/html")
     email.send()
 

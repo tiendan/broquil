@@ -21,7 +21,7 @@
 {% block content %}
     <div id="content-main" class="inner-two-columns">
 		{% if orders %}
-	        <form action="{% url 'elbroquil.views.rate_products' %}" method="POST">
+	        <form action="{% url 'rate_products' %}" method="POST">
 		    	{% csrf_token %}
 				<div>
 					<div class="table-responsive col-md-10">

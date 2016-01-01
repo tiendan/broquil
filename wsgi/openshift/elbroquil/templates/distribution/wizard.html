@@ -6,28 +6,28 @@
 	<div class="wizard">
 	   <ul class="steps">
 	    <li {% if step == 1 %}class="active"{% else %}class="complete"{% endif %}>
-			<a href="{% url 'elbroquil.views.view_order_totals' %}">
+			<a href="{% url 'view_order_totals' %}">
 				<span class="badge {% if step > 1 %}badge-success{% endif %}">1</span>
 				{% trans "Start" %}
 				<span class="chevron"></span>
 			</a>
 		</li>
 	    <li {% if step < 2 %}class="upcoming"{% elif step == 2 %}class="active"{% else %}class="complete"{% endif %}>
-			<a href="{% url 'elbroquil.views.view_product_orders' 1 %}">
+			<a href="{% url 'view_product_orders' 1 %}">
 				<span class="badge {% if step > 2 %}badge-success{% endif %}">2</span>
 				{% trans "Distribute" %} {% if step == 2 %}({{ current_product_no }}/{{ total_products }}){% endif %}
 				<span class="chevron"></span>
 			</a>
 		</li>
 	    <li {% if step < 3 %}class="upcoming"{% elif step == 3 %}class="active"{% else %}class="complete"{% endif %}>
-			<a href="{% url 'elbroquil.views.member_payment' %}">
+			<a href="{% url 'member_payment' %}">
 				<span class="badge {% if step > 3 %}badge-success{% endif %}">3</span>
 				{% trans "Payments" %}
 				<span class="chevron"></span>
 			</a>
 		</li>
 	    <li {% if step < 4 %}class="upcoming"{% elif step == 4 %}class="active"{% else %}class="complete"{% endif %}>
-			<a href="{% url 'elbroquil.views.account_summary' %}">
+			<a href="{% url 'account_summary' %}">
 				<span class="badge {% if step > 4 %}badge-success{% endif %}">4</span>
 				{% trans "Summary" %}
 			</a>

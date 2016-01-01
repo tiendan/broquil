@@ -15,7 +15,7 @@
 	<div class="row">
 		<div class="span12">
 		
-	        <form id="form-check" action="{% url 'elbroquil.views.confirm_products' %}" method="POST" class="form-horizontal">
+	        <form id="form-check" action="{% url 'confirm_products' %}" method="POST" class="form-horizontal">
 	            {% if distribution_date %}
 	            <div class="form-group">
                     <label class="control-label col-sm-2 col-lg-2 ">{% trans "Distribution date" %}</label>

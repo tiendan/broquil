@@ -3,7 +3,7 @@
 
 
 {% block content_title %}
-<h1>{% trans "Your order for this week" %} <span id="order-help" class="glyphicon glyphicon-question-sign right-tooltip blue-icon" data-toggle="tooltip" data-placement="right" title="{% trans "Start help tour" %}"></span> {% if available_product_count %}<a id="make-order-button" href="{% url 'elbroquil.views.update_order' 1 %}" class="btn btn-success btn-lg active pull-right" role="button">{% if products_sum > 0 %}{% trans "Update your order" %}{% else %}{% trans "Make an order" %}{% endif %} &rarr;</a>{% endif %}</h1>
+<h1>{% trans "Your order for this week" %} <span id="order-help" class="glyphicon glyphicon-question-sign right-tooltip blue-icon" data-toggle="tooltip" data-placement="right" title="{% trans "Start help tour" %}"></span> {% if available_product_count %}<a id="make-order-button" href="{% url 'update_order' 1 %}" class="btn btn-success btn-lg active pull-right" role="button">{% if products_sum > 0 %}{% trans "Update your order" %}{% else %}{% trans "Make an order" %}{% endif %} &rarr;</a>{% endif %}</h1>
 {% endblock %}
 
  

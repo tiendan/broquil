@@ -33,7 +33,7 @@ import settings
 @login_required
 def order_history(request):
     if request.user.username.find("@") == -1:
-        return HttpResponseRedirect(reverse('elbroquil.views.view_order_totals', args=()))
+        return HttpResponseRedirect(reverse('view_order_totals', args=()))
         
     today = libs.get_today()
     # Form fields
@@ -150,7 +150,7 @@ def order_history(request):
 @login_required
 def update_order(request, category_no=''):
     if request.user.username.find("@") == -1:
-        return HttpResponseRedirect(reverse('elbroquil.views.view_order_totals', args=()))
+        return HttpResponseRedirect(reverse('view_order_totals', args=()))
     # Choose the available categories:
     #    - having products with order limit date in the future
     #    - not archived
@@ -261,7 +261,7 @@ def update_order(request, category_no=''):
 @login_required
 def view_order(request):
     if request.user.username.find("@") == -1:
-        return HttpResponseRedirect(reverse('elbroquil.views.view_order_totals', args=()))
+        return HttpResponseRedirect(reverse('view_order_totals', args=()))
     
     today = libs.get_today()
     all_orders = models.Order.objects.filter(user=request.user, archived=False, product__distribution_date__gte=today).prefetch_related('product').order_by('product__category__sort_order', 'product__pk')

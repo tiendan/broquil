@@ -30,16 +30,16 @@
 	
     <div id="content-main" class="inner-two-columns">
 		{% if products %}
-        <form action="{% url 'elbroquil.views.view_order_totals' %}" method="POST" class="form-inline">
+        <form action="{% url 'view_order_totals' %}" method="POST" class="form-inline">
 	    	{% csrf_token %}
 			<div>
 				<div>
 					<ul class="pager">
 					  <li class="previous blankpreviouspager"></li>
 					  <li>
-						<h3 class="fillSpace"><a href="{% url 'elbroquil.views.download_orders_pdf' %}" target="_blank"><span class="glyphicon glyphicon-download-alt green-icon"></span> {% trans "Download PDF (excluding products &euro;/kg)"%}</a></h3>
+						<h3 class="fillSpace"><a href="{% url 'download_orders_pdf' %}" target="_blank"><span class="glyphicon glyphicon-download-alt green-icon"></span> {% trans "Download PDF (excluding products &euro;/kg)"%}</a></h3>
 					  </li>
-					  <li class="next"><a href="{% url 'elbroquil.views.count_initial_cash' %}">{% trans "Count initial cash "%} &rarr;</a></li>
+					  <li class="next"><a href="{% url 'count_initial_cash' %}">{% trans "Count initial cash "%} &rarr;</a></li>
 					</ul>
 				</div>
 		        <div class="table-responsive col-md-10">
@@ -53,7 +53,7 @@
 							<tr><th class="product_name_header">{% trans "Product" %}</th><th class="product_price_header">{% trans "Price" %}</th><th class="product_order_header">{% trans "Order" %}</th><th class="product_order_header">{% trans "Arrived" %}</th></tr>
 							{% endif %}
 							<tr class="selectablerow {% if product.integer_demand and product.unit == 'kg' %}has-error{% endif %}" id="selectablerow_{{ product.id }}">
-								<td>{% if show_product_links and product.arrived_quantity > 0 %}<a href="{% url 'elbroquil.views.view_product_orders_with_id' product.pk %}">{{ product.name }}</a>{% else %}{{ product.name }}{% endif %}</td>
+								<td>{% if show_product_links and product.arrived_quantity > 0 %}<a href="{% url 'view_product_orders_with_id' product.pk %}">{{ product.name }}</a>{% else %}{{ product.name }}{% endif %}</td>
 								<td class="price">{{ product.price|floatformat:2 }} <span style="width: 40px;">&euro;</span></td>
 								<td class="quantity"><p class="form-control-static"><strong>{{ product.total_quantity|floatformat:"-2" }}</strong> <span style="width: 40px;">{{ product.unit }}</span></p></td>
 								<td class="quantity"><input id="product_arrived_{{ product.id }}" name="product_arrived_{{ product.id }}" type="text" class="product-order form-control bfh-number input-sm" data-keyboard="true" data-integer="false" data-allowzero="true" data-allowblank="true" data-buttons="false" {% if product.arrived_quantity != product.total_quantity %}value="{{ product.arrived_quantity }}"{% endif %}/></td>

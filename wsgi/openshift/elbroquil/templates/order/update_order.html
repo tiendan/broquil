@@ -27,7 +27,7 @@
 			    <span class="sr-only">{{ progress }}% {% trans "Complete" %}</span>
 			  </div>
 			</div>
-	        <form action="{% url 'elbroquil.views.update_order' category_no %}" method="POST">
+	        <form action="{% url 'update_order' category_no %}" method="POST">
 		    	{% csrf_token %}
 				<!--<button type="button" value="save" id="product_save_button" class="btn btn-primary" data-role="button" data-loading-text="Saving...">
 					Save
@@ -36,9 +36,9 @@
 					<div>						
 						<ul class="pager">
 							{% if prev_category_no %}	
-							  <li class="previous"><a href="{% url 'elbroquil.views.update_order' prev_category_no %}">&larr; {{ prev_category_name }}</a></li>
+							  <li class="previous"><a href="{% url 'update_order' prev_category_no %}">&larr; {{ prev_category_name }}</a></li>
 							{% else %}
-							  <li class="previous importantlink"><a href="{% url 'elbroquil.views.view_order' %}">&larr; {% trans "View order" %}</a></li>
+							  <li class="previous importantlink"><a href="{% url 'view_order' %}">&larr; {% trans "View order" %}</a></li>
 							{% endif %}
 						  <li><h2 class="fillSpace">{{ category_name }}<br/><small>{% trans "Available until:"%} 
 							{% if products.0.0.order_limit_date < few_hours_later %}
@@ -53,9 +53,9 @@
 							{% endtimezone %}
 							</span></small></h2></li>
 							{% if next_category_no %}	
-							  <li class="next"><a href="{% url 'elbroquil.views.update_order' next_category_no %}">{{ next_category_name }} &rarr;</a></li>
+							  <li class="next"><a href="{% url 'update_order' next_category_no %}">{{ next_category_name }} &rarr;</a></li>
 							{% else %}
-							  <li class="next importantlink"><a href="{% url 'elbroquil.views.view_order' %}">{% trans "View order" %} &rarr;</a></li>
+							  <li class="next importantlink"><a href="{% url 'view_order' %}">{% trans "View order" %} &rarr;</a></li>
 							{% endif %}
 						</ul>
 					</div>

@@ -25,16 +25,16 @@
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "In case the product quantity/weight has to be changed, make the changes and don't forget to save them." %}</div>
 	
     <div id="content-main" class="inner-two-columns">
-        <form action="{% url 'elbroquil.views.view_product_orders' current_product_no %}" method="POST">
+        <form action="{% url 'view_product_orders' current_product_no %}" method="POST">
 	    	{% csrf_token %}
 	    	<input id="product_price" name="product_price" type="hidden" value="{{ current_product.price }}" />
 			<div>
 				<div>
 				<ul class="pager">
 				{% if prev_product_no %}	
-				  <li class="previous"><a href="{% url 'elbroquil.views.view_product_orders' prev_product_no %}">&larr; {{ prev_product_name }}</a></li>
+				  <li class="previous"><a href="{% url 'view_product_orders' prev_product_no %}">&larr; {{ prev_product_name }}</a></li>
 				{% else %}	
-				  <li class="previous"><a href="{% url 'elbroquil.views.view_basket_counts' %}">&larr; {% trans "Prepare baskets" %}</a></li>
+				  <li class="previous"><a href="{% url 'view_basket_counts' %}">&larr; {% trans "Prepare baskets" %}</a></li>
 				{% endif %}
 				  <li>
                       <h3 class="fillSpace">{{ current_product.name }}{% if current_product.stock_product %} <span class="label label-primary">{% trans "STOCK" %}</span>{% endif %} {% if update_weights %}<img class="scale-image" src="/static/images/scale.png"/>{% endif %}</h3>
@@ -42,15 +42,15 @@
                           <select class="form-control" id="jump_to_product">
 				  		    <option value="-1">{% trans "JUMP" %}</option>
                             {% for single_product in all_products %}
-                              <option value="{{ single_product.id }}" data-url="{% url 'elbroquil.views.view_product_orders_with_id' single_product.id %}">{{ single_product.name }}</option>
+                              <option value="{{ single_product.id }}" data-url="{% url 'view_product_orders_with_id' single_product.id %}">{{ single_product.name }}</option>
                             {% endfor %}
                           </select>
                         </div>
                   </li>
 				{% if next_product_no %}
-				  <li class="next"><a href="{% url 'elbroquil.views.view_product_orders' next_product_no %}">{{ next_product_name }} &rarr;</a></li>
+				  <li class="next"><a href="{% url 'view_product_orders' next_product_no %}">{{ next_product_name }} &rarr;</a></li>
 				{% else %}	
-				  <li class="next"><a href="{% url 'elbroquil.views.member_payment' %}">{% trans "Payment" %} &rarr;</a></li>
+				  <li class="next"><a href="{% url 'member_payment' %}">{% trans "Payment" %} &rarr;</a></li>
 				{% endif %}
 				</ul>
 				</div>

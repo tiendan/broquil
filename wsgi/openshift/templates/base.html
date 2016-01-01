@@ -65,34 +65,40 @@
 
         {% if '@' in request.user.username %}
 				<li id="menu-item-order" class="dropdown">
-				  <a href="{% url 'elbroquil.views.view_order' %}" class="dropdown-toggle" data-toggle="dropdown">{% trans "Order" %} <span class="caret"></span></a>
+				  <a href="{% url 'site_root' %}" class="dropdown-toggle" data-toggle="dropdown">{% trans "Order" %} <span class="caret"></span></a>
 		          <ul class="dropdown-menu" role="menu">
-					<li><a href="{% url 'elbroquil.views.view_order' %}">{% trans "View order" %}</a></li>
-					<li><a href="{% url 'elbroquil.views.order_history' %}">{% trans "Order history" %}</a></li>
-		            <li><a href="{% url 'elbroquil.views.rate_products' %}">{% trans "Rate products" %}</a></li>
+					<li><a href="{% url 'site_root' %}">{% trans "View order" %}</a></li>
+					<li><a href="{% url 'order_history' %}">{% trans "Order history" %}</a></li>
+		            <li><a href="{% url 'rate_products' %}">{% trans "Rate products" %}</a></li>
 		          </ul>
 		        </li>
 				{% endif %}
 
         {% if perms.elbroquil.prepare_baskets %}
-				<li id="menu-item-distribution"><a href="{% url 'elbroquil.views.view_order_totals' %}">{% trans "Prepare Baskets" %}</a></li>
+				<li id="menu-item-distribution"><a href="{% url 'view_order_totals' %}">{% trans "Prepare Baskets" %}</a></li>
 				{% endif %}
 
-        <li id="menu-item-accounting"><a href="{% url 'elbroquil.views.view_distribution_detail' %}">{% trans "Accounting" %}</a></li>
-				<li id="menu-item-help"><a href="{% url 'help' %}">{% trans "Help" %}</a></li>
+        <li id="menu-item-accounting"><a href="{% url 'view_distribution_detail' %}">{% trans "Accounting" %}</a></li>
+				<li id="menu-item-help" class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Help" %} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'help' %}">{% trans "Help Videos" %}</a></li>
+                        <li><a href="{% url 'contact' %}">{% trans "Contact" %}</a></li>
+                    </ul>
+                </li>
 
 				{% if user.is_staff or perms.elbroquil.modify_products or perms.elbroquil.accounting %}
 				<li id="menu-item-admin" class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Admin" %} <span class="caret"></span></a>
             <ul class="dropdown-menu">
     				  {% if perms.elbroquil.modify_products %}
-		            <li><a href="{% url 'elbroquil.views.upload_products' %}">{% trans "Upload products excel" %}</a></li>
-		            <li><a href="{% url 'elbroquil.views.view_products' %}">{% trans "View products" %}</a></li>
+		            <li><a href="{% url 'upload_products' %}">{% trans "Upload products excel" %}</a></li>
+		            <li><a href="{% url 'view_products' %}">{% trans "View products" %}</a></li>
                 <li role="separator" class="divider"></li>
     				  {% endif %}
               {% if perms.elbroquil.accounting %}
-      				  <li><a href="{% url 'elbroquil.views.view_fees' %}">{% trans "View Fee Status" %}</a></li>
-      		      <li><a href="{% url 'elbroquil.views.create_fees' %}">{% trans "Create Fees" %}</a></li>
+      				  <li><a href="{% url 'view_fees' %}">{% trans "View Fee Status" %}</a></li>
+      		      <li><a href="{% url 'create_fees' %}">{% trans "Create Fees" %}</a></li>
                 <li role="separator" class="divider"></li>
     				  {% endif %}
               {% if user.is_staff %}

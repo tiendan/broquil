@@ -14,7 +14,7 @@
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "Choose the producer and upload the products excel." %}</div>
 	<div class="row">
     	<div class="span12">
-        <form action="{% url 'elbroquil.views.check_products' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+        <form action="{% url 'check_products' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
             	{% csrf_token %}
 				{{ form|bootstrap_horizontal }}
         </form>

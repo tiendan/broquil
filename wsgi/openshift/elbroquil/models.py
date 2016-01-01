@@ -68,6 +68,7 @@ EMAIL_OFFER_CREATED = 1
 EMAIL_REMINDER = 2
 EMAIL_ORDER_SENT_TO_PRODUCER = 3
 EMAIL_ACCOUNT_CREATED = 4
+EMAIL_TASK_REMINDER = 5
 
 # Producer emails
 EMAIL_PRODUCER_ORDER_TOTAL = 101
@@ -79,6 +80,7 @@ EMAIL_CODE_CHOICES  = (
     (EMAIL_REMINDER, _(u'Member: Saturday Reminder')),
     (EMAIL_ORDER_SENT_TO_PRODUCER, _(u'Member: Order Sent to Producers')),
     (EMAIL_ACCOUNT_CREATED, _(u'Member: Account Created')),
+    (EMAIL_TASK_REMINDER, _(u'Member: Distribution Task Reminder')),
 
     (EMAIL_PRODUCER_ORDER_TOTAL, _(u'Producer: Total Order')),
     (EMAIL_PRODUCER_NO_ORDER, _(u'Producer: No Order This Week')),
@@ -116,7 +118,7 @@ class Producer(models.Model):
 # For the producers with limited availability, this table contains the distribution dates
 # when they are available to supply their products
 class ProducerAvailableDate(models.Model):
-    producer = models.ForeignKey(Producer)
+    producer = models.ForeignKey(Producer, on_delete=models.CASCADE)
     available_date = models.DateField(_(u'available date'))
 
     def __unicode__(self):
@@ -143,7 +145,7 @@ class SkippedDistributionDate(models.Model):
 class Category(models.Model):
     name = models.CharField(_(u'name'), max_length=100)
     visible_name = models.CharField(_(u'visible name'), max_length=100, null=True, blank=True, help_text=_(u"<em>(To display shorter/better names for producer categories.)</em>"))
-    producer = models.ForeignKey(Producer)
+    producer = models.ForeignKey(Producer, on_delete=models.CASCADE)
     sort_order = models.PositiveIntegerField(_(u'sort order'), default=0, blank=False, null=False, help_text=_(u"<em>(To change the order of appearance of categories.)</em>"))
     archived = models.BooleanField(_(u'archived'), default=False)
 
@@ -161,7 +163,7 @@ class Category(models.Model):
 # Holds the product details and order summary for the product
 class Product(models.Model):
     name = models.CharField(_(u'product'), max_length=100)
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     origin = models.CharField(_(u'origin'), max_length=100, null=True, blank=True)
     comments = models.CharField(_(u'comments'), max_length=100, null=True, blank=True)
     price = models.DecimalField(_(u'price'), decimal_places=4, max_digits=9)
@@ -193,8 +195,8 @@ class Product(models.Model):
 # Order model
 # Contains the orders made by the members. Each record holds the relation member-product-order
 class Order(models.Model):
-    product = models.ForeignKey(Product)
-    user = models.ForeignKey(User)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     quantity = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7)
     rating = models.SmallIntegerField(_(u'rating'), null=True, blank=True, default=None)
     archived = models.BooleanField(_(u'archived'), default=False)
@@ -211,15 +213,15 @@ class Order(models.Model):
 # Payment model
 # Holds the total payment amount made by the member
 class Payment(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(_(u'date'), default=timezone.now)
     amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7, default=0)
 
 # Consumption model
 # Holds the part of the payment which is due to the consumption (orders)
 class Consumption(models.Model):
-    user = models.ForeignKey(User)
-    payment = models.ForeignKey(Payment)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
     amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7, default=0)
 
 # Debt model
@@ -227,27 +229,27 @@ class Consumption(models.Model):
 # is stored to be charged for later weeks. A negative amount indicates a debt of the
 # cooperative to the member
 class Debt(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7, default=0)
 
-    payment = models.ForeignKey(Payment)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
 
 # Quarterly fee model
 # Holds the quarterly fee that is to be (or already) charged to the member
 # If the payment is not null, it indicates that fee is already paid during that payment
 class Quarterly(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     year = models.SmallIntegerField(_(u'year'))
     quarter = models.SmallIntegerField(_(u'quarter'))
     created_date = models.DateTimeField(_(u'created date'), default=timezone.now)
     amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7, default=0)
 
-    payment = models.ForeignKey(Payment, null=True)
+    payment = models.ForeignKey(Payment, null=True, on_delete=models.CASCADE)
 
 # Extra info model
 # Holds the additional information for the User model
 class ExtraInfo(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     secondary_email = models.EmailField(_(u'secondary email'), blank=True, default='')
     phone = models.CharField(_(u'phone'), max_length=15)
     secondary_phone = models.CharField(_(u'secondary phone'), max_length=15, blank=True, default='')
@@ -270,13 +272,13 @@ class DistributionAccountDetail(models.Model):
 # Holds the information of a payment made to a producer
 class ProducerPayment(models.Model):
     date = models.DateField(_(u'distribution date'), default=timezone.now)
-    producer = models.ForeignKey(Producer)
+    producer = models.ForeignKey(Producer, on_delete=models.CASCADE)
     amount = models.DecimalField(_(u'quantity'), decimal_places=2, max_digits=7, default=0)
 
 # Email Template model
 # Contains editable email templates
 class EmailTemplate(models.Model):
-    email_code = models.SmallIntegerField(_(u'email code'), choices=EMAIL_CODE_CHOICES, default='ca', max_length=2)
+    email_code = models.SmallIntegerField(_(u'email code'), choices=EMAIL_CODE_CHOICES, default='ca')
     language = models.CharField(_(u'language code'), choices=LANGUAGE_CHOICES, default='ca', max_length=2)
     subject = models.CharField(_(u'subject'), max_length=70, blank=True, default='', help_text=_(u"<em>(Without [BroquilGotic])</em>"))
     body = models.TextField(_(u'body'), blank=True, default='', help_text=_(u"<em>(Do not remove the [[CONTENT]] parts.)</em>"))
@@ -308,7 +310,7 @@ class EmailTemplate(models.Model):
 # Distribution Task model
 # Contains the information for the members' obligatory distribution tasks
 class DistributionTask(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     distribution_date = models.DateField(_(u'distribution date'))
     
 # Email List model
@@ -317,3 +319,6 @@ class EmailList(models.Model):
     email_addresses = models.TextField(_(u'email addresses'), blank=True, default='')
     cc_task_reminders = models.BooleanField(_(u'cc task reminders'), default=False)
     cc_incidents = models.BooleanField(_(u'cc incidents'), default=False)
+    
+    def __unicode__(self):
+        return unicode(self.name)

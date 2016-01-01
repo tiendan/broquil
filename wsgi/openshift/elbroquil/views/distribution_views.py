@@ -345,7 +345,7 @@ def view_product_orders_with_id(request, product_id):
 	
     for idx, product in enumerate(products):
         if product.pk == int(product_id):
-            return HttpResponseRedirect(reverse('elbroquil.views.view_product_orders', args=(idx+1,)))
+            return HttpResponseRedirect(reverse('view_product_orders', args=(idx+1,)))
 
     raise Http404
 

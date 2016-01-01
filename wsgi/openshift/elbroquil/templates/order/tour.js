@@ -31,7 +31,7 @@ tour = {
           multipage: true,
 		  nextOnTargetClick: true,
           onNext: function() {
-            window.location = "{% url 'elbroquil.views.update_order' order_first_page %}";
+            window.location = "{% url 'update_order' order_first_page %}";
           }
         },
         {
@@ -72,7 +72,7 @@ tour = {
     	  nextOnTargetClick: true,
           multipage: true,
           onNext: function() {
-              window.location = "{% url 'elbroquil.views.update_order' order_last_page %}";
+              window.location = "{% url 'update_order' order_last_page %}";
           }
          },
           {

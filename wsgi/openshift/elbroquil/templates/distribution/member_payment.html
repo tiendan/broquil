@@ -26,13 +26,13 @@
     <div id="content-main" class="inner-two-columns">
 		<div>
 			<ul class="pager">	
-				<li class="previous"><a href="{% url 'elbroquil.views.view_product_orders' previous_product %}">&larr; {{ prev_product_name }}</a></li>
-			  	<li class="next"><a href="{% url 'elbroquil.views.account_summary' %}">{% trans "Close account" %} &rarr;</a></li>
+				<li class="previous"><a href="{% url 'view_product_orders' previous_product %}">&larr; {{ prev_product_name }}</a></li>
+			  	<li class="next"><a href="{% url 'account_summary' %}">{% trans "Close account" %} &rarr;</a></li>
 			</ul>
 		</div>
 		
 		<div class="row">
-        <form id="member-form" role="form"  action="{% url 'elbroquil.views.member_payment' %}" method="POST"  class="form-horizontal">
+        <form id="member-form" role="form"  action="{% url 'member_payment' %}" method="POST"  class="form-horizontal">
             	{% csrf_token %}
 			<input name="form-name" type="hidden" value="member-form"/>
 			
@@ -58,7 +58,7 @@
 		
 		{% if member_id > 0 %}
 		<div class="row">
-        <form id="payment-form" role="form"  action="{% url 'elbroquil.views.member_payment' %}" method="POST"  class="form-horizontal col-md-offset-2 col-md-10">
+        <form id="payment-form" role="form"  action="{% url 'member_payment' %}" method="POST"  class="form-horizontal col-md-offset-2 col-md-10">
             	{% csrf_token %}
 			<input name="form-name" type="hidden" value="payment-form"/>	
 			<input name="member-id" type="hidden" value="{{ member_id }}"/>
@@ -160,7 +160,7 @@
 					    </thead>
 					    <tbody>
 						{% for pr in counted_product_list %}
-			        		<tr><td><a href="{% url 'elbroquil.views.view_product_orders_with_id' pr.product.pk %}">{{ pr.product.name }}</a></td><td class="quantity">{{ pr.product.price|floatformat:2 }} &euro;</td><td class="quantity">{{ pr.arrived_quantity }} {{ pr.product.unit }}</td><td class="quantity">{{ pr.arrived_quantity|mul:pr.product.price|floatformat:2 }} &euro;</td></tr>
+			        		<tr><td><a href="{% url 'view_product_orders_with_id' pr.product.pk %}">{{ pr.product.name }}</a></td><td class="quantity">{{ pr.product.price|floatformat:2 }} &euro;</td><td class="quantity">{{ pr.arrived_quantity }} {{ pr.product.unit }}</td><td class="quantity">{{ pr.arrived_quantity|mul:pr.product.price|floatformat:2 }} &euro;</td></tr>
 						{% endfor %}
 							</tbody>
 					</table>
@@ -231,7 +231,7 @@
 						      <tbody>
 								{% if amount_changed_product_list|length > 0 %}
 									{% for pr in amount_changed_product_list %}
-						        	<tr><td><a href="{% url 'elbroquil.views.view_product_orders_with_id' pr.product.pk %}">{{ pr.product.name }}</a></td><td class="quantity">{{ pr.quantity }} {{ pr.product.unit }}</td><td class="quantity">{{ pr.arrived_quantity }} {{ pr.product.unit }}</td></tr>
+						        	<tr><td><a href="{% url 'view_product_orders_with_id' pr.product.pk %}">{{ pr.product.name }}</a></td><td class="quantity">{{ pr.quantity }} {{ pr.product.unit }}</td><td class="quantity">{{ pr.arrived_quantity }} {{ pr.product.unit }}</td></tr>
 									{% endfor %}
 								{% else %}
 							        <tr><td class="centered">---</td></tr>

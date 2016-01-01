@@ -117,7 +117,7 @@ def check_products(request):
                 })
         else:
             '''If nothing is posted, redirect to Excel upload page'''
-            return HttpResponseRedirect(reverse('elbroquil.views.upload_products', args=()))
+            return HttpResponseRedirect(reverse('upload_products', args=()))
     except ValueError as e:
         form = UploadProductsForm()
 
@@ -193,9 +193,9 @@ def confirm_products(request):
                 prod = models.Product(name=name_text, category_id=category.id, origin=origin_text, comments=comments_text, price=Decimal(price_text), unit=unit_text, integer_demand=integer_demand, distribution_date=distribution_date, order_limit_date=order_limit_date)
                 prod.save()
 
-        return HttpResponseRedirect(reverse('elbroquil.views.view_products', args=(producer_id,)))
+        return HttpResponseRedirect(reverse('view_products', args=(producer_id,)))
 
-    return HttpResponseRedirect(reverse('elbroquil.views.upload_products', args=()))
+    return HttpResponseRedirect(reverse('upload_products', args=()))
 
 @login_required
 @permission_required('elbroquil.modify_products')
