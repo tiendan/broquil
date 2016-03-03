@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-02 12:11+0100\n"
+"POT-Creation-Date: 2016-03-03 12:46+0100\n"
 "PO-Revision-Date: 2014-05-11 23:05+0000\n"
 "Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,199 +19,100 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.7.4\n"
 
-#: settings.py:187 elbroquil/models.py:58
-msgid "Turkish"
-msgstr "Türkçe"
-
-#: settings.py:188 elbroquil/models.py:59
-#, fuzzy
-msgid "Catala"
-msgstr "Katalanca"
-
-#: settings.py:189 elbroquil/models.py:60
-msgid "Castellano"
-msgstr "Kastilya Dili"
-
-#: settings.py:190 elbroquil/models.py:61
-msgid "English"
-msgstr "İngilizce"
-
-#: urls.py:14
-msgid "^help/"
-msgstr ""
-
-#: urls.py:17
-msgid "^dist/$"
-msgstr ""
-
-#: urls.py:18
-#, fuzzy
-msgid "^dist/pdf/$"
-msgstr "^hesap/giris/$"
-
-#: urls.py:19
-msgid "^dist/cash/$"
-msgstr ""
-
-#: urls.py:20
-msgid "^dist/baskets/$"
-msgstr ""
-
-#: urls.py:21
-#, fuzzy
-msgid "^dist/([0-9]+)/$"
-msgstr "^siparis/([0-9]+)/$"
-
-#: urls.py:22
-#, fuzzy
-msgid "^dist/product/([0-9]+)/$"
-msgstr "^siparis/([0-9]+)/$"
-
-#: urls.py:23
-msgid "^dist/payment/$"
-msgstr ""
-
-#: urls.py:24
-#, fuzzy
-msgid "^dist/account/$"
-msgstr "^hesap/giris/$"
-
-#: urls.py:27
-#, fuzzy
-msgid "^order/rate/$"
-msgstr "^siparis/$"
-
-#: urls.py:28
-msgid "^order/([0-9]+)/$"
-msgstr "^siparis/([0-9]+)/$"
-
-#: urls.py:29
-#, fuzzy
-msgid "^order/history$"
-msgstr "^siparis/$"
-
-#: urls.py:30
-msgid "^order/$"
-msgstr "^siparis/$"
-
-#: urls.py:33
-msgid "^products/view/(?P<producer_id>[0-9]+)$"
-msgstr ""
-
-#: urls.py:34
-#, fuzzy
-msgid "^products/view/$"
-msgstr "^urunler/$"
-
-#: urls.py:35
-#, fuzzy
-msgid "^products/confirm/$"
-msgstr "^urunler/onay"
-
-#: urls.py:36
-#, fuzzy
-msgid "^products/check/$"
-msgstr "^urunler/denetim"
-
-#: urls.py:37
-#, fuzzy
-msgid "^products/upload/$"
-msgstr "^urunler/$"
-
-#: urls.py:40
-msgid "^fees/create/$"
-msgstr ""
-
-#: urls.py:41
-msgid "^fees/view/$"
-msgstr ""
-
-#: urls.py:44
-msgid "^dist/view/$"
-msgstr ""
-
-#: urls.py:45
-#, fuzzy
-msgid "^perm/$"
-msgstr "^dagitim/$"
-
-#: urls.py:58
-msgid "^setlang/$"
-msgstr "^setlang/$"
-
 #: elbroquil/admin.py:24
 msgid "Producer availability (in case of limited availability)"
 msgstr "Üreticinin uygunluk durumu (sürekli uygun değilse)"
 
-#: elbroquil/admin.py:25 elbroquil/models.py:215
+#: elbroquil/admin.py:25 elbroquil/models.py:227
 msgid "date"
 msgstr "tarih"
 
-#: elbroquil/admin.py:30
+#: elbroquil/admin.py:37
 msgid "General Info"
 msgstr "Genel Bilgi"
 
-#: elbroquil/admin.py:31
+#: elbroquil/admin.py:38
 msgid "Order Info"
 msgstr "Sipariş Bilgisi"
 
-#: elbroquil/admin.py:32
+#: elbroquil/admin.py:39
 msgid "Technical Info"
 msgstr "Teknik Bilgi"
 
-#: elbroquil/admin.py:39
+#: elbroquil/admin.py:46
 msgid "Categories"
 msgstr "Kategoriler"
 
-#: elbroquil/admin.py:84 elbroquil/admin.py:191
+#: elbroquil/admin.py:91 elbroquil/admin.py:219
 #, fuzzy
 msgid "Email"
 msgstr "email"
 
-#: elbroquil/admin.py:85
+#: elbroquil/admin.py:92
 msgid "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
 msgstr ""
 
-#: elbroquil/admin.py:86
+#: elbroquil/admin.py:93
 msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
 msgstr ""
 
-#: elbroquil/admin.py:87
+#: elbroquil/admin.py:94
 #, fuzzy
 msgid "First name"
 msgstr "ad"
 
-#: elbroquil/admin.py:88
+#: elbroquil/admin.py:95
 #, fuzzy
 msgid "Last name"
 msgstr "soyad"
 
-#: elbroquil/admin.py:90
+#: elbroquil/admin.py:97
 msgid "Phone number"
 msgstr ""
 
-#: elbroquil/admin.py:91
+#: elbroquil/admin.py:98
 msgid "This will be the initial password for the member."
 msgstr ""
 
-#: elbroquil/admin.py:91
+#: elbroquil/admin.py:98
 msgid "Numbers only."
 msgstr ""
 
-#: elbroquil/admin.py:92
+#: elbroquil/admin.py:99
 msgid "Alternative email"
 msgstr ""
 
-#: elbroquil/admin.py:93
+#: elbroquil/admin.py:100
 msgid "Alt. phone number"
 msgstr ""
 
-#: elbroquil/admin.py:115
+#: elbroquil/admin.py:122
 msgid "A user with that username already exists."
 msgstr ""
 
-#: elbroquil/admin.py:190
+#: elbroquil/admin.py:218
 msgid "Information"
+msgstr ""
+
+#: elbroquil/admin.py:225
+#, fuzzy
+msgid "Email Lists"
+msgstr "email"
+
+#: elbroquil/admin.py:254
+msgid "user (inactive)"
+msgstr ""
+
+#: elbroquil/admin.py:255
+msgid "users (inactive)"
+msgstr ""
+
+#: elbroquil/admin.py:261
+msgid "user (system)"
+msgstr ""
+
+#: elbroquil/admin.py:262
+msgid "users (system)"
 msgstr ""
 
 #: elbroquil/forms.py:9
@@ -286,358 +187,469 @@ msgstr ""
 msgid "Min. order not met"
 msgstr ""
 
-#: elbroquil/models.py:78
+#: elbroquil/models.py:58 settings.py:181
+msgid "Turkish"
+msgstr "Türkçe"
+
+#: elbroquil/models.py:59 settings.py:182
+#, fuzzy
+msgid "Catala"
+msgstr "Katalanca"
+
+#: elbroquil/models.py:60 settings.py:183
+msgid "Castellano"
+msgstr "Kastilya Dili"
+
+#: elbroquil/models.py:61 settings.py:184
+msgid "English"
+msgstr "İngilizce"
+
+#: elbroquil/models.py:79
 msgid "Member: Offer Created"
 msgstr ""
 
-#: elbroquil/models.py:79
+#: elbroquil/models.py:80
 msgid "Member: Saturday Reminder"
 msgstr ""
 
-#: elbroquil/models.py:80
+#: elbroquil/models.py:81
 msgid "Member: Order Sent to Producers"
 msgstr ""
 
-#: elbroquil/models.py:81
+#: elbroquil/models.py:82
 msgid "Member: Account Created"
 msgstr ""
 
 #: elbroquil/models.py:83
+#, fuzzy
+msgid "Member: Distribution Task Reminder"
+msgstr "dağıtım tarihi"
+
+#: elbroquil/models.py:85
 msgid "Producer: Total Order"
 msgstr ""
 
-#: elbroquil/models.py:84
+#: elbroquil/models.py:86
 #, fuzzy
 msgid "Producer: No Order This Week"
 msgstr "Bu haftaki siparişiniz"
 
-#: elbroquil/models.py:85
+#: elbroquil/models.py:87
 msgid "Producer: Product Ratings"
 msgstr ""
 
-#: elbroquil/models.py:91
+#: elbroquil/models.py:95
+msgid "Transfer from SAFE to DRAWER"
+msgstr ""
+
+#: elbroquil/models.py:96
+msgid "Transfer from DRAWER to SAFE"
+msgstr ""
+
+#: elbroquil/models.py:102
 msgid "first name"
 msgstr "ad"
 
-#: elbroquil/models.py:92
+#: elbroquil/models.py:103
 msgid "last name"
 msgstr "soyad"
 
-#: elbroquil/models.py:93
+#: elbroquil/models.py:104
 msgid "company name"
 msgstr "şirket adı"
 
-#: elbroquil/models.py:94
+#: elbroquil/models.py:105
 msgid "email"
 msgstr "email"
 
-#: elbroquil/models.py:95
+#: elbroquil/models.py:106
 msgid "send ratings"
 msgstr "notları gönder"
 
-#: elbroquil/models.py:96
+#: elbroquil/models.py:107
 msgid "order day"
 msgstr "sipariş günü"
 
-#: elbroquil/models.py:97
+#: elbroquil/models.py:108
 msgid "order hour"
 msgstr "sipariş saati"
 
-#: elbroquil/models.py:98
+#: elbroquil/models.py:109
 msgid "minimum order"
 msgstr "sipariş alt sınırı"
 
-#: elbroquil/models.py:99
+#: elbroquil/models.py:110
 msgid "fixed products"
 msgstr "sabit ürünler"
 
-#: elbroquil/models.py:100
+#: elbroquil/models.py:111
 msgid "limited availability"
 msgstr "sınırlı uygunluk durumu"
 
-#: elbroquil/models.py:101
+#: elbroquil/models.py:112
 msgid "excel format"
 msgstr "excel formatı"
 
-#: elbroquil/models.py:102
+#: elbroquil/models.py:113
 msgid "default category name"
 msgstr "varsayılan kategori adı"
 
-#: elbroquil/models.py:103
+#: elbroquil/models.py:114
 msgid "active"
 msgstr "etkin"
 
-#: elbroquil/models.py:103
+#: elbroquil/models.py:114
 msgid "<em>(Disable the producer by clearing this option.)</em>"
 msgstr ""
 
-#: elbroquil/models.py:104
+#: elbroquil/models.py:115
 msgid "transportation cost"
 msgstr ""
 
-#: elbroquil/models.py:106
+#: elbroquil/models.py:117
 msgid "short product explanation"
 msgstr ""
 
-#: elbroquil/models.py:106
+#: elbroquil/models.py:117
 msgid "<em>(Will be shown on the 'offer created' emails.)</em>"
 msgstr ""
 
-#: elbroquil/models.py:112
+#: elbroquil/models.py:118 elbroquil/models.py:330
+msgid "description"
+msgstr ""
+
+#: elbroquil/models.py:118
+msgid ""
+"<em>(Long explanation about the producer. If you want to place photos or "
+"links to files, a) place them in Google Drive and create public link, b) "
+"find their public link from some other website)</em>"
+msgstr ""
+
+#: elbroquil/models.py:124
 msgid "producer"
 msgstr "üretici"
 
-#: elbroquil/models.py:113
+#: elbroquil/models.py:125
 msgid "producers"
 msgstr "üreticiler"
 
-#: elbroquil/models.py:120 elbroquil/models.py:126
+#: elbroquil/models.py:132 elbroquil/models.py:138
 msgid "available date"
 msgstr "uygun tarih"
 
-#: elbroquil/models.py:127
+#: elbroquil/models.py:139
 msgid "available dates"
 msgstr "uygun tarihler"
 
-#: elbroquil/models.py:132 elbroquil/models.py:138
+#: elbroquil/models.py:144 elbroquil/models.py:150
 msgid "skipped date"
 msgstr ""
 
-#: elbroquil/models.py:139
+#: elbroquil/models.py:151
 msgid "skipped dates"
 msgstr ""
 
-#: elbroquil/models.py:144
+#: elbroquil/models.py:156 elbroquil/models.py:329
 msgid "name"
 msgstr "ad"
 
-#: elbroquil/models.py:145
+#: elbroquil/models.py:157
 msgid "visible name"
 msgstr "görünen ad"
 
-#: elbroquil/models.py:145
+#: elbroquil/models.py:157
 msgid "<em>(To display shorter/better names for producer categories.)</em>"
 msgstr ""
 
-#: elbroquil/models.py:147
+#: elbroquil/models.py:159
 msgid "sort order"
 msgstr "sıra"
 
-#: elbroquil/models.py:147
+#: elbroquil/models.py:159
 msgid "<em>(To change the order of appearance of categories.)</em>"
 msgstr ""
 
-#: elbroquil/models.py:148 elbroquil/models.py:171 elbroquil/models.py:200
+#: elbroquil/models.py:160 elbroquil/models.py:183 elbroquil/models.py:212
 msgid "archived"
 msgstr "arşiv"
 
-#: elbroquil/models.py:157
+#: elbroquil/models.py:169
 msgid "category"
 msgstr "kategori"
 
-#: elbroquil/models.py:158
+#: elbroquil/models.py:170
 msgid "categories"
 msgstr "kategoriler"
 
-#: elbroquil/models.py:163 elbroquil/models.py:190
+#: elbroquil/models.py:175 elbroquil/models.py:202
 msgid "product"
 msgstr "ürün"
 
-#: elbroquil/models.py:165
+#: elbroquil/models.py:177
 msgid "origin"
 msgstr "üretim yeri"
 
-#: elbroquil/models.py:166
+#: elbroquil/models.py:178
 msgid "comments"
 msgstr "yorumlar"
 
-#: elbroquil/models.py:167
+#: elbroquil/models.py:179
 msgid "price"
 msgstr "fiyat"
 
-#: elbroquil/models.py:168
+#: elbroquil/models.py:180
 msgid "unit"
 msgstr "birim"
 
-#: elbroquil/models.py:168
+#: elbroquil/models.py:180
 msgid "<em>(without the &euro; sign or / character.)</em>"
 msgstr ""
 
-#: elbroquil/models.py:169
+#: elbroquil/models.py:181
 msgid "integer demand"
 msgstr "tamsayılı sipariş"
 
-#: elbroquil/models.py:170 elbroquil/models.py:258 elbroquil/models.py:271
-#: elbroquil/models.py:311
+#: elbroquil/models.py:182 elbroquil/models.py:270 elbroquil/models.py:284
+#: elbroquil/models.py:324
 msgid "distribution date"
 msgstr "dağıtım tarihi"
 
-#: elbroquil/models.py:170 elbroquil/models.py:175
+#: elbroquil/models.py:182 elbroquil/models.py:187
 msgid "<em>(Only fill for products that are offered just once.)</em>"
 msgstr ""
 
-#: elbroquil/models.py:173
+#: elbroquil/models.py:185
 #, fuzzy
 msgid "total quantity"
 msgstr "miktar"
 
-#: elbroquil/models.py:174 elbroquil/models.py:202
+#: elbroquil/models.py:186 elbroquil/models.py:214
 #, fuzzy
 msgid "arrived quantity"
 msgstr "miktar"
 
-#: elbroquil/models.py:175
+#: elbroquil/models.py:187
 #, fuzzy
 msgid "order limit date"
 msgstr "sipariş günü"
 
-#: elbroquil/models.py:176
+#: elbroquil/models.py:188
 #, fuzzy
 msgid "average rating"
 msgstr "notları gönder"
 
-#: elbroquil/models.py:178
+#: elbroquil/models.py:190
 #, fuzzy
 msgid "new product"
 msgstr "ürün"
 
-#: elbroquil/models.py:178
+#: elbroquil/models.py:190
 msgid "<em>(To highlight this product as NEW in the order pages.)</em>"
 msgstr ""
 
-#: elbroquil/models.py:179
+#: elbroquil/models.py:191
 #, fuzzy
 msgid "sent to producer"
 msgstr "üretici"
 
-#: elbroquil/models.py:181
+#: elbroquil/models.py:193
 #, fuzzy
 msgid "stock product"
 msgstr "ürün"
 
-#: elbroquil/models.py:191
+#: elbroquil/models.py:203
 msgid "products"
 msgstr "ürünler"
 
-#: elbroquil/models.py:198 elbroquil/models.py:216 elbroquil/models.py:223
-#: elbroquil/models.py:231 elbroquil/models.py:243 elbroquil/models.py:273
+#: elbroquil/models.py:210 elbroquil/models.py:228 elbroquil/models.py:235
+#: elbroquil/models.py:243 elbroquil/models.py:255 elbroquil/models.py:286
 msgid "quantity"
 msgstr "miktar"
 
-#: elbroquil/models.py:199
+#: elbroquil/models.py:211
 msgid "rating"
 msgstr "not"
 
-#: elbroquil/models.py:201
+#: elbroquil/models.py:213
 msgid "status"
 msgstr ""
 
-#: elbroquil/models.py:205
+#: elbroquil/models.py:217
 msgid "order"
 msgstr "sipariş"
 
-#: elbroquil/models.py:206
+#: elbroquil/models.py:218
 msgid "orders"
 msgstr "siparişler"
 
-#: elbroquil/models.py:240
+#: elbroquil/models.py:252
 msgid "year"
 msgstr ""
 
-#: elbroquil/models.py:241
+#: elbroquil/models.py:253
 msgid "quarter"
 msgstr ""
 
-#: elbroquil/models.py:242
+#: elbroquil/models.py:254
 msgid "created date"
 msgstr ""
 
-#: elbroquil/models.py:251
+#: elbroquil/models.py:263
 msgid "secondary email"
 msgstr ""
 
-#: elbroquil/models.py:252
+#: elbroquil/models.py:264
 msgid "phone"
 msgstr ""
 
-#: elbroquil/models.py:253
+#: elbroquil/models.py:265
 msgid "secondary phone"
 msgstr ""
 
-#: elbroquil/models.py:259
+#: elbroquil/models.py:271
 msgid "initial amount"
 msgstr ""
 
-#: elbroquil/models.py:260
+#: elbroquil/models.py:272
 msgid "member consumed amount"
 msgstr ""
 
-#: elbroquil/models.py:261
+#: elbroquil/models.py:273
 msgid "total member payment amount"
 msgstr ""
 
-#: elbroquil/models.py:263
+#: elbroquil/models.py:275
 msgid "debt balance amount"
 msgstr ""
 
-#: elbroquil/models.py:264
+#: elbroquil/models.py:276
 msgid "collected fee amount"
 msgstr ""
 
-#: elbroquil/models.py:265
+#: elbroquil/models.py:277
 msgid "final amount"
 msgstr ""
 
-#: elbroquil/models.py:266
+#: elbroquil/models.py:278
 msgid "expected final amount"
 msgstr ""
 
-#: elbroquil/models.py:278
+#: elbroquil/models.py:279
+msgid "notes"
+msgstr ""
+
+#: elbroquil/models.py:291
 #, fuzzy
 msgid "email code"
 msgstr "email"
 
-#: elbroquil/models.py:279
+#: elbroquil/models.py:292
 msgid "language code"
 msgstr ""
 
-#: elbroquil/models.py:280
+#: elbroquil/models.py:293
 msgid "subject"
 msgstr ""
 
-#: elbroquil/models.py:280
+#: elbroquil/models.py:293
 msgid "<em>(Without [BroquilGotic])</em>"
 msgstr ""
 
-#: elbroquil/models.py:281
+#: elbroquil/models.py:294
 msgid "body"
 msgstr ""
 
-#: elbroquil/models.py:281
+#: elbroquil/models.py:294
 msgid "<em>(Do not remove the [[CONTENT]] parts.)</em>"
 msgstr ""
 
-#: elbroquil/models.py:304
+#: elbroquil/models.py:317
 msgid "email template"
 msgstr ""
 
-#: elbroquil/models.py:305
+#: elbroquil/models.py:318
 msgid "email templates"
 msgstr ""
 
-#: elbroquil/templates/help.html:4 elbroquil/templates/help.html.py:5
-#: templates/base.html:82
-msgid "Help"
-msgstr ""
-
-#: elbroquil/templates/help.html:8
-msgid "Com fer comanda"
-msgstr ""
-
-#: elbroquil/templates/help.html:11
+#: elbroquil/models.py:331
 #, fuzzy
-msgid "Com fer la permanencia"
-msgstr "Dağıtım Yap"
+msgid "email addresses"
+msgstr "email"
+
+#: elbroquil/models.py:332
+msgid "cc task reminders"
+msgstr ""
+
+#: elbroquil/models.py:333
+msgid "cc incidents"
+msgstr ""
+
+#: elbroquil/models.py:341
+msgid "movement type"
+msgstr ""
+
+#: elbroquil/models.py:342
+msgid "amount"
+msgstr ""
+
+#: elbroquil/models.py:343
+msgid "final amount in safe"
+msgstr ""
+
+#: elbroquil/models.py:344
+msgid "explanation"
+msgstr ""
+
+#: elbroquil/models.py:345
+#, fuzzy
+msgid "movement date"
+msgstr "sipariş günü"
+
+#: elbroquil/parse.py:166
+msgid "Distribution date and order limit date should be in text format!"
+msgstr ""
+
+#: elbroquil/parse.py:171
+msgid "Distribution date and order limit date should be in YYYY-MM-DD format!"
+msgstr ""
+
+#: elbroquil/templates/contact.html:6 templates/base.html:93
+msgid "Contact"
+msgstr ""
+
+#: elbroquil/templates/contact.html:6
+msgid "Send"
+msgstr ""
+
+#: elbroquil/templates/contact.html:13
+msgid "Choose your contact and send your message."
+msgstr ""
+
+#: elbroquil/templates/contact.html:19
+msgid "To"
+msgstr ""
+
+#: elbroquil/templates/contact.html:22 elbroquil/templates/contact.html:32
+msgid ""
+"Messages related to problems in your order. Choose the distribution date for "
+"which you had a problem."
+msgstr ""
+
+#: elbroquil/templates/contact.html:22
+msgid "Incidents"
+msgstr ""
+
+#: elbroquil/templates/contact.html:37
+#: elbroquil/templates/management/view_distribution_detail.html:17
+#: elbroquil/templates/order/order_history.html:25
+#: elbroquil/templates/product/check_product_info.html:22
+#, fuzzy
+msgid "Distribution date"
+msgstr "dağıtım tarihi"
+
+#: elbroquil/templates/contact.html:47
+msgid "Message"
+msgstr ""
 
 #: elbroquil/templates/distribution/account_summary.html:5
 msgid "Accounting summary"
@@ -693,7 +705,11 @@ msgstr ""
 msgid "Expected final cash:"
 msgstr ""
 
-#: elbroquil/templates/distribution/account_summary.html:89
+#: elbroquil/templates/distribution/account_summary.html:87
+msgid "Notes:"
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:97
 #: elbroquil/templates/distribution/count_initial_cash.html:47
 #: elbroquil/templates/distribution/member_payment.html:135
 #: elbroquil/templates/distribution/view_order_totals.html:67
@@ -1004,7 +1020,7 @@ msgid "FILTER BY MEMBER"
 msgstr ""
 
 #: elbroquil/templates/fee/view_fees.html:54
-#: elbroquil/templates/management/view_distribution_task_information.html:78
+#: elbroquil/templates/management/view_distribution_task_information.html:77
 msgid "Member"
 msgstr ""
 
@@ -1025,16 +1041,64 @@ msgstr ""
 msgid "Year"
 msgstr ""
 
+#: elbroquil/templates/help.html:4 elbroquil/templates/help.html.py:5
+#: templates/base.html:89
+msgid "Help"
+msgstr ""
+
+#: elbroquil/templates/help.html:8
+msgid "Com fer comanda"
+msgstr ""
+
+#: elbroquil/templates/help.html:11
+#, fuzzy
+msgid "Com fer la permanencia"
+msgstr "Dağıtım Yap"
+
+#: elbroquil/templates/management/view_accounting_detail.html:6
+msgid "View accounting details"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:16
+msgid "Start date"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:31
+#, fuzzy
+#| msgid "date"
+msgid "End date"
+msgstr "tarih"
+
+#: elbroquil/templates/management/view_accounting_detail.html:43
+msgid "View"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:51
+msgid "Drawer"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:52
+msgid "Safe"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:55
+#: elbroquil/templates/management/view_distribution_task_information.html:51
+msgid "Date"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:56
+#: elbroquil/templates/management/view_accounting_detail.html:58
+msgid "Before"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:57
+#: elbroquil/templates/management/view_accounting_detail.html:59
+msgid "After"
+msgstr ""
+
 #: elbroquil/templates/management/view_distribution_detail.html:6
 #, fuzzy
 msgid "View distribution summary"
-msgstr "dağıtım tarihi"
-
-#: elbroquil/templates/management/view_distribution_detail.html:17
-#: elbroquil/templates/order/order_history.html:25
-#: elbroquil/templates/product/check_product_info.html:22
-#, fuzzy
-msgid "Distribution date"
 msgstr "dağıtım tarihi"
 
 #: elbroquil/templates/management/view_distribution_detail.html:20
@@ -1077,24 +1141,16 @@ msgstr ""
 msgid "View distribution task summary"
 msgstr "dağıtım tarihi"
 
-#: elbroquil/templates/management/view_distribution_task_information.html:26
-msgid "CHOOSE YEAR"
-msgstr ""
-
-#: elbroquil/templates/management/view_distribution_task_information.html:39
+#: elbroquil/templates/management/view_distribution_task_information.html:38
 #, fuzzy
 msgid "Read from calendar"
 msgstr "Excel'den Oku"
 
-#: elbroquil/templates/management/view_distribution_task_information.html:52
-msgid "Date"
-msgstr ""
-
-#: elbroquil/templates/management/view_distribution_task_information.html:52
+#: elbroquil/templates/management/view_distribution_task_information.html:51
 msgid "Members"
 msgstr ""
 
-#: elbroquil/templates/management/view_distribution_task_information.html:78
+#: elbroquil/templates/management/view_distribution_task_information.html:77
 #, fuzzy
 msgid "Distribution task count"
 msgstr "dağıtım tarihi"
@@ -1331,6 +1387,13 @@ msgstr ""
 msgid "Distribution Date"
 msgstr "dağıtım tarihi"
 
+#: elbroquil/templates/producer/producer_info.html:4
+#: elbroquil/templates/producer/producer_info.html:5 templates/base.html:91
+#, fuzzy
+#| msgid "Producer"
+msgid "Producers"
+msgstr "Üretici"
+
 #: elbroquil/templates/product/check_product_info.html:11
 msgid "Check the product information"
 msgstr ""
@@ -1378,7 +1441,7 @@ msgstr ""
 msgid "Read from Excel"
 msgstr "Excel'den Oku"
 
-#: elbroquil/templates/product/upload_products.html:12
+#: elbroquil/templates/product/upload_products.html:15
 msgid "Choose the producer and upload the products excel."
 msgstr ""
 
@@ -1404,71 +1467,88 @@ msgstr ""
 msgid "Please enter fee amount"
 msgstr ""
 
-#: elbroquil/views/management_views.py:278
+#: elbroquil/views/management_views.py:277
 msgid "Could not find member with email:"
 msgstr ""
 
-#: elbroquil/views/management_views.py:284
+#: elbroquil/views/management_views.py:283
 msgid "Member exists twice in event, email:"
+msgstr ""
+
+#: elbroquil/views/other_views.py:126
+msgid "Message sent successfully and a copy is sent to your address."
 msgstr ""
 
 #: templates/base.html:78
 msgid "Prepare Baskets"
 msgstr ""
 
-#: templates/base.html:81
+#: templates/base.html:82
 msgid "Accounting"
 msgstr ""
 
-#: templates/base.html:86
+#: templates/base.html:84
 #, fuzzy
-msgid "Admin"
-msgstr "^yonetici/"
+msgid "Distribution Detail"
+msgstr "dağıtım tarihi"
 
-#: templates/base.html:89
-msgid "Upload products excel"
+#: templates/base.html:85
+msgid "Accounting Detail"
 msgstr ""
 
-#: templates/base.html:90
-#, fuzzy
-msgid "View products"
-msgstr "ürün"
-
-#: templates/base.html:94
-msgid "View Fee Status"
-msgstr ""
-
-#: templates/base.html:95
-msgid "Create Fees"
+#: templates/base.html:92
+msgid "Help Videos"
 msgstr ""
 
 #: templates/base.html:99
 #, fuzzy
+msgid "Admin"
+msgstr "^yonetici/"
+
+#: templates/base.html:102
+msgid "Upload products excel"
+msgstr ""
+
+#: templates/base.html:103
+#, fuzzy
+msgid "View products"
+msgstr "ürün"
+
+#: templates/base.html:107
+msgid "View Fee Status"
+msgstr ""
+
+#: templates/base.html:108
+msgid "Create Fees"
+msgstr ""
+
+#: templates/base.html:112
+#, fuzzy
 msgid "Admin Panel"
 msgstr "^yonetici/"
 
-#: templates/base.html:130
+#: templates/base.html:143
 #, fuzzy
 msgid "Change password"
 msgstr "Parola"
 
-#: templates/base.html:132
+#: templates/base.html:145
 msgid "Log out"
 msgstr ""
 
-#: templates/base.html:141 templates/login.html:18
+#: templates/base.html:154 templates/login.html:18
 msgid "Username"
 msgstr "Kullanıcı adı"
 
-#: templates/base.html:144 templates/login.html:19
+#: templates/base.html:157 templates/login.html:19
 msgid "Password"
 msgstr "Parola"
 
-#: templates/base.html:146 templates/login.html:24
+#: templates/base.html:159 templates/login.html:24
 msgid "Sign in"
 msgstr "Giriş yap"
 
-#: templates/base.html:148 templates/login.html:26
+#: templates/base.html:161 templates/login.html:26
 #, fuzzy
 msgid "Forgot password"
 msgstr "Parola"
@@ -1495,6 +1575,129 @@ msgstr ""
 #: templates/registration/password_reset_email.html:8
 msgid "Your username, in case you've forgotten:"
 msgstr ""
+
+#: urls.py:17
+msgid "^help/"
+msgstr ""
+
+#: urls.py:18
+msgid "^contact/$"
+msgstr ""
+
+#: urls.py:21
+msgid "^dist/$"
+msgstr ""
+
+#: urls.py:22
+#, fuzzy
+msgid "^dist/pdf/$"
+msgstr "^hesap/giris/$"
+
+#: urls.py:23
+msgid "^dist/cash/$"
+msgstr ""
+
+#: urls.py:24
+msgid "^dist/baskets/$"
+msgstr ""
+
+#: urls.py:25
+#, fuzzy
+msgid "^dist/([0-9]+)/$"
+msgstr "^siparis/([0-9]+)/$"
+
+#: urls.py:26
+#, fuzzy
+msgid "^dist/product/([0-9]+)/$"
+msgstr "^siparis/([0-9]+)/$"
+
+#: urls.py:27
+msgid "^dist/payment/$"
+msgstr ""
+
+#: urls.py:28
+#, fuzzy
+msgid "^dist/account/$"
+msgstr "^hesap/giris/$"
+
+#: urls.py:31
+#, fuzzy
+msgid "^order/rate/$"
+msgstr "^siparis/$"
+
+#: urls.py:32
+msgid "^order/([0-9]+)/$"
+msgstr "^siparis/([0-9]+)/$"
+
+#: urls.py:33
+#, fuzzy
+msgid "^order/history$"
+msgstr "^siparis/$"
+
+#: urls.py:34
+msgid "^order/$"
+msgstr "^siparis/$"
+
+#: urls.py:37
+msgid "^products/view/(?P<producer_id>[0-9]+)$"
+msgstr ""
+
+#: urls.py:38
+#, fuzzy
+msgid "^products/view/$"
+msgstr "^urunler/$"
+
+#: urls.py:39
+#, fuzzy
+msgid "^products/confirm/$"
+msgstr "^urunler/onay"
+
+#: urls.py:40
+#, fuzzy
+msgid "^products/check/$"
+msgstr "^urunler/denetim"
+
+#: urls.py:41
+#, fuzzy
+msgid "^products/upload/$"
+msgstr "^urunler/$"
+
+#: urls.py:43
+#, fuzzy
+#| msgid "producer"
+msgid "^producer/$"
+msgstr "üretici"
+
+#: urls.py:44
+msgid "^producer/(?P<producer_id>[0-9]+)$"
+msgstr ""
+
+#: urls.py:47
+msgid "^fees/create/$"
+msgstr ""
+
+#: urls.py:48
+msgid "^fees/view/$"
+msgstr ""
+
+#: urls.py:51
+#, fuzzy
+msgid "^man/account/$"
+msgstr "^hesap/giris/$"
+
+#: urls.py:52
+#, fuzzy
+msgid "^man/dist/$"
+msgstr "^hesap/giris/$"
+
+#: urls.py:53
+#, fuzzy
+msgid "^man/perm/$"
+msgstr "^dagitim/$"
+
+#: urls.py:67
+msgid "^setlang/$"
+msgstr "^setlang/$"
 
 #, fuzzy
 #~ msgid "Products"
