@@ -24,8 +24,6 @@ class Command(BaseCommand):
     help = 'Crea la oferta y informa los miembros activos'
 
     def handle(self, *args, **options):
-        offer_summary = ""
-
         # Check if there will be an offer this week (exclude today in case it is Wednesday)
         next_dist_date = libs.get_next_distribution_date(False)
 
@@ -120,10 +118,7 @@ class Command(BaseCommand):
 
             if products:
                 self.stdout.write('El productor tiene ' + str(len(products)) + ' productos...')
-
-                # Add information of these products to the offer summary included in the email sent to members
-                offer_summary += "<li>" + producer.short_product_explanation + " (fins " + timezone.localtime(limit_date).strftime("%d/%m/%Y %H:%M") + ")</li>"
-
+                
                 # Delete all products already copied for this week
                 models.Product.objects.filter(category__producer=producer, distribution_date=next_dist_date,sent_to_producer=False).delete()
 
@@ -165,6 +160,14 @@ class Command(BaseCommand):
         # Send the reminder email to the active members
         self.stdout.write('Enviando el correo de informacion sobre la oferta a los miembros...')
 
+        # Prepare the offer summary with short explanation of each available producer
+        offer_summary = ""
+        producers = models.Producer.objects.filter(category__product__order_limit_date__gt=libs.get_now()).distinct()
+        for producer in producers:
+            # Add information of these products to the offer summary included in the email sent to members
+            limit_date = libs.get_producer_order_limit_date(producer, next_dist_date)
+            offer_summary += "<li>" + producer.short_product_explanation + " (fins " + timezone.localtime(limit_date).strftime("%d/%m/%Y %H:%M") + ")</li>"
+                
         email_subject = '[BroquilGotic]Oferta d\'aquesta setmana'
         html_content = '<p style="text-align: center;"><strong><u>El Bróquil Del Gótic</u></strong></p><p style="text-align: left; ">Hola broquilire!!!!</p><p style="text-align: left; ">Aquesta setmana pots comprar aquests maravellosos productes!:</p><h4 style="text-align: left; "><b>[[CONTENT]]</b></h4><p style="text-align: left;">Ja pots fer la teva <strong>comanda</strong> <a href="https://el-broquil.rhcloud.com">aquí</a></p><p>PARTICIPA!!!</p><p>El Bróquil funciona gràcies al treball voluntari de tots nosaltres, pel que et demanem:</p><ul><li>Apunta\'t a les <strong>permanències</strong>: pots fer-ho a l\'enllaç de dalt o a la pestanya del document de comandes.</li><li>Apunta\'t a les comissions: enviant un correu als referents de les <strong>comissions</strong>. Sobretot si no pots fer permanències, <strong>hi ha altres maneres de participar</strong>. Te les indiquem <u>aquí mateix</u>.</li></ul><p></p><p><strong>Enllaços útils</strong>: <a href="http://elbroquildelgotic.blogspot.com.es/p/contacto.html">Triptic de benvinguda</a>, <a href="http://elbroquildelgotic.blogspot.com.es/p/blog-page_30.html">Manual de Permanències</a> / <a href="http://elbroquildelgotic.blogspot.com.es/p/blog-page.html">Manual per a fer comandes</a>.</p><p><strong>COM FER LA COMANDA</strong></p><ul><li><strong>Omplir la comanda</strong>: La comanda es pot omplir <strong>fins al diumenge a les 24h</strong>, per tal de poder reenviar-la a temps als productors. Assegureu-vos d\'omplir la vostra comanda en la columna amb el vostre nom.</li><li><strong>Productes</strong>: Els <strong>productes</strong> es compren per <strong>pes, manats o unitats i pes</strong> (és el cas dels melons, carabasses, síndria i similars que es demanen per unitats peró es paguen per pes )</li><li><strong>Recollida de la comanda</strong>: La comanda es recull els <strong>dimecres de 18:30h a 20:00h</strong> a c. <strong>Nou de Sant Francesc, 21</strong>. Sigueu puntuals! Penseu en portar <strong>bosses, carro o cistella</strong> per a emportar-vos la comanda.</li><li><strong>Quota de transport</strong>: La quota és de <strong>12èeuro;</strong> per trimestre, que s\'abona al començament de cada trimestre natural.</li></ul><p></p><p>El Bróquil del Gótic <a href="http://elbroquildelgotic.blogspot.com.es/">Blog</a> <br>Espai social del Gótic La negreta<br>c. Nou de Sant Francesc 21<br>Barcelona 08002<br>93 315 18 20 (dimecres de 18 a 20 h)</p>'
 
