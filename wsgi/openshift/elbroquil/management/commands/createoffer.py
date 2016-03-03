@@ -85,7 +85,7 @@ class Command(BaseCommand):
                 integer_demand = "unitat" in comments_text.lower() or unit_text.lower() != "kg"
 
                 # For some exceptional products, update the integer_demand value
-                for exceptional_product in [u"carabassa", u"síndria", u"meló"]:
+                for exceptional_product in [u"carabassa", u"carbassa", u"síndria", u"meló"]:
                     integer_demand = integer_demand or exceptional_product in name_text.lower()
 
                 category, created = models.Category.objects.get_or_create(name=category_text, producer_id=active_producer.id)
