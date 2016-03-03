@@ -87,6 +87,15 @@ EMAIL_CODE_CHOICES  = (
     (EMAIL_PRODUCER_RATINGS, _(u'Producer: Product Ratings')),
 )
 
+# Account movements
+MOVEMENT_FROM_SAFE = 1
+MOVEMENT_TO_SAFE = 2
+
+MOVEMENT_CHOICES = (
+    (MOVEMENT_FROM_SAFE, _(u'Transfer from SAFE to DRAWER')),
+    (MOVEMENT_TO_SAFE, _(u'Transfer from DRAWER to SAFE')),
+)
+
 # Producer model
 # Contains the contact information, preference for receiving orders and other information
 class Producer(models.Model):
@@ -106,6 +115,7 @@ class Producer(models.Model):
     transportation_cost = models.DecimalField(_(u'transportation cost'), decimal_places=2, max_digits=7, default=0)
 
     short_product_explanation = models.CharField(_(u'short product explanation'), max_length=80, null=False, blank=False, default="", help_text=_(u"<em>(Will be shown on the 'offer created' emails.)</em>"))
+    description = models.TextField(_(u'description'), blank=True, default='', help_text=_(u"<em>(Long explanation about the producer. If you want to place photos or links to files, a) place them in Google Drive and create public link, b) find their public link from some other website)</em>"))
 
     def __unicode__(self):
         return self.company_name
@@ -314,11 +324,22 @@ class DistributionTask(models.Model):
     distribution_date = models.DateField(_(u'distribution date'))
     
 # Email List model
+# Holds information about email lists in the system (for use in the contact form)
 class EmailList(models.Model):
     name = models.CharField(_(u'name'), max_length=80)
+    description = models.TextField(_(u'description'), blank=True, default='')
     email_addresses = models.TextField(_(u'email addresses'), blank=True, default='')
     cc_task_reminders = models.BooleanField(_(u'cc task reminders'), default=False)
     cc_incidents = models.BooleanField(_(u'cc incidents'), default=False)
     
     def __unicode__(self):
         return unicode(self.name)
+    
+# Account Movement model
+# Contains the movements between the safe box and the daily-use money drawer
+class AccountMovement(models.Model):
+    movement_type = models.SmallIntegerField(_(u'movement type'), choices=MOVEMENT_CHOICES, default=MOVEMENT_FROM_SAFE)
+    amount = models.DecimalField(_(u'amount'), decimal_places=2, max_digits=7, default=0)
+    final_amount = models.DecimalField(_(u'final amount in safe'), decimal_places=2, max_digits=7, default=0)
+    explanation = models.TextField(_(u'explanation'), blank=True, default='')
+    movement_date = models.DateTimeField(_(u'movement date'), default=timezone.now)

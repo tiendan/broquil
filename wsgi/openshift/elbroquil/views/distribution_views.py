@@ -297,7 +297,7 @@ def view_product_orders(request, product_no=''):
                     new_order.save()
 
     product_orders = models.Order.objects.filter(product__id=current_product.id).order_by('user__first_name', 'user__last_name')
-    all_members = User.objects.filter(is_superuser=False).order_by('first_name', 'last_name')
+    all_members = User.objects.filter(username__contains='@').order_by('first_name', 'last_name')
     total_quantity = 0
     total_arrived_quantity = 0
     
@@ -603,7 +603,7 @@ def account_summary(request):
     previous_debt_total = 0
     current_debt_total = 0
 
-    all_users = User.objects.filter(is_superuser=False)
+    all_users = User.objects.filter(username__contains='@')
     for user in all_users:
         # Get today's debt for this user
         debt = models.Debt.objects.filter(user=user, payment__date__gte=today).first()

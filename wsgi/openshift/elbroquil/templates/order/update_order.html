@@ -40,7 +40,7 @@
 							{% else %}
 							  <li class="previous importantlink"><a href="{% url 'view_order' %}">&larr; {% trans "View order" %}</a></li>
 							{% endif %}
-						  <li><h2 class="fillSpace">{{ category_name }}<br/><small>{% trans "Available until:"%} 
+						  <li><h2 class="fillSpace">{{ category_name }} {% if producer.description|length > 0 %}<a href="{% url 'producer_info' producer.pk %}"><span class="glyphicon glyphicon-info-sign"></span></a>{% endif %}<br/><small>{% trans "Available until:"%} 
 							{% if products.0.0.order_limit_date < few_hours_later %}
 							<span class="label label-danger">
 							{% elif products.0.0.order_limit_date < a_day_later %}

@@ -38,7 +38,7 @@ def order_history(request):
     today = libs.get_today()
     # Form fields
     only_latest_dates = True
-    selected_date = "-1"
+    selected_date = None
     date_texts = []
     date_values = []
     payment_records = models.Payment.objects.filter(user=request.user).order_by("-date")
@@ -60,67 +60,71 @@ def order_history(request):
     if request.method == 'POST':
         selected_date = request.POST.get("date")
         only_latest_dates = request.POST.get("only-latest") is not None
-        
-        if selected_date != "-1":
-            user_orders = models.Order.objects.filter(user=request.user, archived=False, product__distribution_date=selected_date).prefetch_related('product').order_by('product__category__sort_order', 'product__pk')
-            
-            # Separate the orders according to their status and calculate the order sum
-            # using only the orders which are OK (that arrived)
-            for order in user_orders:
-                if order.status == models.STATUS_NORMAL:
-                    counted_product_list.append(order)
-                    total_price += (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
-                    
-                    if order.arrived_quantity != order.quantity:
-                        amount_changed_product_list.append(order)
-                    
-                    #orders.append(order)
-                    #totals.append((order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
-                elif order.status == models.STATUS_DID_NOT_ARRIVE:
-                    not_arrived_product_list.append(order)
-                elif order.status == models.STATUS_MIN_ORDER_NOT_MET:
-                    not_ordered_product_list.append(order)
-        
-            # Get debt from last weeks (if exists)
-            last_debt = models.Debt.objects.filter(user=request.user, payment__date__lt=selected_date).order_by('-payment__date').first()
-        
-            if last_debt is not None:
-                debt_before = last_debt.amount
-            
-            # Get the user payment for this distribution date
-            date_start = datetime.strptime(selected_date, "%Y-%m-%d")
-            date_end = date_start + timedelta(days=1)
-            payment = models.Payment.objects.filter(user=request.user, date__range=(date_start, date_end)).first()
-            
-            if payment is not None:
-                paid_amount = payment.amount
-                
-                # Get debt saved for next weeks
-                next_debt = models.Debt.objects.filter(user=request.user, payment=payment).first()
-                if next_debt is not None:
-                    debt_after = next_debt.amount
-                    
-                # Get paid quarterly fee (if exists)
-                quarterly = models.Quarterly.objects.filter(user=request.user, payment=payment).first()
-                if quarterly is not None:
-                    quarterly_fee = quarterly.amount
-                
-        
-    orders_with_totals = zip(orders, totals)
     
-    if not request.session.get('order_total'):
-        libs.calculate_order_summary(request)
-        
     # Store latest few dates in variable
     zone = pytztimezone(settings.TIME_ZONE)
     
     for payment in payment_records:
+        if selected_date == None:
+            selected_date = zone.normalize(payment.date).strftime("%Y-%m-%d")
+        
         date_texts.append(zone.normalize(payment.date).date)
         date_values.append(zone.normalize(payment.date).strftime("%Y-%m-%d"))
         
         # Limit to latest 10 dates
         if only_latest_dates and len(date_texts) >= 10:
             break
+            
+    if selected_date is not None and selected_date != "-1":
+        user_orders = models.Order.objects.filter(user=request.user, archived=False, product__distribution_date=selected_date).prefetch_related('product').order_by('product__category__sort_order', 'product__pk')
+
+        # Separate the orders according to their status and calculate the order sum
+        # using only the orders which are OK (that arrived)
+        for order in user_orders:
+            if order.status == models.STATUS_NORMAL:
+                counted_product_list.append(order)
+                total_price += (order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
+
+                if order.arrived_quantity != order.quantity:
+                    amount_changed_product_list.append(order)
+
+                #orders.append(order)
+                #totals.append((order.arrived_quantity*order.product.price).quantize(Decimal('.0001'))
+            elif order.status == models.STATUS_DID_NOT_ARRIVE:
+                not_arrived_product_list.append(order)
+            elif order.status == models.STATUS_MIN_ORDER_NOT_MET:
+                not_ordered_product_list.append(order)
+
+        # Get debt from last weeks (if exists)
+        last_debt = models.Debt.objects.filter(user=request.user, payment__date__lt=selected_date).order_by('-payment__date').first()
+
+        if last_debt is not None:
+            debt_before = last_debt.amount
+
+        # Get the user payment for this distribution date
+        date_start = datetime.strptime(selected_date, "%Y-%m-%d")
+        date_end = date_start + timedelta(days=1)
+        payment = models.Payment.objects.filter(user=request.user, date__range=(date_start, date_end)).first()
+
+        if payment is not None:
+            paid_amount = payment.amount
+
+            # Get debt saved for next weeks
+            next_debt = models.Debt.objects.filter(user=request.user, payment=payment).first()
+            if next_debt is not None:
+                debt_after = next_debt.amount
+
+            # Get paid quarterly fee (if exists)
+            quarterly = models.Quarterly.objects.filter(user=request.user, payment=payment).first()
+            if quarterly is not None:
+                quarterly_fee = quarterly.amount
+    else:
+        selected_date = 0       
+        
+    orders_with_totals = zip(orders, totals)
+    
+    if not request.session.get('order_total'):
+        libs.calculate_order_summary(request)
              
     distribution_dates = zip(date_texts, date_values)
     
@@ -154,7 +158,7 @@ def update_order(request, category_no=''):
     # Choose the available categories:
     #    - having products with order limit date in the future
     #    - not archived
-    categories = models.Category.objects.filter(product__archived=False, product__order_limit_date__gt=libs.get_now()).distinct()
+    categories = models.Category.objects.filter(product__archived=False, product__order_limit_date__gt=libs.get_now()).prefetch_related('producer').distinct()
 
     # Choose the indices for the current, previous and next categories
     previous_category = None
@@ -179,6 +183,8 @@ def update_order(request, category_no=''):
         if current_category < len(categories):
             next_category = current_category + 1
 
+    producer = categories[current_category-1].producer
+    
     '''Get current category id'''
     current_category_id = categories[current_category-1].pk
 
@@ -237,6 +243,7 @@ def update_order(request, category_no=''):
 
     return render(request, 'order/update_order.html', {
          'products': products,
+         'producer': producer,
      
          'category_name': category_name,
          'prev_category_name': prev_category_name,

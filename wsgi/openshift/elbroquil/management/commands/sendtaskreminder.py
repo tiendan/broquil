@@ -29,19 +29,21 @@ class Command(BaseCommand):
         task_date = tasks.first().distribution_date
         
         # Send the reminder email to the active members
-        email_subject = '[BroquilGotic]Recordatori de Permanències'
+        email_subject = '[BroquilGotic]Recordatori de Perman&egrave;ncies'
         html_content = "Hola,<br/>\
         <br/>\
-        Us recordem que el dia " + task_date.strftime('%d/%m/%Y') + " us toca perman&egrave;ncia.<br/>\
-        Adjunto <a href='https://docs.google.com/document/d/1HiO933Eh_00ftbK8qTpBv09OKTkcIIqD4IdRov1qxhA/edit'> manual d'instruccions</a> i <a href='https://vimeo.com/117321849'>video explicatiu</a> per si de cas els voleu mirar abans de venir.<br/>\
+        Et recordem que el dia " + "[[CONTENT]]" + " et toca perman&egrave;ncia.<br/>\
+        Aqu&iacute; tens el <a href='https://docs.google.com/document/d/1HiO933Eh_00ftbK8qTpBv09OKTkcIIqD4IdRov1qxhA/edit'> manual d'instruccions</a> i <a href='https://vimeo.com/117321849'>video explicatiu</a> per si de cas.<br/>\
         <br/>\
-        En cas que no pogueu venir poseu-vos en contacte amb la resta de broquilaires per demanar una permuta <a href='https://groups.google.com/forum/#!forum/elbroquildelgotic'>aqu&iacute;</a>.<br/>\
+        <strong>La perman&egrave;ncia comen&ccedil;a a les 17h i acaba a les 20h. Poseu-vos d'acord fent un &quot;responder a todos&quot; amb la confirmaci&oacute; de la teva disponibilitat i l'hora prevista d'arribada.</strong><br/>\
         <br/>\
-        Si no teniu clau de La Negreta aviseu per poder quedar abans i donar-vos-la.<br/>\
+        L'equip d'aquesta setmana el formeu 3 persones; una de vosaltres ha de tenir la clau de la Negreta. Si no la teniu, truqueu a l'Aina: 677 652 245.<br/>\
         <br/>\
-        Si el mateix dimecres teniu cap dubte o problema truqueu-me, jo estar&eacute; pel barri. O poseu-vos en contacte amb alguna altra persona de la Comissi&oacute; de Perman&egrave;ncies.<br/>\
+        Per a qualsevol atre problema que pugueu tenir, truqueu a l'Aina, que estar&agrave; pendent i a prop ;).<br/>\
         <br/>\
-        A reveure i Salut!"
+        A reveure i Salut!<br/>\
+        <br/>\
+        In&egrave;s, Bel&egrave;n i Aina"
         
         # If there is an email template stored in DB, use it
         email = models.EmailTemplate.objects.filter(email_code=models.EMAIL_TASK_REMINDER).first()
@@ -51,6 +53,7 @@ class Command(BaseCommand):
             email_subject = email.full_subject()
             html_content = email.body
             
+        html_content = html_content.replace("[[CONTENT]]", task_date.strftime('%d/%m/%Y'))
         to = []
         cc = []
         

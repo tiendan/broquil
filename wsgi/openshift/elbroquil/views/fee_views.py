@@ -28,7 +28,7 @@ import elbroquil.parse as parser
 @permission_required('elbroquil.accounting')
 def view_fees(request):
     # Read the user list
-    users = User.objects.filter(is_superuser=False).order_by('first_name', 'last_name')
+    users = User.objects.filter(username__contains='@').order_by('first_name', 'last_name')
     quarterly_fees = models.Quarterly.objects.all().order_by('-year', '-quarter')
     
     selected_member = -1
@@ -109,7 +109,7 @@ def create_fees(request):
     alert_message = None
     
     # Read the user list
-    users = User.objects.filter(is_superuser=False).order_by('first_name', 'last_name')
+    users = User.objects.filter(username__contains='@').order_by('first_name', 'last_name')
     
     # Write down the year and the quarter for the fee to be generated
     year = date.today().year

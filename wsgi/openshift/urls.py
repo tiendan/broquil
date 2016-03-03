@@ -40,13 +40,17 @@ urlpatterns = [
     url(_(r'^products/check/$'), broquil_views.check_products, name='check_products'),
     url(_(r'^products/upload/$'), broquil_views.upload_products, name='upload_products'),
     
+    url(_(r'^producer/$'), broquil_views.producer_info, name='producer_info'),
+    url(_(r'^producer/(?P<producer_id>[0-9]+)$'), broquil_views.producer_info, name='producer_info'),
+    
     # Quarterly fee related URLs
     url(_(r'^fees/create/$'), broquil_views.create_fees, name='create_fees'),
     url(_(r'^fees/view/$'), broquil_views.view_fees, name='view_fees'),
     
     # Management related URLs
-    url(_(r'^dist/view/$'), broquil_views.view_distribution_detail, name='view_distribution_detail'),
-    url(_(r'^perm/$'), broquil_views.view_distribution_task_information, name='view_distribution_task_information'),
+    url(_(r'^man/account/$'), broquil_views.view_accounting_detail, name='view_accounting_detail'),
+    url(_(r'^man/dist/$'), broquil_views.view_distribution_detail, name='view_distribution_detail'),
+    url(_(r'^man/perm/$'), broquil_views.view_distribution_task_information, name='view_distribution_task_information'),
     
     
     # Admin and account URLs

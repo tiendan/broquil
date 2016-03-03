@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load admin_urls %}
+
+{% block content_title %}
+<h1>{% trans "View accounting details" %}</h1>
+{% endblock %}
+
+{% block content %}
+<form action="{% url 'view_accounting_detail' %}" method="POST">
+{% csrf_token %}
+<div class='col-md-3 col-sm-6'>
+    <div class="form-group">
+        <div>
+            <label for="start-date">
+                {% trans "Start date" %}
+            </label>
+        </div>
+        <div class='input-group date' id='start-date-picker'>
+            <input id='start-date' name='start-date' type='text' class="form-control" {% if start_date %}value="{{ start_date }}"{% endif %}/>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+    </div>
+</div>
+<div class='col-md-3 col-sm-6'>
+    <div class="form-group">
+        <div>
+            <label for="end-date">
+                {% trans "End date" %}
+            </label>
+        </div>
+        <div class='input-group date' id='end-date-picker'>
+            <input id='end-date' name='end-date' type='text' class="form-control" {% if end_date %}value="{{ end_date }}"{% endif %}/>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+    </div>
+</div>
+<div class='col-md-1 col-sm-12 button-container'>
+    <button id="send-button" type="button" class="btn btn-lg btn-success">{% trans "View" %}</button>
+</div>
+</form>
+<div class="row table-responsive col-md-11">
+    <table id="results-table" class="table table-striped table-condensed table-bordered" >
+        <thead class="table-header">
+                <tr>
+                    <th></td>
+                    <th colspan="2">{% trans "Drawer" %}</th>
+                    <th colspan="2">{% trans "Safe" %}</th>
+                </tr>
+                <tr>
+                    <th>{% trans "Date" %}</th>
+                    <th>{% trans "Before" %}</th>
+                    <th>{% trans "After" %}</th>
+                    <th>{% trans "Before" %}</th>
+                    <th>{% trans "After" %}</th>
+                </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td>12/12/2015</td>
+                    <td>100</td>
+                    <td>120</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>14/12/2015</td>
+                    <td></td>
+                    <td></td>
+                    <td>100</td>
+                    <td>150</td>
+                </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extrascripts %}
+<script type="text/javascript">
+    $(function () {
+        $('#start-date-picker').datetimepicker({
+            locale: 'ca',
+            format: 'DD/MM/YYYY'
+        });
+        $('#end-date-picker').datetimepicker({
+            useCurrent: false,
+            locale: 'ca',
+            format: 'DD/MM/YYYY'
+        });
+        $("#start-date-picker").on("dp.change", function (e) {
+            $('#end-date-picker').data("DateTimePicker").minDate(e.date);
+        });
+        $("#end-date-picker").on("dp.change", function (e) {
+            $('#start-date-picker').data("DateTimePicker").maxDate(e.date);
+        });
+        
+        
+		// Activate the send button's form submit
+		$("#send-button").click(function(e) {
+			$("form").submit();
+		});
+    });
+</script>
+{% endblock %}
+
+{% block extrahead %}
+	<link rel="stylesheet" href="/static/styles/bootstrap-datetimepicker.min.css" type="text/css">
+{% endblock %}
+
+{% block scriptincludes %}
+	<script src="/static/scripts/moment-with-locales.min.js"></script>
+	<script src="/static/scripts/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}

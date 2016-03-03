@@ -201,7 +201,7 @@ def get_now():
 
 def send_email_to_active_users(subject, content):
     # Get list of active members
-    active_users = User.objects.filter(is_superuser=False, is_active=True)
+    active_users = User.objects.filter(Q(username__contains='@') & Q(is_active=True))
     bcc_list = []
     
     for user in active_users:

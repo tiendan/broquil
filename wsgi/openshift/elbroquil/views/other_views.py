@@ -141,3 +141,18 @@ def contact(request):
         'last_distribution_dates': distribution_dates,
         'result_message': result_message,
     })
+
+def producer_info(request, producer_id=''):
+    producers = []
+    single_producer = False
+    
+    if producer_id == '':
+        producers = models.Producer.objects.filter(active=True).order_by("pk")
+    else:
+        producers = models.Producer.objects.filter(pk=int(producer_id))
+        single_producer = True
+
+    return render(request, 'producer/producer_info.html', {
+        'producers': producers,
+        'single_producer': single_producer,
+    })

@@ -51,55 +51,55 @@ def view_distribution_detail(request):
     if request.method == 'POST':
         selected_date = request.POST.get("date")
         only_latest_dates = request.POST.get("only-latest") is not None
-        
-        if selected_date != "-1":
-            # Choose the list of ordered products (total quantity > 0)
-            products = models.Product.objects.filter(archived=False, distribution_date=selected_date, total_quantity__gt=0).order_by('category__sort_order', 'name')
-        
-            # Separate the products according to their status
-            for product in products:
-                if product.total_quantity == product.arrived_quantity:  # No incidents
-                    pass
-                elif product.arrived_quantity == 0:
-                    not_arrived_product_list.append(product)            # Did not arrive
-                else:
-                    # Amount changed
-                    
-                    # If product is ordered in units and charged in kg's, it's not an inciden
-                    if product.unit == "kg" and product.integer_demand:
-                        pass
-                    else:
-                        amount_changed_product_list.append(product)         # Amount changed
-                    
-            # Load accounting summary information
-            record = models.DistributionAccountDetail.objects.filter(date=selected_date).first()
-            
-            if record:
-                initial_cash = record.initial_amount
-                member_consumed_amount = record.member_consumed_amount
-                debt_balance = record.debt_balance_amount
-                collected_amount = record.total_member_payment_amount
-                quarterly_fee_collected_amount = record.quarterly_fee_collected_amount
-                final_amount = record.final_amount
-                expected_final_amount = record.expected_final_amount
-                
-                # If there's a gap of more than 5 euros, show the expected amount in red
-                large_final_difference = abs(expected_final_amount - final_amount) > 5
-                
-                # Load producer payments
-                producer_payments = models.ProducerPayment.objects.filter(date=selected_date)
-        else:
-            selected_date = 0
-                
     
     # Store latest few dates in variable
     for detail in detail_records:
+        if selected_date == None:
+            selected_date = detail.date.strftime("%Y-%m-%d")
+        
         date_texts.append(detail.date)
         date_values.append(detail.date.strftime("%Y-%m-%d"))
         
         # Limit to latest 10 dates
         if only_latest_dates and len(date_texts) >= 10:
             break
+        
+    if selected_date is not None and selected_date != "-1":
+        # Choose the list of ordered products (total quantity > 0)
+        products = models.Product.objects.filter(archived=False, distribution_date=selected_date, total_quantity__gt=0).order_by('category__sort_order', 'name')
+
+        # Separate the products according to their status
+        for product in products:
+            if product.total_quantity == product.arrived_quantity:  # No incidents
+                pass
+            elif product.arrived_quantity == 0:
+                not_arrived_product_list.append(product)            # Did not arrive
+            else:
+                # If product is ordered in units and charged in kg's, it's not an incident
+                if product.unit == "kg" and product.integer_demand:
+                    pass
+                else:
+                    amount_changed_product_list.append(product)         # Amount changed
+
+        # Load accounting summary information
+        record = models.DistributionAccountDetail.objects.filter(date=selected_date).first()
+
+        if record:
+            initial_cash = record.initial_amount
+            member_consumed_amount = record.member_consumed_amount
+            debt_balance = record.debt_balance_amount
+            collected_amount = record.total_member_payment_amount
+            quarterly_fee_collected_amount = record.quarterly_fee_collected_amount
+            final_amount = record.final_amount
+            expected_final_amount = record.expected_final_amount
+
+            # If there's a gap of more than 5 euros, show the expected amount in red
+            large_final_difference = abs(expected_final_amount - final_amount) > 5
+
+            # Load producer payments
+            producer_payments = models.ProducerPayment.objects.filter(date=selected_date)
+    else:
+        selected_date = 0
     
     distribution_dates = zip(date_texts, date_values)
     
@@ -296,3 +296,34 @@ def update_distribution_task_information(year):
     
     print "Transaction finished successfully"
     return update_log
+
+@login_required
+def view_accounting_detail(request):
+    start_date = None
+    end_date = None
+    
+    if request.method == 'POST':
+        start_date = request.POST.get("start-date").strip()
+        end_date = request.POST.get("end-date").strip()
+    else:
+        # By default, show last two months
+        today = libs.get_today()
+        
+        start_date = today.strftime("%d/%m/%Y")
+        end_date = (today - datetime.timedelta(60)).strftime("%d/%m/%Y")
+    
+    # Create the accounting summary information
+    # Convert dates from posted format to DB format (+ time)
+    start_date_formatted = start_date[6:11] + "-" + start_date[3:5] + "-" + start_date[0:2] + " 00:00:00"
+    end_date_formatted = end_date[6:11] + "-" + end_date[3:5] + "-" + end_date[0:2] + " 23:59:59"
+
+    # TODO CONTINUE
+    # Fetch records from distr. information and acc. movements
+    # Iterate at the same time respecting the chronology
+    # Fill a 2D array with the information to display on the page
+    #   Date, before, after, comment, before, after, explanation
+    
+    return render(request, 'management/view_accounting_detail.html', {
+            'start_date' : start_date,
+            'end_date' : end_date,
+    })

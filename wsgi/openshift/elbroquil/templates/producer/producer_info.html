@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}El Broquil | {% trans "Producers" %}{% endblock %}
+{% block content_title %}{% if single_producer %}<h1>{{ producers.0.company_name }}{% else %}<h1>{% trans "Producers" %}</h1>{% endif %}{% endblock %}
+
+{% block content %}
+<!-- TODO ITERATE OVER PRODUCERS AND VIEW DETAILS -->
+    {% for producer in producers %}
+        {% include "producer/single_producer.html" with producer=producer single_producer=single_producer %}
+    {% endfor %}
+{% endblock %}
+
+
+{% block extrascripts %}
+<script type="text/javascript">
+	 $(function() {
+		// Set selected menu item
+		$('#menu-item-help').addClass("active");
+	  });
+</script>
+{% endblock %}

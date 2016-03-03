@@ -1,0 +1,15 @@
+{% load i18n %}
+{% if single_producer %}
+    <div class="row col-md-12">
+        <h2>{{ producer.short_product_explanation }}</h3>
+        <p>{{ producer.description|safe }}</p>
+    </div>
+{% else %}
+    {% if producer.description|length > 0 %}
+    <div class="row col-md-12">
+        <h2>{{ producer.company_name }}</h3>
+        <h3>{{ producer.short_product_explanation }}</h4>
+        <p>{{ producer.description|safe }}</p>
+    </div>
+    {% endif %}
+{% endif %}

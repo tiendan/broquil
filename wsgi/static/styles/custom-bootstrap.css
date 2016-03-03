@@ -278,3 +278,18 @@ div.panel-heading.incident-panel {
         height: 40px;
     margin-top: -5px;
 }
+
+.button-container {
+    height: 74px; 
+    line-height:74px;
+    text-align:center;
+}
+
+.centered-text {
+    text-align: center;
+}
+
+.table-header {
+    text-transform: uppercase;
+    font-weight: bold;
+}

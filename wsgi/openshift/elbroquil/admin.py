@@ -24,13 +24,20 @@ class AvailabilityInline(admin.TabularInline):
     verbose_name_plural = _(u"Producer availability (in case of limited availability)")
     verbose_name = _(u"date")
 
+class ProducerForm(forms.ModelForm):
+    class Meta:
+        widgets = {
+            'description': RedactorWidget(editor_options={'lang': 'ca'})
+        }
+
 # Producer admin pages
 class ProducerAdmin(admin.ModelAdmin):
-    fieldsets = [
-      (_(u'General Info'), {'fields': ['first_name', 'last_name', 'company_name', 'email']}),
+    form = ProducerForm
+    fieldsets = (
+      (_(u'General Info'), {'fields': ['first_name', 'last_name', 'company_name', 'email', 'description']}),
       (_(u'Order Info'), {'fields': ['order_day', 'order_hour', 'minimum_order', 'transportation_cost', 'fixed_products', 'limited_availability']}),
       (_(u'Technical Info'), {'fields': ['short_product_explanation', 'excel_format', 'active']}),
-    ]
+    )
     inlines = [AvailabilityInline]
     list_display = ('company_name', 'email', 'active')
 
@@ -47,8 +54,8 @@ class CategoryAdmin(admin.ModelAdmin):
     )
     
     # Override default queryset so that only relevant products are shown
-    def queryset(self, request):
-        qs = super(CategoryAdmin, self).queryset(request).order_by('sort_order', 'pk')
+    def get_queryset(self, request):
+        qs = super(CategoryAdmin, self).get_queryset(request).order_by('sort_order', 'pk')
         
         return qs
 
@@ -63,8 +70,8 @@ class ProductAdmin(admin.ModelAdmin):
     )
     
     # Override default queryset so that only relevant products are shown
-    def queryset(self, request):
-        qs = super(ProductAdmin, self).queryset(request).filter(Q(distribution_date__gte=libs.get_today()) | Q(distribution_date=None)).order_by('category__sort_order', 'pk')
+    def get_queryset(self, request):
+        qs = super(ProductAdmin, self).get_queryset(request).filter(Q(distribution_date__gte=libs.get_today()) | Q(distribution_date=None)).order_by('category__sort_order', 'pk')
         
         return qs
 
@@ -178,6 +185,27 @@ class CustomUserAdmin(UserAdmin):
         self.inlines = (ExtraInfoInline, )
         return super(CustomUserAdmin, self).change_view(request, object_id)
 
+class CustomUserAdminActiveUsers(CustomUserAdmin):
+    # Override default queryset so that only relevant users are shown
+    def get_queryset(self, request):
+        qs = super(CustomUserAdminActiveUsers, self).get_queryset(request).filter(Q(is_active=True) & Q(username__contains='@')).order_by('first_name', 'last_name')
+        
+        return qs
+
+class CustomUserAdminInactiveUsers(CustomUserAdmin):
+    # Override default queryset so that only relevant users are shown
+    def get_queryset(self, request):
+        qs = super(CustomUserAdminInactiveUsers, self).get_queryset(request).filter(~Q(is_active=True) & Q(username__contains='@')).order_by('first_name', 'last_name')
+        
+        return qs
+
+class CustomUserAdminSystemUsers(CustomUserAdmin):
+    # Override default queryset so that only relevant users are shown
+    def get_queryset(self, request):
+        qs = super(CustomUserAdminSystemUsers, self).get_queryset(request).filter(~Q(username__contains='@')).order_by('username')
+        
+        return qs
+
 class EmailTemplateForm(forms.ModelForm):
     class Meta:
         widgets = {
@@ -186,10 +214,10 @@ class EmailTemplateForm(forms.ModelForm):
 
 class EmailTemplateAdmin(admin.ModelAdmin):
     form = EmailTemplateForm
-    fieldsets = [
+    fieldsets = (
       (_(u'Information'), {'classes': ('full-width',), 'fields': ('email_code','language',)}),
       (_(u'Email'), {'classes': ('full-width',), 'fields': ('subject', 'body',)}),
-    ]
+    )
     ordering = ['email_code', 'language']
 
 # Producer availability model is shown inline in the producer admin pages
@@ -200,13 +228,42 @@ class EmailListAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('name', 'email_addresses', 'cc_task_reminders', 'cc_incidents')}
+            'fields': ('name', 'description', 'email_addresses', 'cc_task_reminders', 'cc_incidents')}
         ),
     )
+
+class AccountMovementAdmin(admin.ModelAdmin):
+    list_display = ('movement_date', 'amount', 'explanation')
+    list_display_links = ('movement_date',)
+    fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('movement_type', 'amount', 'final_amount', 'explanation', 'movement_date')}
+        ),
+    )
+    ordering = ['-movement_date']
     
-# Re-register UserAdmin
+    # Re-register UserAdmin
 admin.site.unregister(User)
-admin.site.register(User, CustomUserAdmin)
+admin.site.register(User, CustomUserAdminActiveUsers)
+
+class InactiveUser(User):
+    class Meta:
+        proxy = True
+        app_label = "auth"
+        verbose_name = _('user (inactive)')
+        verbose_name_plural = _('users (inactive)')
+
+class SystemUser(User):
+    class Meta:
+        proxy = True
+        app_label = "auth"
+        verbose_name = _('user (system)')
+        verbose_name_plural = _('users (system)')
+
+admin.site.register(InactiveUser, CustomUserAdminInactiveUsers)
+admin.site.register(SystemUser, CustomUserAdminSystemUsers)
+
 admin.site.register(Permission)
 
 
@@ -217,4 +274,4 @@ admin.site.register(models.Product, ProductAdmin)
 admin.site.register(models.SkippedDistributionDate)
 admin.site.register(models.EmailTemplate, EmailTemplateAdmin)
 admin.site.register(models.EmailList, EmailListAdmin)
-#admin.site.register(models.AccountMovement)	# TODO ONUR Removed new model admin for now
+admin.site.register(models.AccountMovement, AccountMovementAdmin)
