@@ -50,7 +50,9 @@ urlpatterns = [
     # Management related URLs
     url(_(r'^man/account/$'), broquil_views.view_accounting_detail, name='view_accounting_detail'),
     url(_(r'^man/dist/$'), broquil_views.view_distribution_detail, name='view_distribution_detail'),
-    url(_(r'^man/perm/$'), broquil_views.view_distribution_task_information, name='view_distribution_task_information'),
+    
+    # Distribution task information is removed for the GENERIC branch
+    #url(_(r'^man/perm/$'), broquil_views.view_distribution_task_information, name='view_distribution_task_information'),
     
     
     # Admin and account URLs
