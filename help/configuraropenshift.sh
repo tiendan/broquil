@@ -1,41 +1,41 @@
 #!/bin/bash
 
-# Fully automatical installation script for Mac OS X and Linux systems.
-# It will pull the Broquil project from GitHub and install a copy of it on your OpenShift account.
+# Instalacion automatica para sistemas de Mac OS X y Linux.
+# Va a descargar el proyecto Broquil de GitHub y instalar una copia en tu cuenta de OpenShift.
 # 
-# Before starting, complete the following steps:
+# Antes de empezar, completa los pasos siguientes:
 #
-# 1) Create an account in Gmail (https://www.gmail.com/)
-# 2) Configure your Gmail account settings:
-#    a) Set up 2-Step Verification and verify your mobile phone number (https://myaccount.google.com/security)
-#    b) Go to "App-specific Passwords" tab and enter "Manage application specific passwords" (https://accounts.google.com/b/0/SmsAuthSettings#asps)
-#    c) Select "Custom" as application and give a custom name, and generate
-#    d) Save the 16-digit password aside (gfheltxgjvbkeomi)
+# 1) Crea una cuenta en Gmail (https://www.gmail.com/)
+# 2) Configura tu cuenta de Gmail:
+#    a) Configura Verificacion en dos Pasos y verifica tu numero de movil (https://myaccount.google.com/security)
+#    b) Navega a "Contrasenas de Aplicacion" y entra en "Administrar contrasenas especificas de aplicaciones" (https://accounts.google.com/b/0/SmsAuthSettings#asps)
+#    c) Elige "Otra" como aplicacion y pon un nombre, y guardala
+#    d) Guarda la contrasena de 16 digitos (gfheltxgjvbkeomi)
 #    
-# 3) Create an account in OpenShift (https://www.openshift.com/)
-# 4) Set up your domain name in OpenShift settings
-# 5) Install the OpenShift Client Tools (https://developers.openshift.com/en/managing-client-tools.html#_select_your_operating_system)
-# 6) Install Git SCM (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+# 3) Crea una cuenta en OpenShift (https://www.openshift.com/)
+# 4) Configura tu nombre de dominio en la configuracion de OpenShift
+# 5) Instala OpenShift Client Tools (https://developers.openshift.com/en/managing-client-tools.html#_select_your_operating_system)
+# 6) Instala Git SCM (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 # --------------------------------------------------
-# ----------------- FILL THIS PART -----------------
+# --------------- RELLENAR ESTA PARTE --------------
 # --------------------------------------------------
-# After these steps, fill in the following information
-EMAIL_ADDRESS=GMAILACCOUNT@gmail.com        # The Gmail account you created in step 1 above
-EMAIL_PASSWORD=16DIGITPASSWORD              # The app-specific password you created in step 2-d above
-OPENSHIFT_PASSWORD=OPENSHIFTPASSWORD        # The password for your OpenShift account you created in step 3
-OPENSHIFT_DOMAIN=OPENSHIFT_DOMAIN_NAME      # The domain name for your OpenShift account as created in step 4
-OPENSHIFT_APP_NAME=OPENSHIFT_APPLICATION_NAME   # The preferred name for your application. The final URL will be http://appname-domain.rhcloud.com
+# Rellena la informacion siguiente
+EMAIL_ADDRESS=CUENTAGMAIL@gmail.com        # La cuenta de Gmail que has creado en el paso 1 de arriba
+EMAIL_PASSWORD=CONTRASENA16DIGITOS         # La contrasena de 16 digitos que has creado en el paso 2-d de arriba
+OPENSHIFT_PASSWORD=CONTRASENAOPENSHIFT     # La contrasena de tu cuenta de OpenShift que has creado en el paso 3
+OPENSHIFT_DOMAIN=OPENSHIFT_NOMBRE_DOMINIO  # El nombre de dominio de tu cuenta de OpenShift como configurado en el paso 4
+OPENSHIFT_APP_NAME=OPENSHIFT_NOMBRE_APLICACION   # El nombre preferido de tu aplicacion. La direccion final sera http://nombre-dominio.rhcloud.com 
 # --------------------------------------------------
-# ------------------- UNTIL HERE -------------------
+# ------------------- HASTA AQUI -------------------
 # --------------------------------------------------
 
 
 
 
 # --------------------------------------------------
-# ----------- DON'T TOUCH ANYTHING BELOW -----------
-# ------ IF YOU DON'T KNOW WHAT YOU ARE DOING ------
+# ------ NO TOQUES NADA DESPUES DE ESTE PUNTO ------
+# --------- SI NO SABES QUE ESTAS HACIENDO ---------
 # --------------------------------------------------
 
 # 1) Configure the OpenShift client tools with the OpenShift account details
@@ -114,10 +114,10 @@ init_script=$init_script'thursday = thursday.astimezone(pytztimezone("UTC"));'
 init_script=$init_script'saturday = zone.localize(datetime.datetime(saturday.year, saturday.month, saturday.day, saturday.hour), is_dst=False);'
 init_script=$init_script'saturday = saturday.astimezone(pytztimezone("UTC"));'
             
-init_script=$init_script'Job(name="Send order to producer", frequency="MINUTELY", params="interval:10", command="sendordertoproducers", maximum_log_entries=100, log_stderr=1).save();'
-init_script=$init_script'Job(name="Send reminder emails", frequency="WEEKLY", command="sendreminder", maximum_log_entries=100, log_stderr=1, next_run=saturday).save();'
-init_script=$init_script'Job(name="Create weekly product offer", frequency="WEEKLY", command="createoffer", maximum_log_entries=100, log_stderr=1, next_run=thursday).save();'
-init_script=$init_script'Job(name="Clear expired sessions", frequency="DAILY", command="clearsessions", maximum_log_entries=100, log_stderr=1).save();'
+init_script=$init_script'Job(name="Envia los pedidos al productor", frequency="MINUTELY", params="interval:10", command="sendordertoproducers", maximum_log_entries=100, log_stderr=1).save();'
+init_script=$init_script'Job(name="Envia correos recordatorios", frequency="WEEKLY", command="sendreminder", maximum_log_entries=100, log_stderr=1, next_run=saturday).save();'
+init_script=$init_script'Job(name="Crea la oferta de la semana", frequency="WEEKLY", command="createoffer", maximum_log_entries=100, log_stderr=1, next_run=thursday).save();'
+init_script=$init_script'Job(name="Borra datos (sesiones) innecesarios", frequency="DAILY", command="clearsessions", maximum_log_entries=100, log_stderr=1).save();'
 
 # Execute the prepared script through SSH
 ssh $OPENSHIFT_APP_ID@$OPENSHIFT_APP_NAME-$OPENSHIFT_DOMAIN.rhcloud.com << EOF
