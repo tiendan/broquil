@@ -90,9 +90,7 @@ def check_products(request):
                     products = parser.parse_can_pipirimosca(book)
                 elif excel_format == models.STANDARD:
                     products, distribution_date, order_limit_date = parser.parse_standard(book)
-                elif excel_format == models.CAN_PEROL:
-                    products = parser.parse_can_perol(file_path)
-
+                
                 # If dates are entered, check if there is a problem with it (whether they are past dates)
                 if distribution_date != "":
                     zone = pytztimezone(settings.TIME_ZONE)

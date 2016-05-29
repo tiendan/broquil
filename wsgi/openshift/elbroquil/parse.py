@@ -162,16 +162,18 @@ def parse_standard(book):
     distribution_date = sheet.cell_value(rowx=3, colx=1)
     order_limit_date = sheet.cell_value(rowx=4, colx=1)
     
-    if (type(distribution_date) is not str and type(distribution_date) is not unicode) or (type(order_limit_date) is not str and type(order_limit_date) is not unicode):
-        raise ValueError(_(u"Distribution date and order limit date should be in text format!" + type(distribution_date).__name__ + ", " + type(order_limit_date).__name__))
+    # Do some checks on the dates if they were provided
+    if distribution_date != "":
+        if (type(distribution_date) is not str and type(distribution_date) is not unicode) or (type(order_limit_date) is not str and type(order_limit_date) is not unicode):
+            raise ValueError(_(u"Distribution date and order limit date should be in text format!" + type(distribution_date).__name__ + ", " + type(order_limit_date).__name__))
 
-    r = re.compile('([0-9]){4}-([0-9]){2}-([0-9]){2}')
+        r = re.compile('([0-9]){4}-([0-9]){2}-([0-9]){2}')
 
-    if r.match(distribution_date) is None or r.match(order_limit_date) is None:
-        raise ValueError(_(u"Distribution date and order limit date should be in YYYY-MM-DD format!"))
-    
-    if order_limit_date:
-        order_limit_date += " " + str(sheet.cell_value(rowx=5, colx=1)).zfill(2) + ":00"
+        if r.match(distribution_date) is None or r.match(order_limit_date) is None:
+            raise ValueError(_(u"Distribution date and order limit date should be in YYYY-MM-DD format!"))
+        
+        if order_limit_date:
+            order_limit_date += " " + str(sheet.cell_value(rowx=5, colx=1)).zfill(2) + ":00"
 
     # Loop over the sheet rows
     while current_row < row_count:
@@ -195,139 +197,7 @@ def parse_standard(book):
 
     return products, distribution_date, order_limit_date
 
-# Parse the excel for Can Perol producer
-def parse_can_perol(filename):
-    print "Parsing Can Perol format"
-
-    # Directory where to find the private key
-    data_dir = '/Users/onur/github/broquil/data/'
-
-    if os.environ.has_key('OPENSHIFT_DATA_DIR'):
-        data_dir = os.path.join(os.environ['OPENSHIFT_DATA_DIR'], "temp")
-
-    # First upload and download the XLS file to convert as xlsx
-    # Setup the connection to Google Drive API
-    client_email = '975533004012-d4veh1666grh6es8bq0celae34u9ag7k@developer.gserviceaccount.com'
-    with open(os.path.join(data_dir, "serviceaccount.json")) as f:
-        private_key = json.load(f)['private_key']
-
-    credentials = SignedJwtAssertionCredentials(client_email, private_key,
-        ['https://www.googleapis.com/auth/sqlservice.admin', 'https://www.googleapis.com/auth/drive'])
-
-    http_auth = credentials.authorize(Http())
-    service = build('drive', 'v2', http=http_auth)
-    gauth = GoogleAuth()
-    gauth.credentials = credentials
-    drive = GoogleDrive(gauth)
-
-    uploaded_file = drive.CreateFile({'title': 'dummyfile.xls'})
-    uploaded_file.SetContentFile(filename)
-    uploaded_file.Upload({'convert': True})
-
-    download_url = uploaded_file['exportLinks']['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
-    converted_filename = filename + '.xlsx'
-
-    if download_url:
-        resp, content = service._http.request(download_url)
-        if resp.status == 200:
-            with open(converted_filename, 'wb') as f:
-                f.write(content)
-        else:
-            print 'An error occurred: %s' % resp
-
-    # Open converted book
-    book = load_workbook(converted_filename, use_iterators=True)
-    sheet = book.active
-
-    ## PARSING ##
-
-    # Define the corresponding column numbers in Excel sheet for each type of information
-    origin_column = 1
-    product_name_column = 3
-    unit_column = 4
-    price_column = 6
-    quantity_column = 7
-    vat_column = 10
-
-    # Get the first sheet and read row and column counts
-    products = []
-    #row_count = sheet.nrows
-
-    current_row = 1
-
-    # Skip to header row
-    # Header row contains "Origen" in the origin column
-    while True:
-        if sheet.cell(row=current_row, column=origin_column).value == "Origen":
-            break
-        current_row += 1
-
-    empty_rows = 1
-    category_name = ""
-
-    last_vat_multiplier = 1
-
-    # Loop over the sheet rows
-    while True:
-        # If there are many (5) consecutive empty rows, we have reached the end of data
-        if empty_rows == 5:
-            break;
-        # If cell empty, it is another empty row
-        if sheet.cell(row=current_row, column=product_name_column).value == "" or sheet.cell(row=current_row, column=product_name_column).value is None:
-            empty_rows += 1
-            category_name = ""
-        else:
-            # If cell has data and it's the first data after few empty rows, it is category name
-            if empty_rows > 0:
-                empty_rows = 0
-                category_name = sheet.cell(row=current_row, column=product_name_column).value
-                #print "New category:", category_name
-            # Else it is product info
-            else:
-                # If it is subcategory, skip it
-                if sheet.cell(row=current_row, column=origin_column).value == "Origen":
-                    pass
-                else:
-                    # Create the array containing product info and append it to product list
-                    product_name = sheet.cell(row=current_row, column=product_name_column).value
-                    #price = sheet.cell(row=current_row, column=price_column)
-                    origin = sheet.cell(row=current_row, column=origin_column).value
-                    # Add VAT depending on product (10% for processed food, 4% for others)
-                    price = sheet.cell(row=current_row, column=price_column).value
-                    vat_multiplier_cell = sheet.cell(row=current_row, column=vat_column).value
-                    vat_multiplier = None
-
-                    try:
-                        # Extract VAT multiplier from possible formula
-                        if vat_multiplier_cell is None:
-                            pass
-                        elif vat_multiplier_cell == "=":
-                            pass
-                        else:
-                            vat_multiplier = float(vat_multiplier_cell.split('=')[-1].split("*")[-1])
-                    except:
-                        pass
-
-                    if vat_multiplier is None:
-                        vat_multiplier = last_vat_multiplier
-                    else:
-                        last_vat_multiplier = vat_multiplier
-
-                    # Update the price with VAT information
-                    price = price * last_vat_multiplier
-
-                    product = [category_name, product_name, price, sheet.cell(row=current_row, column=unit_column).value, origin, ""]
-
-                    # Do not add products from some categories
-                    if "carnisseria" in category_name.lower() or "algues" in category_name.lower() or "prote" in category_name.lower() or "fleca" in category_name.lower() or "cereals" in category_name.lower():
-                        pass
-                    else:
-                        products.append(product)
-        current_row += 1
-
-    return products
-
 # When script is executed directly from command line, try to parse a sample Excel file
 if __name__=="__main__":
-    #book = xlrd.open_workbook('/Users/onur/canperolDOWNLOAD.xlsx')
-    print parse_can_perol('/Users/onur/canperol.xls')
+    book = xlrd.open_workbook('/Users/onur/problem1.xlsx')
+    print parse_standard(book)
