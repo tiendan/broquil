@@ -109,7 +109,7 @@ def create_fees(request):
     alert_message = None
     
     # Read the user list
-    users = User.objects.filter(username__contains='@').order_by('first_name', 'last_name')
+    users = User.objects.filter(username__contains='@', is_active=True).order_by('first_name', 'last_name')
     
     # Write down the year and the quarter for the fee to be generated
     year = date.today().year
