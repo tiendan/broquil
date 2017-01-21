@@ -97,7 +97,7 @@ def check_products(request):
                     distribution_date_parsed = parse_date(distribution_date)
                     order_limit_date_parsed = parse_datetime(order_limit_date)
 
-                    if distribution_date_parsed < libs.get_today()
+                    if distribution_date_parsed < libs.get_today() \
                        or order_limit_date_parsed < libs.get_now().replace(tzinfo=None):
                         date_error = True
 
