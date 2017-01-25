@@ -2,208 +2,211 @@
 {% load bootstrap %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Cooperativa de consumo El Broquil del Gotic, Barcelona.">
-    <meta name="author" content="Onur Ferhat">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Cooperativa de consumo El Broquil del Gotic, Barcelona.">
+	<meta name="author" content="Onur Ferhat">
 
-    <title>{% block title %}El Broquil del Gotic{% endblock %}</title>
+	<title>{% block title %}El Broquil del Gotic{% endblock %}</title>
 	<link rel="shortcut icon" href="/static/images/favicon.ico">
 	<link rel="apple-touch-icon" href="/static/images/apple-touch-icon.png">
 
 	<!-- Bootstrap core CSS -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	
 	<!-- Optional theme -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-	
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 
-    <!-- Bootstrap core CSS 
-	<link rel="stylesheet" href="/static/styles/bootstrap.min.css">
-    -->
-	<!-- Optional theme 
-	<link rel="stylesheet" href="/static/styles/bootstrap-theme.min.css">
-    -->
-	
-    <link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
+	<link rel="stylesheet" href="/static/styles/custom-bootstrap.css" type="text/css">
 	<link rel="stylesheet" href="/static/styles/bootstrap-formhelpers.min.css" type="text/css">
 	<link rel="stylesheet" href="/static/styles/fuelux.css" type="text/css">
 	<link rel="stylesheet" href="/static/styles/hopscotch.css" type="text/css">
 	{% block extrahead %}{% endblock %}
 
-    <!-- Custom styles for this template
-    <link href="jumbotron.css" rel="stylesheet"> -->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+      <![endif]-->
   </head>
 
   <body>
 
-    <div class="navbar navbar-inverse" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">El Broquil del Gotic</a>
-			<!--<a style="float: left" href="/">
-				<img src="/static/images/broquillogo.png" alt="El Broquil del Gotic">
-		    </a>-->
-        </div>
-        <div class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				{% block menuitems %}
+  	<div class="navbar navbar-inverse" role="navigation">
+  		<div class="container">
+  			<div class="navbar-header">
+  				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+  					<span class="sr-only">Toggle navigation</span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  				</button>
+  				<a class="navbar-brand" href="/">
+  					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+  				</a>
+  			</div>
+  			<div class="navbar-collapse collapse">
+  				<ul class="nav navbar-nav">
+  					{% block menuitems %}
 
-        {% if '@' in request.user.username %}
-				<li id="menu-item-order" class="dropdown">
-				  <a href="{% url 'site_root' %}" class="dropdown-toggle" data-toggle="dropdown">{% trans "Order" %} <span class="caret"></span></a>
-		          <ul class="dropdown-menu" role="menu">
-					<li><a href="{% url 'site_root' %}">{% trans "View order" %}</a></li>
-					<li><a href="{% url 'order_history' %}">{% trans "Order history" %}</a></li>
-		            <li><a href="{% url 'rate_products' %}">{% trans "Rate products" %}</a></li>
-		          </ul>
-		        </li>
-				{% endif %}
-
-        {% if perms.elbroquil.prepare_baskets %}
-				<li id="menu-item-distribution"><a href="{% url 'view_order_totals' %}">{% trans "Prepare Baskets" %}</a></li>
-				{% endif %}
-
-                <li id="menu-item-accounting" class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Accounting" %} <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'view_distribution_detail' %}">{% trans "Distribution Detail" %}</a></li>
-                        <!-- <li><a href="{% url 'view_accounting_detail' %}">{% trans "Accounting Detail" %}</a></li>-->
-                    </ul>
-                </li>
-				<li id="menu-item-help" class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Help" %} <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{% url 'producer_info' %}">{% trans "Producers" %}</a></li>
-                        <li><a href="{% url 'help' %}">{% trans "Help Videos" %}</a></li>
-                        <li><a href="{% url 'contact' %}">{% trans "Contact" %}</a></li>
-                    </ul>
-                </li>
-
-				{% if user.is_staff or perms.elbroquil.modify_products or perms.elbroquil.accounting %}
-				<li id="menu-item-admin" class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Admin" %} <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-    				  {% if perms.elbroquil.modify_products %}
-		            <li><a href="{% url 'upload_products' %}">{% trans "Upload products excel" %}</a></li>
-		            <li><a href="{% url 'view_products' %}">{% trans "View products" %}</a></li>
+  					{% if '@' in request.user.username %}
+  					<li id="menu-item-order" class="dropdown">
+  						<a href="{% url 'site_root' %}" class="dropdown-toggle" data-toggle="dropdown">{% trans "Order" %} <span class="caret"></span></a>
+  						<ul class="dropdown-menu" role="menu">
+  							<li><a href="{% url 'site_root' %}"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {% trans "View order" %}</a></li>
+  							<li><a href="{% url 'order_history' %}"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> {% trans "Order history" %}</a></li>
+  							<!-- <li><a href="{% url 'rate_products' %}">{% trans "Rate products" %}</a></li> -->
                 <li role="separator" class="divider"></li>
-    				  {% endif %}
-              {% if perms.elbroquil.accounting %}
-      				  <li><a href="{% url 'view_fees' %}">{% trans "View Fee Status" %}</a></li>
-      		      <li><a href="{% url 'create_fees' %}">{% trans "Create Fees" %}</a></li>
+                <li><a href="{% url 'view_distribution_detail' %}"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> {% trans "Distribution Detail" %}</a></li>
+
                 <li role="separator" class="divider"></li>
-    				  {% endif %}
-              {% if user.is_staff %}
-                <li><a href="/admin/">{% trans "Admin Panel" %}</a></li>
-              {% endif %}
-            </ul>
-        </li>
-				{% endif %}
-				
-        {% endblock %}
-			</ul>
+                <li><a href="{% url 'view_distribution_task_information' %}"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {% trans "Distribution Tasks" %}</a></li>
+
+                
+  						</ul>
+  					</li>
+  					{% endif %}
+
+  					{% if perms.elbroquil.prepare_baskets %}
+  					<li id="menu-item-distribution"><a href="{% url 'view_order_totals' %}">{% trans "Prepare Baskets" %}</a></li>
+  					{% endif %}
+
+<!--
+  					<li id="menu-item-accounting" class="dropdown">
+  						<a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Accounting" %} <span class="caret"></span></a>
+  						<ul class="dropdown-menu">-->
+  							
+  							<!-- <li><a href="{% url 'view_accounting_detail' %}">{% trans "Accounting Detail" %}</a></li>-->
+  						<!--</ul>
+  					</li>-->
+  					<li id="menu-item-help" class="dropdown">
+  						<a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "Help" %} <span class="caret"></span></a>
+  						<ul class="dropdown-menu">
+  							<li><a href="{% url 'producer_info' %}"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> {% trans "Producers" %}</a></li>
+  							<li><a href="{% url 'help' %}"><span class="glyphicon glyphicon-film" aria-hidden="true"></span> {% trans "Help Videos" %}</a></li>
+  							<li><a href="{% url 'contact' %}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {% trans "Contact" %}</a></li>
+  						</ul>
+  					</li>
+  					{% endblock %}
+  				</ul>
 
 
-			<ul class="nav navbar-nav navbar-right">
+  				<a class="btn btn-primary navbar-btn" href="{% url 'contact' %}"  role="button"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {% trans "Contact" %}</a>
+          <a class="btn btn-warning navbar-btn" href="{% url 'view_distribution_task_information' %}"  role="button"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {% trans "Distribution Tasks" %}</a>
+  				
+  				<ul class="nav navbar-nav navbar-right">
+  					<!--<li>
+  					</li>-->
 
-				{% if order_total %}
-		        <li id="order-total-dropdown" class="dropdown">
-                	<a href="#" class="dropdown-toggle larger-text" data-toggle="dropdown">
-					  <span class="glyphicon glyphicon-shopping-cart"></span> {{ order_total }} &euro;
-	                  <b class="caret"></b>
-	                </a>
-	                <div class="dropdown-menu summary-dropdown">
-	                  {{ order_summary|safe }}
-	                </div>
-	              </li>
-				{% endif %}
+  					{% if order_total %}
+  					<li id="order-total-dropdown" class="dropdown">
+  						<a href="#" class="dropdown-toggle larger-text" data-toggle="dropdown">
+  							<span class="glyphicon glyphicon-shopping-cart"></span> {{ order_total }} &euro;
+  							<b class="caret"></b>
+  						</a>
+  						<div class="dropdown-menu summary-dropdown">
+  							{{ order_summary|safe }}
+  						</div>
+  					</li>
+  					{% endif %}
 
-				{% if user.is_authenticated %}
-	              <li class="dropdown">
-	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						{{ user.first_name }}
-	                  <b class="caret"></b>
-	                </a>
-	                <ul class="dropdown-menu">
-	                  <li><a class="userlink" href="{% url 'django.contrib.auth.views.password_change' %}">{% trans "Change password" %}</a></li>
-	                  <li class="divider"></li>
-	                  <li><a class="userlink" href="{% url 'django.contrib.auth.views.logout' %}">{% trans "Log out" %}</a></li>
-	                </ul>
-	              </li>
-	          	{% else %}
-		          <li class="dropdown">
-	                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Log In <b class="caret"></b></a>
-	                <ul class="dropdown-menu login">
-	                  <form action="{% url 'django.contrib.auth.views.login' %}" method="post" role="form">{% csrf_token %}
-						<!--<div class="form-group">-->
-	                    	<input class="form-control" type="text" name="username" id="login-username"  placeholder="{% trans "Username" %}">
+  					{% if user.is_authenticated %}
+  					<li class="dropdown">
+  						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+  							{{ user.first_name }}
+  							<b class="caret"></b>
+  						</a>
+  						<ul class="dropdown-menu">
+  							{% if perms.elbroquil.modify_products %}
+  							<li><a href="{% url 'upload_products' %}"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> {% trans "Upload products excel" %}</a></li>
+  							<li><a href="{% url 'view_products' %}"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> {% trans "View products" %}</a></li>
+  							<li role="separator" class="divider"></li>
+  							{% endif %}
+  							{% if perms.elbroquil.accounting %}
+  							<li><a href="{% url 'view_fees' %}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> {% trans "View Fee Status" %}</a></li>
+  							<li><a href="{% url 'create_fees' %}"><span class="glyphicon glyphicon-euro" aria-hidden="true"></span> {% trans "Create Fees" %}</a></li>
+  							<li role="separator" class="divider"></li>
+  							{% endif %}
+  							{% if user.is_staff %}
+  							<li><a href="/admin/"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> {% trans "Admin Panel" %}</a></li>
+  							<li role="separator" class="divider"></li>
+  							{% endif %}
+
+  							<li><a class="userlink" href="{% url 'django.contrib.auth.views.password_change' %}">{% trans "Change password" %}</a></li>
+  							<li class="divider"></li>
+  							<li><a class="userlink" href="{% url 'django.contrib.auth.views.logout' %}">{% trans "Log out" %}</a></li>
+  						</ul>
+  					</li>
+  					{% else %}
+  					<li class="dropdown">
+  						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Log In <b class="caret"></b></a>
+  						<ul class="dropdown-menu login">
+  							<form action="{% url 'django.contrib.auth.views.login' %}" method="post" role="form">{% csrf_token %}
+  								<!--<div class="form-group">-->
+  								<input class="form-control" type="text" name="username" id="login-username"  placeholder="{% trans "Username" %}">
 						<!--</div>
 						<div class="form-group">-->
-	                    	<input class="form-control" type="password" name="password" id="login-password" placeholder="{% trans "Password" %}">
-						<!--</div>-->
-	                    <button class="btn btn-default btn-block" type="submit">{% trans "Sign in" %}</button>
-	                  </form>
-	                  <small><a href="{% url 'django.contrib.auth.views.password_reset' %}">{% trans "Forgot password" %}</a></small>
-	                </ul>
-	              </li>
-		         {% endif %}
-				<li>
+							<input class="form-control" type="password" name="password" id="login-password" placeholder="{% trans "Password" %}">
+							<!--</div>-->
+							<button class="btn btn-default btn-block" type="submit">{% trans "Sign in" %}</button>
+						</form>
+						<small><a href="{% url 'django.contrib.auth.views.password_reset' %}">{% trans "Forgot password" %}</a></small>
+					</ul>
+				</li>
+				{% endif %}
+				<!--<li>
 					<div>
 					<a href="{% url 'set_language' %}?language=ca"><img src="/static/images/blank.gif" class="flag flag-ca" alt="Catala" /></a>
 					<a href="{% url 'set_language' %}?language=es"><img src="/static/images/blank.gif" class="flag flag-es" alt="Castellano" /></a><br/>
 					<a href="{% url 'set_language' %}?language=en"><img src="/static/images/blank.gif" class="flag flag-gb" alt="English" /></a>
 					<a href="{% url 'set_language' %}?language=tr"><img src="/static/images/blank.gif" class="flag flag-tr" alt="Turkce" /></a>
 					</div>
-				</li>
+				</li>-->
 			</ul>
 
-        </div><!--/.navbar-collapse -->
-      </div>
-    </div>
+		</div><!--/.navbar-collapse -->
+	</div>
+</div>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <!--<div class="jumbotron">-->
-      <div class="container maincontent">
-		<div class="page-header {% block header_style %}{% endblock %}">
-        {% block content_title %}{% endblock %}
-		</div>
-		{% block content %}{% endblock %}
-      </div>
-    <!--</div>-->
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<!--<div class="jumbotron">-->
+<div class="container maincontent">
+	<div class="page-header {% block header_style %}{% endblock %}">
+		{% block content_title %}{% endblock %}
+	</div>
+	{% block content %}{% endblock %}
+</div>
+<!--</div>-->
 
-    <div class="container">
-      <!-- Example row of columns -->
-      <footer>
-        <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Llicència de Creative Commons" style="border-width:0" src="/static/images/by-nc-sa-88x31.png" /></a></p>
-      </footer>
-    </div> <!-- /container -->
+<div class="container">
+	<!-- Example row of columns -->
+	<footer>
+		<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Llicència de Creative Commons" style="border-width:0" src="/static/images/by-nc-sa-88x31.png" /></a></p>
+	</footer>
+</div> <!-- /container -->
 
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
+
+
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="/static/scripts/hopscotch.js"></script>
+
+    <!--
     <script src="/static/scripts/jquery.min.js"></script>
     <script src="/static/scripts/bootstrap.min.js"></script>
-	<script src="/static/scripts/jquery.cookie.min.js"></script>
-	<script src="/static/scripts/hopscotch.js"></script>
+    <script src="/static/scripts/jquery.cookie.min.js"></script>
+    <script src="/static/scripts/hopscotch.js"></script>
+    -->
 
-	{% block scriptincludes %}{% endblock %}
-	{% block extrascripts %}{% endblock %}
-  </body>
+    {% block scriptincludes %}{% endblock %}
+    {% block extrascripts %}{% endblock %}
+</body>
 </html>

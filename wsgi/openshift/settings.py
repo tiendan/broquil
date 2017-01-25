@@ -128,7 +128,7 @@ else:
      DATABASES = {
          'default': {
              'ENGINE': 'django.db.backends.mysql',
-             'NAME': os.environ['DB_NAME'],
+             'NAME': 'test',
              'USER': os.environ['DB_USERNAME'],             # Not used with sqlite3.
              'PASSWORD': os.environ['DB_PASSWORD'],         # Not used with sqlite3.
              'HOST': '127.0.0.1',             # Set to empty string for localhost. Not used with sqlite3.

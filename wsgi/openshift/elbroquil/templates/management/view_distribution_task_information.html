@@ -29,7 +29,7 @@
                             </select>
                         </div>
                     </form>
-                    {% if selected_year %} <!-- TODO Show only if user has permission -->
+                    {% if selected_year and user.is_staff %}
                     <form id="update_form" role="form"  action="{% url 'view_distribution_task_information' %}" method="POST"  class="form-horizontal">
                       {% csrf_token %}	
                         <input name="form-name" type="hidden" value="update-form"/>
@@ -97,8 +97,8 @@
 {% block extrascripts %}
 <script type="text/javascript">
 	 $(function() {	
-		// Set selected menu item
-		//$('#menu-item-accounting').addClass("active");
+    // Set selected menu item
+    $('#menu-item-order').addClass("active");
 		
 		// Bind the event so that when form items change, form is submitted
 		$("#year").change(function(e) {

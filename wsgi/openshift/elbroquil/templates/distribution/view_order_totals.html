@@ -22,7 +22,7 @@
 
 
 {% block content %}
-	{% if products %}
+	{% if products and edit_enabled %}
 	{% include "distribution/wizard.html" with step=1 current_product_no=0 total_products=0 %}
 	<br/>
 	<div class="alert alert-info"><span class="glyphicon glyphicon-info-sign"></span> {% trans "Check that all the products has arrived. You can mark the products you have checked by clicking on them." %}</div>
@@ -35,38 +35,46 @@
 			<div>
 				<div>
 					<ul class="pager">
+					  {% if edit_enabled %}
 					  <li class="previous blankpreviouspager"></li>
+					  {% endif %}
 					  <li>
 						<h3 class="fillSpace"><a href="{% url 'download_orders_pdf' %}" target="_blank"><span class="glyphicon glyphicon-download-alt green-icon"></span> {% trans "Download PDF (excluding products &euro;/kg)"%}</a></h3>
 					  </li>
+					  {% if edit_enabled %}
 					  <li class="next"><a href="{% url 'count_initial_cash' %}">{% trans "Count initial cash "%} &rarr;</a></li>
+					  {% endif %}
 					</ul>
 				</div>
-		        <div class="table-responsive col-md-10">
+		        <div class="table-responsive {%if edit_enabled %}col-md-10{% else %}col-sm-12 col-md-8 col-md-offset-2{% endif %}">
 					<table id="totals_table" class="category_table table table-striped table-condensed table-bordered" >
 					<tbody>
 						{% for product, add_category_row in products %}
 							{% if add_category_row %}
 							<tr>
-								<td class="category-row info" colspan="5">{{ product.category|upper }}</td>
+								<td class="category-row info" colspan="{% if edit_enabled %}4{% else %}3{% endif %}">{{ product.category|upper }}</td>
 							</tr>
-							<tr><th class="product_name_header">{% trans "Product" %}</th><th class="product_price_header">{% trans "Price" %}</th><th class="product_order_header">{% trans "Order" %}</th><th class="product_order_header">{% trans "Arrived" %}</th></tr>
+							<tr><th class="product_name_header">{% trans "Product" %}</th><th class="product_price_header">{% trans "Price" %}</th><th class="product_order_header">{% trans "Order" %}</th>{% if edit_enabled %}<th class="product_order_header">{% trans "Arrived" %}</th>{% endif %}</tr>
 							{% endif %}
 							<tr class="selectablerow {% if product.integer_demand and product.unit == 'kg' %}has-error{% endif %}" id="selectablerow_{{ product.id }}">
 								<td>{% if show_product_links and product.arrived_quantity > 0 %}<a href="{% url 'view_product_orders_with_id' product.pk %}">{{ product.name }}</a>{% else %}{{ product.name }}{% endif %}</td>
 								<td class="price">{{ product.price|floatformat:2 }} <span style="width: 40px;">&euro;</span></td>
 								<td class="quantity"><p class="form-control-static"><strong>{{ product.total_quantity|floatformat:"-2" }}</strong> <span style="width: 40px;">{{ product.unit }}</span></p></td>
+								{% if edit_enabled %}
 								<td class="quantity"><input id="product_arrived_{{ product.id }}" name="product_arrived_{{ product.id }}" type="text" class="product-order form-control bfh-number input-sm" data-keyboard="true" data-integer="false" data-allowzero="true" data-allowblank="true" data-buttons="false" {% if product.arrived_quantity != product.total_quantity %}value="{{ product.arrived_quantity }}"{% endif %}/></td>
+								{% endif %}
 							</tr>
 						{% endfor %}
 					</tbody>
 					</table>
 				</div>
+				{% if edit_enabled %}
 			    <div class="table-responsive col-md-2">
 					<div class="sidebar">
 					<button id="save_button" type="button" class="btn btn-lg btn-success" disabled="disabled">{% trans "Save changes" %}</button>
 					</div>
 				</div>
+				{% endif %}
 			</div>
 		</div>
 		{% else %}

@@ -1,14 +1,21 @@
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 from pytz import timezone as pytztimezone
+import json
+import os
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
+from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import ugettext as _
+
+from oauth2client.client import SignedJwtAssertionCredentials
+from httplib2 import Http
+from apiclient.discovery import build
 
 import elbroquil.models as models
 
@@ -288,3 +295,106 @@ def send_email_to_user(subject, content, user):
     email = EmailMultiAlternatives(subject, text_content, to=to_list)
     email.attach_alternative(content, "text/html")
     email.send()
+
+
+# TODO ONUR @permission_required('elbroquil.update_dist_task')
+def update_distribution_task_information(year):
+    update_log = ""
+
+    with transaction.atomic():
+        # Directory where to find the private key
+        data_dir = '/Users/onur/github/broquil/data/temp'
+
+        if 'OPENSHIFT_DATA_DIR' in os.environ:
+            data_dir = os.path.join(os.environ['OPENSHIFT_DATA_DIR'], "temp")
+
+        # Setup the connection to Google Calendar API
+        client_email = '975533004012-d4veh1666grh6es8bq0celae34u9ag7k@developer.gserviceaccount.com'
+        with open(os.path.join(data_dir, "serviceaccount.json")) as f:
+            private_key = json.load(f)['private_key']
+
+        credentials = SignedJwtAssertionCredentials(
+            client_email,
+            private_key,
+            ['https://www.googleapis.com/auth/sqlservice.admin',
+             'https://www.googleapis.com/auth/calendar'])
+
+        http_auth = credentials.authorize(Http())
+        service = build('calendar', 'v3', http=http_auth)
+
+        year_beginning = str(year) + "-01-01T00:00:00Z"
+        request = service.events().list(
+            calendarId='lt3p1poe2spctu4u9vogokk59g@group.calendar.google.com',
+            timeMin=year_beginning)
+
+        # Delete old task objects for the given year
+        models.DistributionTask.objects.filter(
+            distribution_date__year=year).delete()
+        print "Deleted old tasks"
+
+        # Loop until all pages have been processed.
+        while request is not None:
+            # Get the next page.
+            response = request.execute()
+            for event in response.get('items', []):
+                print "Another event"
+                distribution_date = event.get("start", "").get("dateTime", "")
+
+                # Continue with next iteration if dist date not valid
+                if distribution_date == "":
+                    continue
+
+                distribution_date = parse_date(distribution_date[0:10])
+                date_string = distribution_date.strftime('%d/%m/%Y')
+
+                task_members = []
+
+                for attendee in event.get('attendees', []):
+                    current_email = attendee.get('email', "")
+
+                    # Continue with next iteration if email not valid (or it is
+                    # admin email)
+                    if current_email == "" \
+                       or current_email == "broquilgotic@gmail.com":
+                        continue
+
+                    # Find user for this email
+                    user = models.User.objects.filter(
+                        email=current_email, is_active=True).first()
+
+                    # If not found, try the secondary email too
+                    if not user:
+                        extra_info = models.ExtraInfo.objects.filter(
+                            secondary_email=current_email,
+                            user__is_active=True).first()
+
+                        if extra_info:
+                            user = extra_info.user
+                        else:
+                            message = _(
+                                u"Could not find member with email:") + ""
+                            update_log = update_log + "<br>" + date_string + \
+                                " " + message + " " + current_email
+                            continue
+
+                    # If the user is already added to the event, skip
+                    if user in task_members:
+                        message = _(
+                            u"Member exists twice in event, email:") + ""
+                        update_log = update_log + "<br>" + date_string + \
+                            " " + message + " " + current_email
+                        continue
+
+                    # Add the user to the event
+                    task = models.DistributionTask(
+                        distribution_date=distribution_date, user=user)
+                    task.save()
+
+                    task_members.append(user)
+
+            # Get the next request object by passing the previous request
+            # object to the list_next method.
+            request = service.events().list_next(request, response)
+
+    print "Transaction finished successfully"
+    return update_log

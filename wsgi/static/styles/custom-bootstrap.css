@@ -293,3 +293,12 @@ div.panel-heading.incident-panel {
     text-transform: uppercase;
     font-weight: bold;
 }
+
+.navbar-brand > .glyphicon {
+    font-size: 24pt;
+    margin-top: -7px;
+}
+
+.navbar {
+    border-radius: 0px;
+}

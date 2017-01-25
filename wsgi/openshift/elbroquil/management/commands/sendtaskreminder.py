@@ -16,9 +16,19 @@ class Command(BaseCommand):
         self.stdout.write(
             'Enviando el recordatorio a los responsables de permanencia...')
 
+        now = libs.get_now()
+
+        # Update the distribtion task information from Google Calendar
+        update_log = libs.update_distribution_task_information(now.year)
+        self.stdout.write(update_log)
+
+        # If we are in December, update next year's information too
+        if now.month == 12:
+            update_log = libs.update_distribution_task_information(now.year + 1)
+            self.stdout.write(update_log)
+
         # Check if there is a distribution task in the following 9 days (larger
         # margin to handle modified dist. dates)
-        now = libs.get_now()
         some_days_later = now + timedelta(days=9)
         tasks = models.DistributionTask.objects.filter(
             distribution_date__lt=some_days_later,

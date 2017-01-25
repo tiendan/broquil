@@ -98,10 +98,13 @@ def download_orders_pdf(request):
 @login_required
 @permission_required('elbroquil.prepare_baskets')
 def view_order_totals(request):
+    distribution_date = libs.get_next_distribution_date()
+    edit_enabled = (distribution_date == libs.get_today())
+
     # 01 March 2015: Do not show stock products in the first page
     products = models.Product.objects.filter(
         archived=False,
-        distribution_date=libs.get_today(),
+        distribution_date=distribution_date,
         total_quantity__gt=0,
         stock_product=False).order_by('category__sort_order', 'id')
 
@@ -149,6 +152,7 @@ def view_order_totals(request):
                   {
                       'products': products,
                       'show_product_links': True,
+                      'edit_enabled': edit_enabled
                   })
 
 

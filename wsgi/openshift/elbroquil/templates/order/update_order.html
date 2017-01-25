@@ -63,7 +63,7 @@
 					<div class="table-responsive col-md-10">
 						<table id="table_{{ category_id }}" class="category-table table table-striped table-condensed table-bordered" >
 						<thead>
-							<tr><th>{% trans "Order" %}</th><th>{% trans "Product" %}</th><th>{% trans "Price" %}</th><th>{% trans "Unit" %}</th><th>{% trans "Origin" %}</th><th>{% trans "Rating" %}</th></tr>
+							<tr><th>{% trans "Order" %}</th><th>{% trans "Product" %}</th><th>{% trans "Price" %}</th><th>{% trans "Unit" %}</th><th>{% trans "Origin" %}</th><!--<th>{% trans "Rating" %}</th>--></tr>
 						</thead>
 						<tbody>
 							{% for product, product_order in products %}
@@ -81,7 +81,7 @@
 								<td class="price">{{ product.price|floatformat:2 }}</td>
 								<td>&euro;/{{ product.unit }}</td>
 								<td>{{ product.origin }}</td>
-								<td>{% if product.average_rating > 0 %}<input class="rating" data-readonly="true" value="{{ product.average_rating|unlocalize }}" data-size="xs" data-show-clear="false" data-show-caption="false">{% endif %}</td>
+								<!--<td>{% if product.average_rating > 0 %}<input class="rating" data-readonly="true" value="{{ product.average_rating|unlocalize }}" data-size="xs" data-show-clear="false" data-show-caption="false">{% endif %}</td>-->
 							</tr>
 							{% endfor %}
 						</tbody>
