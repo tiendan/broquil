@@ -11,8 +11,8 @@ def parse_cal_rosset(book):
     price_column = 3
     unit_column = 4
     product_name_column = 5
-    origin_column = 6
-    comments_column = 8
+    origin_column = 7
+    comments_column = 9
 
     # Get the first sheet and read row and column counts
     sheet = book.sheet_by_index(0)
