@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
+from django.utils.dateparse import *
 from django.utils.translation import ugettext as _
 
 from oauth2client.client import SignedJwtAssertionCredentials
@@ -297,7 +298,6 @@ def send_email_to_user(subject, content, user):
     email.send()
 
 
-# TODO ONUR @permission_required('elbroquil.update_dist_task')
 def update_distribution_task_information(year):
     update_log = ""
 
