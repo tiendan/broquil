@@ -223,8 +223,9 @@ def get_producer_order_limit_date(producer, next_dist_date):
     zone = pytztimezone(settings.TIME_ZONE)
 
     day = next_dist_date
-    day = zone.localize(datetime(day.year, day.month,
-                                 day.day, producer.order_hour), is_dst=False)
+    day = zone.localize(datetime.datetime(day.year, day.month,
+                                          day.day, producer.order_hour),
+                        is_dst=False)
 
     days_to_substract = (next_dist_date.weekday() - producer.order_day) % 7
     day -= timedelta(days=days_to_substract)
