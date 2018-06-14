@@ -1,0 +1,1614 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-01-26 00:14+0200\n"
+"PO-Revision-Date: 2015-01-22 00:04+0000\n"
+"Last-Translator: Onur Ferhat <tiendan@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Translated-Using: django-rosetta 0.7.4\n"
+
+#: elbroquil/admin.py:26
+msgid "Producer availability (in case of limited availability)"
+msgstr ""
+
+#: elbroquil/admin.py:27 elbroquil/models.py:278
+msgid "date"
+msgstr ""
+
+#: elbroquil/admin.py:41
+msgid "General Info"
+msgstr ""
+
+#: elbroquil/admin.py:43
+msgid "Order Info"
+msgstr ""
+
+#: elbroquil/admin.py:49
+msgid "Technical Info"
+msgstr ""
+
+#: elbroquil/admin.py:58
+msgid "Categories"
+msgstr ""
+
+#: elbroquil/admin.py:113 elbroquil/admin.py:278
+msgid "Email"
+msgstr ""
+
+#: elbroquil/admin.py:117
+msgid "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
+msgstr ""
+
+#: elbroquil/admin.py:120
+msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
+msgstr ""
+
+#: elbroquil/admin.py:123
+msgid "First name"
+msgstr ""
+
+#: elbroquil/admin.py:124
+msgid "Last name"
+msgstr ""
+
+#: elbroquil/admin.py:127
+msgid "Phone number"
+msgstr ""
+
+#: elbroquil/admin.py:130
+msgid "This will be the initial password for the member."
+msgstr ""
+
+#: elbroquil/admin.py:132
+msgid "Numbers only."
+msgstr ""
+
+#: elbroquil/admin.py:135
+msgid "Alternative email"
+msgstr ""
+
+#: elbroquil/admin.py:137
+msgid "Alt. phone number"
+msgstr ""
+
+#: elbroquil/admin.py:159
+msgid "A user with that username already exists."
+msgstr ""
+
+#: elbroquil/admin.py:276
+msgid "Information"
+msgstr ""
+
+#: elbroquil/admin.py:285
+msgid "Email Lists"
+msgstr ""
+
+#: elbroquil/admin.py:319
+msgid "user (inactive)"
+msgstr ""
+
+#: elbroquil/admin.py:320
+msgid "users (inactive)"
+msgstr ""
+
+#: elbroquil/admin.py:327
+msgid "user (system)"
+msgstr ""
+
+#: elbroquil/admin.py:328
+msgid "users (system)"
+msgstr ""
+
+#: elbroquil/forms.py:9
+#: elbroquil/templates/product/view_defined_products.html:24
+msgid "Producer"
+msgstr ""
+
+#: elbroquil/forms.py:10
+msgid "Excel file"
+msgstr ""
+
+#: elbroquil/libraries.py:53
+#: elbroquil/templates/distribution/member_payment.html:148
+#: elbroquil/templates/order/order_history.html:107
+msgid "PRODUCTS"
+msgstr ""
+
+#: elbroquil/libraries.py:65
+msgid "And"
+msgstr ""
+
+#: elbroquil/libraries.py:67
+msgid "more products"
+msgstr ""
+
+#: elbroquil/libraries.py:77
+msgid "No products in cart"
+msgstr ""
+
+#: elbroquil/libraries.py:375
+msgid "Could not find member with email:"
+msgstr ""
+
+#: elbroquil/libraries.py:383
+msgid "Member exists twice in event, email:"
+msgstr ""
+
+#: elbroquil/models.py:17
+msgid "Monday"
+msgstr ""
+
+#: elbroquil/models.py:18
+msgid "Tuesday"
+msgstr ""
+
+#: elbroquil/models.py:19
+msgid "Wednesday"
+msgstr ""
+
+#: elbroquil/models.py:20
+msgid "Thursday"
+msgstr ""
+
+#: elbroquil/models.py:21
+msgid "Friday"
+msgstr ""
+
+#: elbroquil/models.py:22
+msgid "Saturday"
+msgstr ""
+
+#: elbroquil/models.py:23
+msgid "Sunday"
+msgstr ""
+
+#: elbroquil/models.py:34
+msgid "Standard"
+msgstr ""
+
+#: elbroquil/models.py:47
+msgid "Normal"
+msgstr ""
+
+#: elbroquil/models.py:48
+msgid "Did not arrive"
+msgstr ""
+
+#: elbroquil/models.py:49
+msgid "Min. order not met"
+msgstr ""
+
+#: elbroquil/models.py:55 settings.py:181
+msgid "Turkish"
+msgstr ""
+
+#: elbroquil/models.py:56 settings.py:182
+msgid "Catala"
+msgstr ""
+
+#: elbroquil/models.py:57 settings.py:183
+msgid "Castellano"
+msgstr ""
+
+#: elbroquil/models.py:58 settings.py:184
+msgid "English"
+msgstr ""
+
+#: elbroquil/models.py:76
+msgid "Member: Offer Created"
+msgstr ""
+
+#: elbroquil/models.py:77
+msgid "Member: Saturday Reminder"
+msgstr ""
+
+#: elbroquil/models.py:78
+msgid "Member: Order Sent to Producers"
+msgstr ""
+
+#: elbroquil/models.py:79
+msgid "Member: Account Created"
+msgstr ""
+
+#: elbroquil/models.py:80
+msgid "Member: Distribution Task Reminder"
+msgstr ""
+
+#: elbroquil/models.py:82
+msgid "Producer: Total Order"
+msgstr ""
+
+#: elbroquil/models.py:83
+msgid "Producer: No Order This Week"
+msgstr ""
+
+#: elbroquil/models.py:84
+msgid "Producer: Product Ratings"
+msgstr ""
+
+#: elbroquil/models.py:92
+msgid "Transfer from SAFE to DRAWER"
+msgstr ""
+
+#: elbroquil/models.py:93
+msgid "Transfer from DRAWER to SAFE"
+msgstr ""
+
+#: elbroquil/models.py:101
+msgid "first name"
+msgstr ""
+
+#: elbroquil/models.py:103
+msgid "last name"
+msgstr ""
+
+#: elbroquil/models.py:105
+msgid "company name"
+msgstr ""
+
+#: elbroquil/models.py:106
+msgid "email"
+msgstr ""
+
+#: elbroquil/models.py:107
+msgid "send ratings"
+msgstr ""
+
+#: elbroquil/models.py:109
+msgid "order day"
+msgstr ""
+
+#: elbroquil/models.py:111
+msgid "order hour"
+msgstr ""
+
+#: elbroquil/models.py:114
+msgid "minimum order"
+msgstr ""
+
+#: elbroquil/models.py:119
+msgid "fixed products"
+msgstr ""
+
+#: elbroquil/models.py:121
+msgid "limited availability"
+msgstr ""
+
+#: elbroquil/models.py:123
+msgid "excel format"
+msgstr ""
+
+#: elbroquil/models.py:125
+msgid "default category name"
+msgstr ""
+
+#: elbroquil/models.py:126
+msgid "active"
+msgstr ""
+
+#: elbroquil/models.py:127
+msgid "<em>(Disable the producer by clearing this option.)</em>"
+msgstr ""
+
+#: elbroquil/models.py:129
+msgid "transportation cost"
+msgstr ""
+
+#: elbroquil/models.py:132
+msgid "short product explanation"
+msgstr ""
+
+#: elbroquil/models.py:134
+msgid "<em>(Will be shown on the 'offer created' emails.)</em>"
+msgstr ""
+
+#: elbroquil/models.py:136 elbroquil/models.py:417
+msgid "description"
+msgstr ""
+
+#: elbroquil/models.py:137
+msgid ""
+"<em>(Long explanation about the producer. If you want to place photos or "
+"links to files, a) place them in Google Drive and create public link, b) "
+"find their public link from some other website)</em>"
+msgstr ""
+
+#: elbroquil/models.py:143
+msgid "producer"
+msgstr ""
+
+#: elbroquil/models.py:144
+msgid "producers"
+msgstr ""
+
+#: elbroquil/models.py:152 elbroquil/models.py:158
+msgid "available date"
+msgstr ""
+
+#: elbroquil/models.py:159
+msgid "available dates"
+msgstr ""
+
+#: elbroquil/models.py:166 elbroquil/models.py:172
+msgid "skipped date"
+msgstr ""
+
+#: elbroquil/models.py:173
+msgid "skipped dates"
+msgstr ""
+
+#: elbroquil/models.py:180 elbroquil/models.py:416
+msgid "name"
+msgstr ""
+
+#: elbroquil/models.py:182
+msgid "visible name"
+msgstr ""
+
+#: elbroquil/models.py:183
+msgid "<em>(To display shorter/better names for producer categories.)</em>"
+msgstr ""
+
+#: elbroquil/models.py:186
+msgid "sort order"
+msgstr ""
+
+#: elbroquil/models.py:187
+msgid "<em>(To change the order of appearance of categories.)</em>"
+msgstr ""
+
+#: elbroquil/models.py:188 elbroquil/models.py:218 elbroquil/models.py:261
+msgid "archived"
+msgstr ""
+
+#: elbroquil/models.py:197
+msgid "category"
+msgstr ""
+
+#: elbroquil/models.py:198
+msgid "categories"
+msgstr ""
+
+#: elbroquil/models.py:205 elbroquil/models.py:247
+msgid "product"
+msgstr ""
+
+#: elbroquil/models.py:208
+msgid "origin"
+msgstr ""
+
+#: elbroquil/models.py:210
+msgid "comments"
+msgstr ""
+
+#: elbroquil/models.py:211
+msgid "price"
+msgstr ""
+
+#: elbroquil/models.py:212
+msgid "unit"
+msgstr ""
+
+#: elbroquil/models.py:213
+msgid "<em>(without the &euro; sign or / character.)</em>"
+msgstr ""
+
+#: elbroquil/models.py:214
+msgid "integer demand"
+msgstr ""
+
+#: elbroquil/models.py:216 elbroquil/models.py:334 elbroquil/models.py:358
+#: elbroquil/models.py:409
+msgid "distribution date"
+msgstr ""
+
+#: elbroquil/models.py:217 elbroquil/models.py:226
+msgid "<em>(Only fill for products that are offered just once.)</em>"
+msgstr ""
+
+#: elbroquil/models.py:221
+msgid "total quantity"
+msgstr ""
+
+#: elbroquil/models.py:223 elbroquil/models.py:265
+msgid "arrived quantity"
+msgstr ""
+
+#: elbroquil/models.py:225
+msgid "order limit date"
+msgstr ""
+
+#: elbroquil/models.py:228
+msgid "average rating"
+msgstr ""
+
+#: elbroquil/models.py:231
+msgid "new product"
+msgstr ""
+
+#: elbroquil/models.py:232
+msgid "<em>(To highlight this product as NEW in the order pages.)</em>"
+msgstr ""
+
+#: elbroquil/models.py:234
+msgid "sent to producer"
+msgstr ""
+
+#: elbroquil/models.py:236
+msgid "stock product"
+msgstr ""
+
+#: elbroquil/models.py:248
+msgid "products"
+msgstr ""
+
+#: elbroquil/models.py:258 elbroquil/models.py:280 elbroquil/models.py:289
+#: elbroquil/models.py:299 elbroquil/models.py:315 elbroquil/models.py:361
+msgid "quantity"
+msgstr ""
+
+#: elbroquil/models.py:260
+msgid "rating"
+msgstr ""
+
+#: elbroquil/models.py:263
+msgid "status"
+msgstr ""
+
+#: elbroquil/models.py:268
+msgid "order"
+msgstr ""
+
+#: elbroquil/models.py:269
+msgid "orders"
+msgstr ""
+
+#: elbroquil/models.py:310
+msgid "year"
+msgstr ""
+
+#: elbroquil/models.py:311
+msgid "quarter"
+msgstr ""
+
+#: elbroquil/models.py:313
+msgid "created date"
+msgstr ""
+
+#: elbroquil/models.py:325
+msgid "secondary email"
+msgstr ""
+
+#: elbroquil/models.py:326
+msgid "phone"
+msgstr ""
+
+#: elbroquil/models.py:328
+msgid "secondary phone"
+msgstr ""
+
+#: elbroquil/models.py:336
+msgid "initial amount"
+msgstr ""
+
+#: elbroquil/models.py:338
+msgid "member consumed amount"
+msgstr ""
+
+#: elbroquil/models.py:341
+msgid "total member payment amount"
+msgstr ""
+
+#: elbroquil/models.py:345
+msgid "debt balance amount"
+msgstr ""
+
+#: elbroquil/models.py:347
+msgid "collected fee amount"
+msgstr ""
+
+#: elbroquil/models.py:349
+msgid "final amount"
+msgstr ""
+
+#: elbroquil/models.py:351
+msgid "expected final amount"
+msgstr ""
+
+#: elbroquil/models.py:352
+msgid "notes"
+msgstr ""
+
+#: elbroquil/models.py:368
+msgid "email code"
+msgstr ""
+
+#: elbroquil/models.py:370
+msgid "language code"
+msgstr ""
+
+#: elbroquil/models.py:373
+msgid "subject"
+msgstr ""
+
+#: elbroquil/models.py:374
+msgid "<em>(Without [BroquilGotic])</em>"
+msgstr ""
+
+#: elbroquil/models.py:376
+msgid "body"
+msgstr ""
+
+#: elbroquil/models.py:377
+msgid "<em>(Do not remove the [[CONTENT]] parts.)</em>"
+msgstr ""
+
+#: elbroquil/models.py:401
+msgid "email template"
+msgstr ""
+
+#: elbroquil/models.py:402
+msgid "email templates"
+msgstr ""
+
+#: elbroquil/models.py:419
+msgid "email addresses"
+msgstr ""
+
+#: elbroquil/models.py:421
+msgid "cc task reminders"
+msgstr ""
+
+#: elbroquil/models.py:422
+msgid "cc incidents"
+msgstr ""
+
+#: elbroquil/models.py:432
+msgid "movement type"
+msgstr ""
+
+#: elbroquil/models.py:435
+msgid "amount"
+msgstr ""
+
+#: elbroquil/models.py:437
+msgid "final amount in safe"
+msgstr ""
+
+#: elbroquil/models.py:438
+msgid "explanation"
+msgstr ""
+
+#: elbroquil/models.py:440
+msgid "movement date"
+msgstr ""
+
+#: elbroquil/parse.py:185
+msgid "Distribution date and order limit date should be in text format!"
+msgstr ""
+
+#: elbroquil/parse.py:194
+msgid "Distribution date and order limit date should be in YYYY-MM-DD format!"
+msgstr ""
+
+#: elbroquil/templates/contact.html:6 templates/base.html:89
+#: templates/base.html.py:96
+msgid "Contact"
+msgstr ""
+
+#: elbroquil/templates/contact.html:6
+msgid "Send"
+msgstr ""
+
+#: elbroquil/templates/contact.html:13
+msgid "Choose your contact and send your message."
+msgstr ""
+
+#: elbroquil/templates/contact.html:19
+msgid "To"
+msgstr ""
+
+#: elbroquil/templates/contact.html:22 elbroquil/templates/contact.html:32
+msgid ""
+"Messages related to problems in your order. Choose the distribution date for "
+"which you had a problem."
+msgstr ""
+
+#: elbroquil/templates/contact.html:22
+msgid "Incidents"
+msgstr ""
+
+#: elbroquil/templates/contact.html:37
+#: elbroquil/templates/management/view_distribution_detail.html:17
+#: elbroquil/templates/order/order_history.html:25
+#: elbroquil/templates/product/check_product_info.html:22
+msgid "Distribution date"
+msgstr ""
+
+#: elbroquil/templates/contact.html:47
+msgid "Message"
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:5
+msgid "Accounting summary"
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:22
+msgid ""
+"<strong>Prepare the envelopes</strong> for each producer, placing the "
+"required amount of money inside.<br/>Count the <strong>final amount</strong> "
+"in the drawer and save it here. Make sure it more or less equals the "
+"expected amount."
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:25
+msgid "The initial cash has not been entered!"
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:29
+#, python-format
+msgid ""
+"There are %(order_count - payment_count)s members who were not charged yet! "
+"If you continue, remaining amount will be saved as debt."
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:35
+#: elbroquil/templates/distribution/view_product_orders.html:53
+msgid "Payment"
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:45
+#: elbroquil/templates/distribution/count_initial_cash.html:37
+#: elbroquil/templates/management/view_distribution_detail.html:41
+msgid "Initial cash:"
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:54
+#: elbroquil/templates/management/view_distribution_detail.html:53
+msgid "Collected from members:"
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:63
+msgid "Pay to Producers"
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:77
+#: elbroquil/templates/management/view_distribution_detail.html:104
+msgid "Final cash:"
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:83
+#: elbroquil/templates/management/view_distribution_detail.html:113
+msgid "Expected final cash:"
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:87
+msgid "Notes:"
+msgstr ""
+
+#: elbroquil/templates/distribution/account_summary.html:97
+#: elbroquil/templates/distribution/count_initial_cash.html:47
+#: elbroquil/templates/distribution/member_payment.html:135
+#: elbroquil/templates/distribution/view_order_totals.html:74
+#: elbroquil/templates/distribution/view_product_orders.html:88
+#: elbroquil/templates/order/update_order.html:92
+msgid "Save changes"
+msgstr ""
+
+#: elbroquil/templates/distribution/count_initial_cash.html:5
+#: elbroquil/templates/distribution/view_basket_counts.html:29
+msgid "Count initial cash"
+msgstr ""
+
+#: elbroquil/templates/distribution/count_initial_cash.html:23
+msgid "Count the total money in the drawer and save the amount here."
+msgstr ""
+
+#: elbroquil/templates/distribution/count_initial_cash.html:31
+msgid "Back to order summary"
+msgstr ""
+
+#: elbroquil/templates/distribution/count_initial_cash.html:32
+#: elbroquil/templates/distribution/view_basket_counts.html:5
+#: elbroquil/templates/distribution/view_product_orders.html:37
+msgid "Prepare baskets"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:6
+msgid "Member payments"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:24
+msgid ""
+"Choose the member and charge him the required amount. In case the user wants "
+"to pay the quarterly fee, mark the box to add it to the total amount. If you "
+"or the member does not have change, just enter the paid amount and the rest "
+"will be saved as debt."
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:30
+msgid "Close account"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:42
+#: elbroquil/templates/distribution/view_product_orders.html:100
+msgid "CHOOSE MEMBER"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:54
+msgid " members paid."
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:68
+#: elbroquil/templates/order/order_history.html:49
+msgid "Products:"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:77
+#: elbroquil/templates/order/order_history.html:58
+msgid "Debt from last week:"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:87
+msgid "Pay quarterly fee:"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:108
+#: elbroquil/templates/order/view_order.html:51
+msgid "TOTAL TO PAY:"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:117
+#: elbroquil/templates/order/order_history.html:82
+msgid "Paid:"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:128
+#: elbroquil/templates/order/order_history.html:93
+msgid "marked as debt for next week."
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:158
+#: elbroquil/templates/distribution/view_order_totals.html:57
+#: elbroquil/templates/order/order_history.html:117
+#: elbroquil/templates/order/update_order.html:66
+#: elbroquil/templates/order/view_order.html:23
+#: elbroquil/templates/order/view_order.html:66
+#: elbroquil/templates/product/check_product_info.html:41
+#: elbroquil/templates/product/view_defined_products.html:45
+msgid "Price"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:158
+#: elbroquil/templates/order/order_history.html:117
+msgid "Quantity"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:158
+#: elbroquil/templates/distribution/view_product_orders.html:60
+#: elbroquil/templates/order/order_history.html:117
+#: elbroquil/templates/order/view_order.html:23
+msgid "Total"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:176
+#: elbroquil/templates/management/view_distribution_detail.html:131
+#: elbroquil/templates/order/order_history.html:141
+msgid "INCIDENTS"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:187
+#: elbroquil/templates/order/order_history.html:152
+msgid "Not Ordered"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:205
+#: elbroquil/templates/management/view_distribution_detail.html:143
+#: elbroquil/templates/order/order_history.html:170
+msgid "Not Arrived"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:223
+#: elbroquil/templates/management/view_distribution_detail.html:161
+#: elbroquil/templates/order/order_history.html:188
+msgid "Amount Changed"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:227
+#: elbroquil/templates/management/view_distribution_detail.html:165
+#: elbroquil/templates/order/order_history.html:192
+msgid "Ordered"
+msgstr ""
+
+#: elbroquil/templates/distribution/member_payment.html:227
+#: elbroquil/templates/order/order_history.html:192
+msgid "Final"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_basket_counts.html:23
+msgid ""
+"Prepare the baskets for each member. Place an extra basket for the indicated "
+"members (with more products)."
+msgstr ""
+
+#: elbroquil/templates/distribution/view_basket_counts.html:30
+msgid "Start distribution"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_basket_counts.html:36
+#: elbroquil/templates/distribution/view_product_orders.html:60
+msgid "Cooperative Member"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_basket_counts.html:36
+msgid "Extra basket?"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_basket_counts.html:36
+msgid "Order total"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_order_totals.html:6
+msgid "This week's order"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_order_totals.html:8
+msgid "No orders"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_order_totals.html:28
+msgid ""
+"Check that all the products has arrived. You can mark the products you have "
+"checked by clicking on them."
+msgstr ""
+
+#: elbroquil/templates/distribution/view_order_totals.html:42
+msgid "Download PDF (excluding products &euro;/kg)"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_order_totals.html:45
+msgid "Count initial cash "
+msgstr ""
+
+#: elbroquil/templates/distribution/view_order_totals.html:57
+#: elbroquil/templates/order/rate_products.html:30
+#: elbroquil/templates/order/update_order.html:66
+#: elbroquil/templates/order/view_order.html:23
+#: elbroquil/templates/order/view_order.html:66
+#: elbroquil/templates/product/view_defined_products.html:45
+msgid "Product"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_order_totals.html:57
+#: elbroquil/templates/distribution/view_product_orders.html:60
+#: elbroquil/templates/order/update_order.html:66
+#: elbroquil/templates/order/view_order.html:23
+#: elbroquil/templates/order/view_order.html:66 templates/base.html:56
+msgid "Order"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_order_totals.html:57
+#: elbroquil/templates/distribution/view_product_orders.html:60
+#: elbroquil/templates/management/view_distribution_detail.html:165
+msgid "Arrived"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_order_totals.html:81
+msgid "No orders made this week!"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_product_orders.html:5
+msgid "Distribute product"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_product_orders.html:25
+msgid ""
+"In case the product quantity/weight has to be changed, make the changes and "
+"don't forget to save them."
+msgstr ""
+
+#: elbroquil/templates/distribution/view_product_orders.html:40
+msgid "STOCK"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_product_orders.html:43
+msgid "JUMP"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_product_orders.html:74
+msgid "Add order for another member"
+msgstr ""
+
+#: elbroquil/templates/distribution/view_product_orders.html:79
+msgid "TOTAL:"
+msgstr ""
+
+#: elbroquil/templates/distribution/wizard.html:11
+msgid "Start"
+msgstr ""
+
+#: elbroquil/templates/distribution/wizard.html:18
+msgid "Distribute"
+msgstr ""
+
+#: elbroquil/templates/distribution/wizard.html:25
+msgid "Payments"
+msgstr ""
+
+#: elbroquil/templates/distribution/wizard.html:32
+msgid "Summary"
+msgstr ""
+
+#: elbroquil/templates/fee/create_fees.html:6
+#, python-format
+msgid "Create quarterly fee (Year: %(year)s, Quarter: %(quarter)s)"
+msgstr ""
+
+#: elbroquil/templates/fee/create_fees.html:6
+msgid "Create fees"
+msgstr ""
+
+#: elbroquil/templates/fee/create_fees.html:28
+msgid "Amount:"
+msgstr ""
+
+#: elbroquil/templates/fee/create_fees.html:39
+msgid "Remaining Members"
+msgstr ""
+
+#: elbroquil/templates/fee/create_fees.html:42
+msgid "Selected Members"
+msgstr ""
+
+#: elbroquil/templates/fee/view_fees.html:6
+msgid "View fee status"
+msgstr ""
+
+#: elbroquil/templates/fee/view_fees.html:23
+msgid "FILTER BY QUARTER"
+msgstr ""
+
+#: elbroquil/templates/fee/view_fees.html:25
+msgid "Q: "
+msgstr ""
+
+#: elbroquil/templates/fee/view_fees.html:32
+msgid "OR"
+msgstr ""
+
+#: elbroquil/templates/fee/view_fees.html:40
+msgid "FILTER BY MEMBER"
+msgstr ""
+
+#: elbroquil/templates/fee/view_fees.html:54
+#: elbroquil/templates/management/view_distribution_task_information.html:77
+msgid "Member"
+msgstr ""
+
+#: elbroquil/templates/fee/view_fees.html:54
+msgid "Paid?"
+msgstr ""
+
+#: elbroquil/templates/fee/view_fees.html:54
+msgid "Payment Date"
+msgstr ""
+
+#: elbroquil/templates/fee/view_fees.html:70
+msgid "QUARTERS"
+msgstr ""
+
+#: elbroquil/templates/fee/view_fees.html:71
+#: elbroquil/templates/management/view_distribution_task_information.html:23
+msgid "Year"
+msgstr ""
+
+#: elbroquil/templates/help.html:4 elbroquil/templates/help.html.py:5
+#: templates/base.html:85
+msgid "Help"
+msgstr ""
+
+#: elbroquil/templates/help.html:8
+msgid "Com fer comanda"
+msgstr "How to make an order"
+
+#: elbroquil/templates/help.html:11
+msgid "Com fer la permanencia"
+msgstr "How to do the distribution"
+
+#: elbroquil/templates/management/view_accounting_detail.html:6
+msgid "View accounting details"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:16
+msgid "Start date"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:31
+msgid "End date"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:43
+msgid "View"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:51
+msgid "Drawer"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:52
+msgid "Safe"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:55
+#: elbroquil/templates/management/view_distribution_task_information.html:51
+msgid "Date"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:56
+#: elbroquil/templates/management/view_accounting_detail.html:58
+msgid "Before"
+msgstr ""
+
+#: elbroquil/templates/management/view_accounting_detail.html:57
+#: elbroquil/templates/management/view_accounting_detail.html:59
+msgid "After"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_detail.html:6
+msgid "View distribution summary"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_detail.html:20
+#: elbroquil/templates/order/order_history.html:28
+msgid "CHOOSE DISTRIBUTION DATE"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_detail.html:28
+#: elbroquil/templates/order/order_history.html:36
+msgid "Show only recent dates"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_detail.html:51
+msgid "Payments from Members"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_detail.html:62
+msgid "Members consumption:"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_detail.html:71
+msgid "Collected quarterly fees:"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_detail.html:80
+msgid "Debt balance:"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_detail.html:90
+msgid "Paid to Producers"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_detail.html:186
+msgid "NO INCIDENTS"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_task_information.html:6
+msgid "View distribution task summary"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_task_information.html:38
+msgid "Read from calendar"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_task_information.html:51
+msgid "Members"
+msgstr ""
+
+#: elbroquil/templates/management/view_distribution_task_information.html:77
+msgid "Distribution task count"
+msgstr ""
+
+#: elbroquil/templates/order/order_history.html:7 templates/base.html:59
+msgid "Order history"
+msgstr ""
+
+#: elbroquil/templates/order/order_history.html:68
+msgid "Quarterly fee:"
+msgstr ""
+
+#: elbroquil/templates/order/rate_products.html:6 templates/base.html:60
+msgid "Rate products"
+msgstr ""
+
+#: elbroquil/templates/order/rate_products.html:30
+#: elbroquil/templates/order/update_order.html:66
+msgid "Rating"
+msgstr ""
+
+#: elbroquil/templates/order/rate_products.html:36
+#, python-brace-format
+msgid "{rating} stars"
+msgstr ""
+
+#: elbroquil/templates/order/rate_products.html:36
+msgid "Not rated"
+msgstr ""
+
+#: elbroquil/templates/order/rate_products.html:36
+msgid "Clear"
+msgstr ""
+
+#: elbroquil/templates/order/rate_products.html:44
+msgid "Save ratings"
+msgstr ""
+
+#: elbroquil/templates/order/rate_products.html:50
+msgid "No products to rate!"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:6
+msgid "Next"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:7
+msgid "Previous"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:8
+msgid "Done"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:9
+msgid "Skip"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:10
+msgid "Close"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:15
+msgid "Order Summary"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:16
+msgid "Here you can see your order summary"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:21
+msgid "No Order Yet"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:22
+msgid "Your order summary would appear here"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:27
+msgid "Make an Order"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:28
+msgid "Click here to start making your order"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:38 elbroquil/templates/order/tour.js:45
+msgid "Order a Product"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:39
+msgid "Enter the amount of product you want here."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:46
+msgid ""
+"Some products are ordered in units. You can use the up/down buttons to "
+"adjust the quantity you want."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:52
+msgid "Save the Changes"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:53
+msgid "When you make changes to your order, don't forget to save it!"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:60 elbroquil/templates/order/tour.js:67
+msgid "Browse by Categories"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:61
+msgid ""
+"Here you can see the name of product category. Below, the order limit date "
+"for these products is shown. The color shows how much time you have left to "
+"update your order (green: much time, orange: one day, red: few hours)."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:68
+msgid ""
+"Click on these links to switch between product categories. You can also use "
+"the keyboard left and right arrow keys."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:79 elbroquil/templates/order/tour.js:86
+msgid "View Your Order"
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:80
+msgid "When you are finished, check the order summary."
+msgstr ""
+
+#: elbroquil/templates/order/tour.js:87
+msgid "You can also view your order from the top menu."
+msgstr ""
+
+#: elbroquil/templates/order/update_order.html:7
+msgid "Update order"
+msgstr ""
+
+#: elbroquil/templates/order/update_order.html:27
+msgid "Complete"
+msgstr ""
+
+#: elbroquil/templates/order/update_order.html:41
+#: elbroquil/templates/order/update_order.html:58 templates/base.html:58
+msgid "View order"
+msgstr ""
+
+#: elbroquil/templates/order/update_order.html:43
+msgid "Available until:"
+msgstr ""
+
+#: elbroquil/templates/order/update_order.html:66
+#: elbroquil/templates/order/view_order.html:23
+#: elbroquil/templates/order/view_order.html:66
+#: elbroquil/templates/product/check_product_info.html:41
+#: elbroquil/templates/product/view_defined_products.html:45
+msgid "Unit"
+msgstr ""
+
+#: elbroquil/templates/order/update_order.html:66
+#: elbroquil/templates/product/check_product_info.html:41
+#: elbroquil/templates/product/view_defined_products.html:45
+msgid "Origin"
+msgstr ""
+
+#: elbroquil/templates/order/update_order.html:80
+msgid "NEW!"
+msgstr ""
+
+#: elbroquil/templates/order/update_order.html:98
+msgid "No products offered this week!"
+msgstr ""
+
+#: elbroquil/templates/order/update_order.html:129
+msgid "Don't forget to save your order!"
+msgstr ""
+
+#: elbroquil/templates/order/update_order.html:139
+msgid "You haven't saved your order. Do you want to close the page?"
+msgstr ""
+
+#: elbroquil/templates/order/view_order.html:6
+msgid "Your order for this week"
+msgstr ""
+
+#: elbroquil/templates/order/view_order.html:6
+msgid "Start help tour"
+msgstr ""
+
+#: elbroquil/templates/order/view_order.html:6
+msgid "Update your order"
+msgstr ""
+
+#: elbroquil/templates/order/view_order.html:6
+msgid "Make an order"
+msgstr ""
+
+#: elbroquil/templates/order/view_order.html:38
+msgid "Debt:"
+msgstr ""
+
+#: elbroquil/templates/order/view_order.html:45
+msgid "Quarterly Fee:"
+msgstr ""
+
+#: elbroquil/templates/order/view_order.html:58
+msgid "You do not have any order currently!"
+msgstr ""
+
+#: elbroquil/templates/order/view_order.html:62
+msgid "Products to be distributed later"
+msgstr ""
+
+#: elbroquil/templates/order/view_order.html:66
+msgid "Distribution Date"
+msgstr ""
+
+#: elbroquil/templates/producer/producer_info.html:4
+#: elbroquil/templates/producer/producer_info.html:5 templates/base.html:87
+msgid "Producers"
+msgstr ""
+
+#: elbroquil/templates/product/check_product_info.html:11
+msgid "Check the product information"
+msgstr ""
+
+#: elbroquil/templates/product/check_product_info.html:11
+msgid "Save products"
+msgstr ""
+
+#: elbroquil/templates/product/check_product_info.html:15
+msgid ""
+"Check that the product information is processed correctly. If everything is "
+"correct, <strong>save the products</strong>. If there is an error, inform "
+"the administrator."
+msgstr ""
+
+#: elbroquil/templates/product/check_product_info.html:31
+msgid "Order limit date"
+msgstr ""
+
+#: elbroquil/templates/product/check_product_info.html:41
+msgid "Category"
+msgstr ""
+
+#: elbroquil/templates/product/check_product_info.html:41
+msgid "Product Name"
+msgstr ""
+
+#: elbroquil/templates/product/check_product_info.html:41
+#: elbroquil/templates/product/view_defined_products.html:45
+msgid "Comments"
+msgstr ""
+
+#: elbroquil/templates/product/check_product_info.html:41
+#: elbroquil/templates/product/view_defined_products.html:45
+msgid "Unit Demand"
+msgstr ""
+
+#: elbroquil/templates/product/upload_products.html:8
+msgid "Upload the products excel"
+msgstr ""
+
+#: elbroquil/templates/product/upload_products.html:8
+msgid "Read from Excel"
+msgstr ""
+
+#: elbroquil/templates/product/upload_products.html:15
+msgid "Choose the producer and upload the products excel."
+msgstr ""
+
+#: elbroquil/templates/product/view_defined_products.html:6
+msgid "Currently defined products for producer"
+msgstr ""
+
+#: elbroquil/templates/product/view_defined_products.html:65
+msgid "No products defined for producer!"
+msgstr ""
+
+#: elbroquil/views/fee_views.py:136
+msgid ""
+"Someone has alread paid the fee for this quarter! You cannot delete them!"
+msgstr ""
+
+#: elbroquil/views/fee_views.py:138
+msgid "Please choose members"
+msgstr ""
+
+#: elbroquil/views/fee_views.py:140
+msgid "Please enter fee amount"
+msgstr ""
+
+#: elbroquil/views/other_views.py:104
+msgid "Message sent successfully and a copy is sent to your address."
+msgstr ""
+
+#: templates/base.html:62
+msgid "Distribution Detail"
+msgstr ""
+
+#: templates/base.html:65 templates/base.html.py:97
+msgid "Distribution Tasks"
+msgstr ""
+
+#: templates/base.html:73
+msgid "Prepare Baskets"
+msgstr ""
+
+#: templates/base.html:78
+msgid "Accounting"
+msgstr ""
+
+#: templates/base.html:81
+msgid "Accounting Detail"
+msgstr ""
+
+#: templates/base.html:88
+msgid "Help Videos"
+msgstr ""
+
+#: templates/base.html:123
+msgid "Upload products excel"
+msgstr ""
+
+#: templates/base.html:124
+msgid "View products"
+msgstr ""
+
+#: templates/base.html:128
+msgid "View Fee Status"
+msgstr ""
+
+#: templates/base.html:129
+msgid "Create Fees"
+msgstr ""
+
+#: templates/base.html:133
+msgid "Admin Panel"
+msgstr ""
+
+#: templates/base.html:137
+msgid "Change password"
+msgstr ""
+
+#: templates/base.html:139
+msgid "Log out"
+msgstr ""
+
+#: templates/base.html:148 templates/login.html:18
+msgid "Username"
+msgstr ""
+
+#: templates/base.html:151 templates/login.html:19
+msgid "Password"
+msgstr ""
+
+#: templates/base.html:153 templates/login.html:24
+msgid "Sign in"
+msgstr ""
+
+#: templates/base.html:155 templates/login.html:26
+msgid "Forgot password"
+msgstr ""
+
+#: templates/login.html:11
+msgid "Your username and password didn't match. Please try again."
+msgstr ""
+
+#: templates/login.html:17
+msgid "Please sign in"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:2
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+
+#: templates/registration/password_reset_email.html:4
+msgid "Please go to the following page and choose a new password:"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:8
+msgid "Your username, in case you've forgotten:"
+msgstr ""
+
+#: urls.py:16
+msgid "^help/"
+msgstr ""
+
+#: urls.py:19
+msgid "^contact/$"
+msgstr ""
+
+#: urls.py:24
+msgid "^dist/$"
+msgstr ""
+
+#: urls.py:27
+msgid "^dist/pdf/$"
+msgstr ""
+
+#: urls.py:29
+msgid "^dist/cash/$"
+msgstr ""
+
+#: urls.py:31
+msgid "^dist/baskets/$"
+msgstr ""
+
+#: urls.py:33
+msgid "^dist/([0-9]+)/$"
+msgstr ""
+
+#: urls.py:35
+msgid "^dist/product/([0-9]+)/$"
+msgstr ""
+
+#: urls.py:38
+msgid "^dist/payment/$"
+msgstr ""
+
+#: urls.py:41
+msgid "^dist/account/$"
+msgstr ""
+
+#: urls.py:46
+msgid "^order/rate/$"
+msgstr ""
+
+#: urls.py:49
+msgid "^order/([0-9]+)/$"
+msgstr ""
+
+#: urls.py:52
+msgid "^order/history$"
+msgstr ""
+
+#: urls.py:55
+msgid "^order/$"
+msgstr ""
+
+#: urls.py:60
+msgid "^products/view/(?P<producer_id>[0-9]+)$"
+msgstr ""
+
+#: urls.py:63
+msgid "^products/view/$"
+msgstr ""
+
+#: urls.py:66
+msgid "^products/confirm/$"
+msgstr ""
+
+#: urls.py:69
+msgid "^products/check/$"
+msgstr ""
+
+#: urls.py:72
+msgid "^products/upload/$"
+msgstr ""
+
+#: urls.py:76
+msgid "^producer/$"
+msgstr ""
+
+#: urls.py:79
+msgid "^producer/(?P<producer_id>[0-9]+)$"
+msgstr ""
+
+#: urls.py:84
+msgid "^fees/create/$"
+msgstr ""
+
+#: urls.py:87
+msgid "^fees/view/$"
+msgstr ""
+
+#: urls.py:92
+msgid "^man/account/$"
+msgstr ""
+
+#: urls.py:95
+msgid "^man/dist/$"
+msgstr ""
+
+#: urls.py:98
+msgid "^man/perm/$"
+msgstr ""
+
+#: urls.py:118
+msgid "^setlang/$"
+msgstr ""
