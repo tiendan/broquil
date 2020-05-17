@@ -16,12 +16,15 @@ urlpatterns = [
     url(_(r'^help/'),
         TemplateView.as_view(template_name="help.html"),
         name='help'),
-        url(r'^health/',
+    url(r'^health/',
         TemplateView.as_view(template_name="help.html"),
         name='health'),
     url(_(r'^contact/$'),
         broquil_views.contact,
         name='contact'),
+    url(_(r'^tasks/$'),
+        broquil_views.tasks,
+        name='tasks'),
 
     # Distribution related URLs
     url(_(r'^dist/$'),

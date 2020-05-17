@@ -516,7 +516,7 @@ def send_sunday_reminder():
     print('Enviando el recordatorio a los miembros...')
 
     if models.Product.objects.filter(
-            distribution_date=libs.get_next_wednesday()).count() == 0:
+            distribution_date=libs.get_next_weekday()).count() == 0:
         print(
             """No productos en oferta para este miercoles, """
             """no se enviara ningun correo...""")
@@ -529,8 +529,8 @@ def send_sunday_reminder():
         """<br/>""" \
         """Tant sols recordar-te que pots fer la comanda fins el """ \
         """Diumenge nit """ \
-        """<a href=\"http://el-broquil.rhcloud.com/\">aqu&iacute;</a> """ \
-        """i que pots recullir la comanda el <em>Dimecres</em> de """ \
+        """<a href=\"http://broquilgotic.pythonanywhere.com\">aqu&iacute;</a> """ \
+        """i que pots recullir la comanda el <em>Divendres</em> de """ \
         """<strong>18 a 19:30</strong>, no ho deixis correr ;)<br/>""" \
         """<br/>""" \
         """Tamb&eacute; que necessitem que t'apuntis a les """ \

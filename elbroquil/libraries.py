@@ -126,19 +126,20 @@ def calculate_user_orders(member, dist_date):
     return [product_count, order_total]
 
 
-# Calculate the date for the next wednesday
-def get_next_wednesday(allow_today=True):
+# Calculate the date for the next weekday (by default FRIDAY)
+# TODO Move back to models.WEDNESDAY
+def get_next_weekday(allow_today=True, weekday=models.FRIDAY):
     # Get today
     day = get_today()
 
-    # If today is not allowed (today may be wednesday and we want to get the
+    # If today is not allowed (today may be FRIDAY and we want to get the
     # next one)
     if not allow_today:
         day += timedelta(days=1)
 
-    # While day of week is not Wednesday, add one
-    days_till_next_wednesday = (models.WEDNESDAY - day.weekday()) % 7
-    day += timedelta(days=days_till_next_wednesday)
+    # Add as many days as needed to jump to next FRIDAY
+    days_till_next_weekday = (weekday - day.weekday()) % 7
+    day += timedelta(days=days_till_next_weekday)
 
     return day
 
@@ -146,20 +147,20 @@ def get_next_wednesday(allow_today=True):
 
 
 def get_next_distribution_date(allow_today=True):
-    wednesday = get_next_wednesday(allow_today)
+    candidate_date = get_next_weekday(allow_today)
 
     # While the calculated date corresponds to a skipped date, get next week
     while models.SkippedDistributionDate.objects.filter(
-            skipped_date=wednesday):
-        wednesday += timedelta(days=7)
+            skipped_date=candidate_date):
+        candidate_date += timedelta(days=7)
 
-    return wednesday
+    return candidate_date
 
 
 # Calculate the next distribution date for the given producer
 def get_producer_next_distribution_date(producer_id, allow_today=True):
     producer = models.Producer.objects.get(pk=producer_id)
-    wednesday = get_next_wednesday(allow_today)
+    candidate_date = get_next_weekday(allow_today)
 
     iterations = 1
 
@@ -167,12 +168,12 @@ def get_producer_next_distribution_date(producer_id, allow_today=True):
     # or producer has limited availability and he/she is not available on
     # that date, get next week
     while models.SkippedDistributionDate.objects.filter(
-            skipped_date=wednesday) \
+            skipped_date=candidate_date) \
             or (producer.limited_availability and
                 not models.ProducerAvailableDate.objects.filter(
-                    available_date=wednesday,
+                    available_date=candidate_date,
                     producer=producer)):
-        wednesday += timedelta(days=7)
+        candidate_date += timedelta(days=7)
 
         # If there are no available dates in the next 5 weeks, return a date in
         # the far far future
@@ -181,8 +182,7 @@ def get_producer_next_distribution_date(producer_id, allow_today=True):
 
         iterations += 1
 
-    return wednesday
-    # return date(2014, 7, 29)
+    return candidate_date
 
 
 # Returns the last date when products were distributed

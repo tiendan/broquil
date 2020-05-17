@@ -2,13 +2,14 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.utils import translation
 from django.utils.translation import ugettext as _
 
 import elbroquil.libraries as libs
 import elbroquil.models as models
+from elbroquil.tasks import send_order_to_producers
 
 import html2text
 
@@ -134,3 +135,8 @@ def producer_info(request, producer_id=''):
         'producers': producers,
         'single_producer': single_producer,
     })
+
+
+def tasks(request):
+    send_order_to_producers()
+    return HttpResponse('OK')
