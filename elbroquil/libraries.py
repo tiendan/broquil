@@ -298,7 +298,7 @@ def send_email_to_user(subject, content, user):
     text_content = html2text.html2text(content)
     email = EmailMultiAlternatives(subject, text_content, to=to_list)
     email.attach_alternative(content, "text/html")
-    email.send()
+    return email.send()
 
 
 def update_distribution_task_information(year):

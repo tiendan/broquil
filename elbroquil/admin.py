@@ -202,8 +202,6 @@ class CustomUserCreationForm(UserCreationForm):
 
         libs.send_email_to_user(email_subject, html_content, user)
 
-        logger.error("... and saved")
-
         return user
 
 

@@ -9,11 +9,11 @@ from django.utils.translation import ugettext as _
 def parse_cal_rosset(book):
     # Define the corresponding column numbers in Excel sheet for each type of
     # information
-    price_column = 3
-    unit_column = 4
-    product_name_column = 5
-    origin_column = 7
-    comments_column = 9
+    price_column = 4
+    unit_column = 5
+    product_name_column = 6
+    origin_column = 8
+    comments_column = 10
 
     # Get the first sheet and read row and column counts
     sheet = book.sheet_by_index(0)
@@ -23,16 +23,21 @@ def parse_cal_rosset(book):
 
     current_row = 0
 
-    # Skip to header row
-    # Header row contains "Coop." for in the price column
-    while True:
-        # logger.error(current_row)
-        # logger.error(sheet.cell_value(rowx=current_row, colx=4))
-        if sheet.cell_value(rowx=current_row, colx=price_column) == "Coop.":
-            current_row += 1
-            break
+    for r in range(0, 20):
+        for c in range(0, 10):
+            print("Row: {}, col: {}".format(r, c))
+            cell = sheet.cell_value(rowx=r, colx=c)
+            if isinstance(cell, str) and cell.startswith("Coop"):
+                print("Row: {}, col: {}, value={}".format(r, c, cell))
 
-        current_row += 1
+                price_column = c
+                unit_column = price_column + 1
+                product_name_column = price_column + 2
+                origin_column = price_column + 4
+                comments_column = price_column + 6
+
+                current_row = r + 1
+                break
 
     empty_rows = 0
     category_name = ""

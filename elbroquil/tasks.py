@@ -41,7 +41,7 @@ def send_order_to_producers():
 
         # If there are no products, continue
         if len(products) == 0:
-            # print('No hay productos para este productor.')
+            print('No hay productos para este productor.')
             continue
 
         print('Productor: %s...' % producer.company_name)
@@ -440,7 +440,8 @@ def download_cal_rosset_excel():
     pwd = settings.EMAIL_HOST_PASSWORD
 
     print('>Connectando a GMAIL')
-    m = imaplib.IMAP4_SSL("imap.gmail.com")
+    # m = imaplib.IMAP4_SSL("imap.gmail.com")
+    m = imaplib.IMAP4_SSL("74.125.133.109")
     m.login(user, pwd)
 
     # Choose the default mailbox (Inbox)
