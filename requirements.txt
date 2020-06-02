@@ -18,7 +18,7 @@ google-api-python-client==1.6.4
 gunicorn==19.5.0
 html2text==2014.7.3
 html5lib==0.999
-httplib2==0.10.3
+httplib2==0.18.0
 jdcal==1.2
 mysqlclient==1.4.6
 oauth2client==4.1.3
