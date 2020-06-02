@@ -110,23 +110,17 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'broquilgotic$default',
-        'USER': 'broquilgotic',             # Not used with sqlite3.
-        'PASSWORD': '0nur!BroquilDB',         # Not used with sqlite3.
-        'HOST': 'broquilgotic.mysql.pythonanywhere-services.com',             # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',             # Set to empty string for default. Not used with sqlite3.
+        'USER': 'broquilgotic',
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', '1234'),
+        'HOST': 'broquilgotic.mysql.pythonanywhere-services.com',
+        'PORT': '',
     }
 }
-
 # Email settings
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = "yalanim@gmail.com"
-if 'EMAIL_HOST_USER' in os.environ:
-    EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-
-EMAIL_HOST_PASSWORD = "11641164"
-if 'EMAIL_HOST_PASSWORD' in os.environ:
-    EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', "yalanim@gmail.com")
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', "1234")
 EMAIL_PORT = 587
 
 # Internationalization
