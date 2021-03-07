@@ -7,6 +7,7 @@
 *.egg-info
 .project
 .pydevproject
+.idea/
 venv/
 virtenv/
 dist/

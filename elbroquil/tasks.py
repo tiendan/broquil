@@ -430,10 +430,9 @@ def download_cal_rosset_excel():
     # Directory where to save attachments (default: current)
     detach_dir = os.path.join(settings.BASE_DIR, 'data', 'temp')
 
-    email_subject = "oferta cal rosset"
-
     # Check offer emails sent in the last 5 days
-    limit = datetime.now() - timedelta(days=5)
+    limit = (datetime.now() - timedelta(days=5)).strftime('%d-%b-%Y')
+    email_from = "comandes@calrosset.com"
 
     # Connect to the Gmail IMAP server
     user = settings.EMAIL_HOST_USER
@@ -444,44 +443,32 @@ def download_cal_rosset_excel():
     m = imaplib.IMAP4_SSL("74.125.133.109")
     m.login(user, pwd)
 
-    # Choose the default mailbox (Inbox)
-    # m.select()
-
     # Choose the "All mail" folder
     m.select('"[Gmail]/Tot el correu"')
 
     # Search for the offer emails (subject='oferta cal rosset' and
     # sent in the last few days)
-    resp, items = m.search(
-        None,
-        '(SUBJECT "%s") (SINCE "%s")' %
-        (email_subject, limit.strftime('%d-%b-%Y')))
+    _, items = m.search(None, f'(SINCE "{limit}") (FROM "{email_from}")')
     items = items[0].split()  # getting the mails id
 
     file_path = ""
 
     if len(items) == 0:
-        print(
-            '>No email en la bandeja de entrada con el TEMA: "%s".' %
-            email_subject)
+        print(f">Ningun email encontrado con el FROM: '{email_from}'.")
         return ""
 
-    print(
-        """>%d emails encontrados en la bandeja de entrada """
-        """con el tema "%s".""" %
-        (len(items), email_subject))
+    print(f">{len(items)} emails encontrados con el FROM: '{email_from}'.")
 
     for emailid in items:
         # Get the email
-        resp, data = m.fetch(emailid, "(RFC822)")
+        _, data = m.fetch(emailid, "(RFC822)")
         email_body = data[0][1]
-        print(email_body)
         mail = email.message_from_bytes(email_body)
-
         # Only process mails with attachments
         if mail.get_content_maintype() != 'multipart':
             continue
 
+        print(f"Mail con tema '{mail['Subject']}', con fecha '{mail['Date']}'")
         # Iterate over mail parts
         for part in mail.walk():
             # Multipart are just containers, so we skip them
@@ -656,3 +643,7 @@ def send_task_reminder():
 
     print(
         'RECORDATORIO email enviado a %d personas.' % len(to))
+
+
+if __name__ == "__main__":
+    download_cal_rosset_excel()

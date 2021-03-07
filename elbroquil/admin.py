@@ -172,7 +172,7 @@ class CustomUserCreationForm(UserCreationForm):
         user.set_password(self.cleaned_data["phone"])
         user.email = self.cleaned_data["username"]
 
-        logger.error("User saved")
+        logger.info("User saved")
         user.save()
 
         extra = models.ExtraInfo(
@@ -200,7 +200,11 @@ class CustomUserCreationForm(UserCreationForm):
             email_subject = email.full_subject()
             html_content = email.body
 
-        libs.send_email_to_user(email_subject, html_content, user)
+        try:
+           libs.send_email_to_user(email_subject, html_content, user)
+        except Exception as e:
+           logger.error("Error sending email to user")
+           logger.error(str(e))
 
         return user
 

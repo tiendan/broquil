@@ -126,26 +126,23 @@ def calculate_user_orders(member, dist_date):
     return [product_count, order_total]
 
 
-# Calculate the date for the next weekday (by default FRIDAY)
-# TODO Move back to models.WEDNESDAY
-def get_next_weekday(allow_today=True, weekday=models.FRIDAY):
+# Calculate the date for the next weekday (by default WEDNESDAY)
+def get_next_weekday(allow_today=True, weekday=models.WEDNESDAY):
     # Get today
     day = get_today()
 
-    # If today is not allowed (today may be FRIDAY and we want to get the
+    # If today is not allowed (today may be WEDNESDAY and we want to get the
     # next one)
     if not allow_today:
         day += timedelta(days=1)
 
-    # Add as many days as needed to jump to next FRIDAY
+    # Add as many days as needed to jump to next WEDNESDAY
     days_till_next_weekday = (weekday - day.weekday()) % 7
     day += timedelta(days=days_till_next_weekday)
 
     return day
 
 # Calculate the next distribution date
-
-
 def get_next_distribution_date(allow_today=True):
     candidate_date = get_next_weekday(allow_today)
 
@@ -298,6 +295,7 @@ def send_email_to_user(subject, content, user):
     text_content = html2text.html2text(content)
     email = EmailMultiAlternatives(subject, text_content, to=to_list)
     email.attach_alternative(content, "text/html")
+
     return email.send()
 
 
