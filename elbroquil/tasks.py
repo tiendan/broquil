@@ -488,6 +488,9 @@ def download_cal_rosset_excel():
                 filename = 'part-%03d%s' % (counter, 'bin')
                 counter += 1
 
+            if "xls" not in filename:
+                continue
+
             file_path = os.path.join(detach_dir, filename)
 
             print('Saving file %s.' % filename)

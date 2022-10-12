@@ -333,7 +333,7 @@ def update_distribution_task_information(year):
             response = request.execute()
             for event in response.get('items', []):
                 print("Another event")
-                distribution_date = event.get("start", "").get("dateTime", "")
+                distribution_date = event.get("start", {}).get("dateTime", "")
 
                 # Continue with next iteration if dist date not valid
                 if distribution_date == "":
