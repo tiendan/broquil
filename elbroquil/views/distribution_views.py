@@ -337,7 +337,7 @@ def view_product_orders(request, product_no=''):
         product__id=current_product.id) \
         .order_by('user__first_name', 'user__last_name')
 
-    all_members = User.objects.filter(username__contains='@') \
+    all_members = User.objects.filter(username__contains='@', is_active=True) \
         .order_by('first_name', 'last_name')
 
     total_quantity = 0
