@@ -688,6 +688,9 @@ msgstr "Pagament"
 msgid "Initial cash:"
 msgstr "Punt de partida:"
 
+msgid "Expected initial cash:"
+msgstr "Punt de partida (expectativa):"
+
 #: elbroquil/templates/distribution/account_summary.html:54
 #: elbroquil/templates/management/view_distribution_detail.html:53
 msgid "Collected from members:"

@@ -674,6 +674,9 @@ msgstr ""
 msgid "Initial cash:"
 msgstr ""
 
+msgid "Expected initial cash:"
+msgstr ""
+
 #: elbroquil/templates/distribution/account_summary.html:54
 #: elbroquil/templates/management/view_distribution_detail.html:53
 msgid "Collected from members:"

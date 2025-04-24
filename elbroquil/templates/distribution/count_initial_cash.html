@@ -34,6 +34,15 @@
 					</div>
 				</div>
 				<div class="form-group col-md-10">
+			    	<label for="previous-final-cash" class="col-md-offset-2 col-md-2 control-label">{% trans "Expected initial cash:" %}</label>
+			    	<div class="col-md-6">
+				    	<div class="input-group">
+							<input id="previous-final-cash" name="previous-final-cash" type="text" class="form-control input-lg" value="{{ previous_final_cash }}" disabled="disabled"/>
+				      		<div class="input-group-addon"><strong>&euro;</strong></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-md-10">
 			    	<label for="initial-cash" class="col-md-offset-2 col-md-2 control-label">{% trans "Initial cash:" %}</label>
 			    	<div class="col-md-6">
 				    	<div class="input-group"> 

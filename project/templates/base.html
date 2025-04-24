@@ -127,6 +127,7 @@
   							{% if perms.elbroquil.accounting %}
   							<li><a href="{% url 'view_fees' %}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> {% trans "View Fee Status" %}</a></li>
   							<li><a href="{% url 'create_fees' %}"><span class="glyphicon glyphicon-euro" aria-hidden="true"></span> {% trans "Create Fees" %}</a></li>
+  							<li><a href="{% url 'view_debts' %}"><span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span> {% trans "View Debt Status" %}</a></li>
   							<li role="separator" class="divider"></li>
   							{% endif %}
   							{% if user.is_staff %}
@@ -156,14 +157,13 @@
 					</ul>
 				</li>
 				{% endif %}
-				<!--<li>
+				<li>
 					<div>
 					<a href="{% url 'set_language' %}?language=ca"><img src="/static/images/blank.gif" class="flag flag-ca" alt="Catala" /></a>
 					<a href="{% url 'set_language' %}?language=es"><img src="/static/images/blank.gif" class="flag flag-es" alt="Castellano" /></a><br/>
 					<a href="{% url 'set_language' %}?language=en"><img src="/static/images/blank.gif" class="flag flag-gb" alt="English" /></a>
-					<a href="{% url 'set_language' %}?language=tr"><img src="/static/images/blank.gif" class="flag flag-tr" alt="Turkce" /></a>
 					</div>
-				</li>-->
+				</li>
 			</ul>
 
 		</div><!--/.navbar-collapse -->

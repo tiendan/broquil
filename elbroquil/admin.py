@@ -309,6 +309,24 @@ class AccountMovementAdmin(admin.ModelAdmin):
     ordering = ['-movement_date']
 
 
+class DistributionDateAdmin(admin.ModelAdmin):
+    list_display = ('distribution_date', 'canceled')
+    list_display_links = ('distribution_date',)
+    fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('distribution_date', 'canceled')}
+         ),
+    )
+    
+    def get_queryset(self, request):
+        qs = super(DistributionDateAdmin, self) \
+            .get_queryset(request) \
+            .filter(Q(distribution_date__gte=libs.get_today())) \
+            .order_by('distribution_date')
+
+        return qs
+
 # Re-register UserAdmin
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdminActiveUsers)
@@ -339,7 +357,7 @@ admin.site.register(models.Producer, ProducerAdmin)
 
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Product, ProductAdmin)
-admin.site.register(models.SkippedDistributionDate)
+admin.site.register(models.DistributionDate, DistributionDateAdmin)
 admin.site.register(models.EmailTemplate, EmailTemplateAdmin)
 admin.site.register(models.EmailList, EmailListAdmin)
 admin.site.register(models.AccountMovement, AccountMovementAdmin)

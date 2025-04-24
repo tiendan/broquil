@@ -37,10 +37,19 @@
 		<div class="row">
 			<form id="dummy" role="form"  action="#" method="GET" class="form-horizontal">
 			<div class="col-md-12">
-				<div class="form-group has-success">
+				<div class="form-group">
+			    	<label for="expected-initial-amount" class="control-label col-md-4">{% trans "Expected initial cash:" %}</label>
+			    	<div class="col-md-3">
+				    	<div class="input-group">
+							<input id="expected-initial-amount" name="expected-initial-amount" type="text" class="form-control bfh-number input-lg quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ expected_initial_cash }}" data-trailingzeros="true" disabled/>
+				      		<div class="input-group-addon"><strong>&euro;</strong></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group {% if initial_cash == 0 or initial_cash_difference > 10 %}has-error{% else %}has-success{% endif %}">
 			    	<label for="initial-amount" class="control-label col-md-4">{% trans "Initial cash:" %}</label>
 			    	<div class="col-md-3">
-				    	<div class="input-group"> 
+				    	<div class="input-group">
 							<input id="initial-amount" name="initial-amount" type="text" class="form-control bfh-number input-lg quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ initial_cash }}" data-trailingzeros="true" disabled/>
 				      		<div class="input-group-addon"><strong>&euro;</strong></div>
 						</div>

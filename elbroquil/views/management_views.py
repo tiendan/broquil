@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
+from datetime import date, datetime
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.models import User
+from django.db.models import Max, F, Q
 from django.shortcuts import render
 from django.utils.dateparse import *
 
@@ -23,6 +25,7 @@ def view_distribution_detail(request):
     amount_changed_product_list = []
 
     # Account summary values
+    expected_initial_cash = 0
     initial_cash = 0
     member_consumed_amount = 0
     debt_balance = 0
@@ -80,6 +83,7 @@ def view_distribution_detail(request):
             date=selected_date).first()
 
         if record:
+            expected_initial_cash = record.expected_initial_amount
             initial_cash = record.initial_amount
             member_consumed_amount = record.member_consumed_amount
             debt_balance = record.debt_balance_amount
@@ -108,7 +112,10 @@ def view_distribution_detail(request):
         'not_arrived_product_list': not_arrived_product_list,
         'amount_changed_product_list': amount_changed_product_list,
 
+        'expected_initial_cash': expected_initial_cash,
         'initial_cash': initial_cash,
+        'initial_cash_difference': expected_initial_cash - initial_cash,
+
         'collected_amount': collected_amount,
         'member_consumed_amount': member_consumed_amount,
         'debt_balance': debt_balance,
@@ -218,6 +225,36 @@ def view_distribution_task_information(request):
                       'update_log': update_log,
                   })
 
+
+
+@login_required
+@permission_required('elbroquil.accounting')
+def view_debts(request):
+    """
+    View that shows the latest debt and payment information for each active user.
+    """
+    # Get all active users
+    users = User.objects.filter(Q(username__contains='@') & Q(is_active=True)).order_by('first_name', 'last_name')
+    
+    # Get the latest debt and payment for each user
+    user_debts = []
+    
+    for user in users:
+        # Get the latest debt for this user
+        latest_debt = models.Debt.objects.filter(user=user).order_by('-payment__date').first()
+        
+        # Get the latest payment for this user
+        latest_payment = models.Payment.objects.filter(user=user).order_by('-date').first()
+        
+        user_debts.append({
+            'user': user,
+            'latest_debt': latest_debt,
+            'latest_payment': latest_payment,
+        })
+    
+    return render(request, 'fee/view_debts.html', {
+        'user_debts': user_debts,
+    })
 
 @login_required
 def view_accounting_detail(request):

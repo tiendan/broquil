@@ -142,44 +142,106 @@ def get_next_weekday(allow_today=True, weekday=models.WEDNESDAY):
 
     return day
 
+# Create distribution dates for the next 12 weeks if they don't exist
+def create_distribution_dates():
+    today = get_today()
+    
+    # Start from the next Wednesday
+    next_wednesday = get_next_weekday(True, models.WEDNESDAY)
+    
+    # Create dates for the next 12 weeks
+    for i in range(12):
+        candidate_date = next_wednesday + timedelta(weeks=i)
+        
+        # Check if this date already exists in the DistributionDate table
+        # First check for exact match
+        existing_date = models.DistributionDate.objects.filter(
+            distribution_date=candidate_date).first()
+        
+        # If no exact match, check for dates within 1 day before or after
+        if not existing_date:
+            day_before = candidate_date - timedelta(days=1)
+            day_after = candidate_date + timedelta(days=1)
+            
+            existing_date = models.DistributionDate.objects.filter(
+                distribution_date__in=[day_before, day_after]).first()
+        
+        # If it doesn't exist at all, create it
+        if not existing_date:
+            distribution_date = models.DistributionDate(
+                distribution_date=candidate_date,
+                canceled=False)
+            distribution_date.save()
+            print(f"Created distribution date: {candidate_date.strftime('%d/%m/%Y')}")
+
 # Calculate the next distribution date
 def get_next_distribution_date(allow_today=True):
-    candidate_date = get_next_weekday(allow_today)
-
-    # While the calculated date corresponds to a skipped date, get next week
-    while models.SkippedDistributionDate.objects.filter(
-            skipped_date=candidate_date):
-        candidate_date += timedelta(days=7)
-
-    return candidate_date
+    # First, ensure we have distribution dates for the next 12 weeks
+    create_distribution_dates()
+    
+    # Get today's date
+    today = get_today()
+    
+    # If today is not allowed, start from tomorrow
+    if not allow_today:
+        today += timedelta(days=1)
+    
+    # Find the next non-canceled distribution date
+    next_date = models.DistributionDate.objects.filter(
+        distribution_date__gte=today,
+        canceled=False).order_by('distribution_date').first()
+    
+    if next_date:
+        return next_date.distribution_date
 
 
 # Calculate the next distribution date for the given producer
 def get_producer_next_distribution_date(producer_id, allow_today=True):
     producer = models.Producer.objects.get(pk=producer_id)
-    candidate_date = get_next_weekday(allow_today)
-
-    iterations = 1
-
-    # While the calculated date corresponds to a skipped date,
-    # or producer has limited availability and he/she is not available on
-    # that date, get next week
-    while models.SkippedDistributionDate.objects.filter(
-            skipped_date=candidate_date) \
-            or (producer.limited_availability and
-                not models.ProducerAvailableDate.objects.filter(
-                    available_date=candidate_date,
-                    producer=producer)):
-        candidate_date += timedelta(days=7)
-
-        # If there are no available dates in the next 5 weeks, return a date in
-        # the far far future
-        if iterations > 5:
-            return date(2040, 1, 1)
-
-        iterations += 1
-
-    return candidate_date
+    
+    # First, ensure we have distribution dates for the next 12 weeks
+    create_distribution_dates()
+    
+    # Get today's date
+    today = get_today()
+    
+    # If today is not allowed, start from tomorrow
+    if not allow_today:
+        today += timedelta(days=1)
+    
+    # Find the next non-canceled distribution date
+    next_dates = models.DistributionDate.objects.filter(
+        distribution_date__gte=today,
+        canceled=False).order_by('distribution_date').limit(5)
+    
+    # For producers with limited availability, check if they are available on the next distribution date
+    if producer.limited_availability:
+        for dist_date in next_dates:
+            # Check if the producer is available on this exact date
+            if models.ProducerAvailableDate.objects.filter(
+                    available_date=dist_date.distribution_date,
+                    producer=producer).exists():
+                return dist_date.distribution_date
+            
+            # Check if the producer is available on the day before or after
+            day_before = dist_date.distribution_date - timedelta(days=1)
+            day_after = dist_date.distribution_date + timedelta(days=1)
+            
+            if models.ProducerAvailableDate.objects.filter(
+                    available_date=day_before,
+                    producer=producer).exists():
+                return day_before
+            
+            if models.ProducerAvailableDate.objects.filter(
+                    available_date=day_after,
+                    producer=producer).exists():
+                return day_after
+        
+        # If no suitable date is found in the next 5 weeks, return a date in the far future
+        return date(2040, 1, 1)
+    
+    # For producers without limited availability, just return the next distribution date
+    return next_dates.first().distribution_date
 
 
 # Returns the last date when products were distributed
@@ -236,6 +298,7 @@ def get_producer_order_limit_date(producer, next_dist_date):
 
 
 def get_today():
+    # return datetime.date(2025, 4, 16)
     return timezone.now().astimezone(pytztimezone(settings.TIME_ZONE)).date()
 
 

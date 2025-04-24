@@ -38,9 +38,6 @@
 					  {% if edit_enabled %}
 					  <li class="previous blankpreviouspager"></li>
 					  {% endif %}
-					  <li>
-						<h3 class="fillSpace"><a href="{% url 'download_orders_pdf' %}" target="_blank"><span class="glyphicon glyphicon-download-alt green-icon"></span> {% trans "Download PDF (excluding products &euro;/kg)"%}</a></h3>
-					  </li>
 					  {% if edit_enabled %}
 					  <li class="next"><a href="{% url 'count_initial_cash' %}">{% trans "Count initial cash "%} &rarr;</a></li>
 					  {% endif %}

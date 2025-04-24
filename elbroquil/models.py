@@ -165,21 +165,22 @@ class ProducerAvailableDate(models.Model):
         verbose_name_plural = _('available dates')
 
 
-# Skipped distribution date model
-# Contains the canceled/skipped distribution dates for which the
-# cooperative will not make any orders
-class SkippedDistributionDate(models.Model):
-    skipped_date = models.DateField(_('skipped date'))
+# Distribution date model
+# Contains the past/future distribution dates for which the
+# cooperative will make any orders
+class DistributionDate(models.Model):
+    distribution_date = models.DateField(_('distribution date'))
+    canceled = models.BooleanField(_('canceled'))
 
     def __unicode__(self):
-        return self.skipped_date.strftime('%d/%m/%Y')
+        return self.distribution_date.strftime('%d/%m/%Y') + (" (canceled)" if self.canceled else "")
 
     def __str__(self):
         return self.__unicode__()
 
     class Meta:
-        verbose_name = _('skipped date')
-        verbose_name_plural = _('skipped dates')
+        verbose_name = _('distribution date')
+        verbose_name_plural = _('distribution dates')
 
 
 # Category model
@@ -347,6 +348,8 @@ class ExtraInfo(models.Model):
 # Holds the financial summary of the distribution day
 class DistributionAccountDetail(models.Model):
     date = models.DateField(_('distribution date'), default=timezone.now)
+    expected_initial_amount = models.DecimalField(
+        _('expected initial amount'), decimal_places=2, max_digits=7, default=0)
     initial_amount = models.DecimalField(
         _('initial amount'), decimal_places=2, max_digits=7, default=0)
     member_consumed_amount = models.DecimalField(

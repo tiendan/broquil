@@ -59,10 +59,8 @@ INSTALLED_APPS = (
     'xlutils',
     'rosetta',
     'bootstrapform',
-    #'debug_toolbar',
     'suit_redactor',
     'mathfilters',
-    'django_xhtml2pdf',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -142,7 +140,6 @@ LOCALE_PATHS = (
 )
 
 LANGUAGES = (
-    ('tr', _('Turkish')),
     ('ca', _('Catala')),
     ('es', _('Castellano')),
     ('en', _('English')),

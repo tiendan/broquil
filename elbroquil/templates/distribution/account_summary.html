@@ -41,7 +41,16 @@
         <form id="account-form" role="form"  action="{% url 'account_summary' %}" method="POST"  class="form-horizontal col-md-offset-2 col-md-10">
             	{% csrf_token %}
 			<div class="col-md-10">
-				<div class="form-group {% if initial_amount == 0 %}has-error{% endif %}">
+				<div class="form-group">
+			    	<label for="expected-initial-amount" class="control-label col-md-4">{% trans "Expected initial cash:" %}</label>
+			    	<div class="col-md-4">
+				    	<div class="input-group">
+							<input id="expected-initial-amount" name="expected-initial-amount" type="text" class="form-control bfh-number input-sm quantity" data-keyboard="true" data-integer="false" data-allowzero="true" data-buttons="false" value="{{ expected_initial_amount }}" data-trailingzeros="true" disabled/>
+				      		<div class="input-group-addon"><strong>&euro;</strong></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group {% if initial_amount == 0 or initial_amount_difference > 10 %}has-error{% endif %}">
 			    	<label for="initial-amount" class="control-label col-md-4">{% trans "Initial cash:" %}</label>
 			    	<div class="col-md-4">
 				    	<div class="input-group"> 
