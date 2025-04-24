@@ -113,6 +113,10 @@ DATABASES = {
         'HOST': 'broquilgotic.mysql.pythonanywhere-services.com',
         'PORT': '',
     }
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': 'broquilgotic.db'
+    #}
 }
 # Email settings
 EMAIL_USE_TLS = True
