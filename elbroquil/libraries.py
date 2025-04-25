@@ -212,7 +212,7 @@ def get_producer_next_distribution_date(producer_id, allow_today=True):
     # Find the next non-canceled distribution date
     next_dates = models.DistributionDate.objects.filter(
         distribution_date__gte=today,
-        canceled=False).order_by('distribution_date').limit(5)
+        canceled=False).order_by('distribution_date')[:5]
     
     # For producers with limited availability, check if they are available on the next distribution date
     if producer.limited_availability:

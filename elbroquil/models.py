@@ -173,7 +173,7 @@ class DistributionDate(models.Model):
     canceled = models.BooleanField(_('canceled'))
 
     def __unicode__(self):
-        return self.distribution_date.strftime('%d/%m/%Y') + (" (canceled)" if self.canceled else "")
+        return self.distribution_date.strftime('%d/%m/%Y') + (" (" + _("canceled") + ")" if self.canceled else "")
 
     def __str__(self):
         return self.__unicode__()

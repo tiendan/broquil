@@ -1615,3 +1615,12 @@ msgstr ""
 #: urls.py:118
 msgid "^setlang/$"
 msgstr ""
+
+msgid "View Debt Status"
+msgstr ""
+
+msgid "Latest Debt"
+msgstr ""
+
+msgid "Latest Payment"
+msgstr ""

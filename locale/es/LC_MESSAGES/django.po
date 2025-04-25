@@ -1739,3 +1739,12 @@ msgstr "^setlang/$"
 
 #~ msgid "/admin/products/"
 #~ msgstr "/admin/productos/"
+
+msgid "View Debt Status"
+msgstr "Ver Estado de Deudas"
+
+msgid "Latest Debt"
+msgstr "Ultima Deuda"
+
+msgid "Latest Payment"
+msgstr "Ultimo Pago"

@@ -54,7 +54,7 @@
 							<tr><th class="product_name_header">{% trans "Product" %}</th><th class="product_price_header">{% trans "Price" %}</th><th class="product_order_header">{% trans "Order" %}</th>{% if edit_enabled %}<th class="product_order_header">{% trans "Arrived" %}</th>{% endif %}</tr>
 							{% endif %}
 							<tr class="selectablerow {% if product.integer_demand and product.unit == 'kg' %}has-error{% endif %}" id="selectablerow_{{ product.id }}">
-								<td>{% if show_product_links and product.arrived_quantity > 0 %}<a href="{% url 'view_product_orders_with_id' product.pk %}">{{ product.name }}</a>{% else %}{{ product.name }}{% endif %}</td>
+								<td>{% if edit_enabled and show_product_links and product.arrived_quantity > 0 %}<a href="{% url 'view_product_orders_with_id' product.pk %}">{{ product.name }}</a>{% else %}{{ product.name }}{% endif %}</td>
 								<td class="price">{{ product.price|floatformat:2 }} <span style="width: 40px;">&euro;</span></td>
 								<td class="quantity"><p class="form-control-static"><strong>{{ product.total_quantity|floatformat:"-2" }}</strong> <span style="width: 40px;">{{ product.unit }}</span></p></td>
 								{% if edit_enabled %}
@@ -85,7 +85,14 @@
 	 $(function() {
 		// Set selected menu item
 		$('#menu-item-distribution').addClass("active");
-		
+	});
+</script>
+{% endblock %}
+
+{% block extrascripts %}
+{% if edit_enabled %}
+<script type="text/javascript">
+	$(function() {
 		// Cookie parameters for this page
 		var cookie_name = 'selected_rows';
 		var cookie_expires = 2;
@@ -157,4 +164,5 @@
 		});
 	  });
 </script>
+{% endif %}
 {% endblock %}
