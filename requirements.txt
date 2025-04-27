@@ -5,7 +5,7 @@ Django==1.8.19
 django-admin-bootstrapped==2.5.7
 django-admin-sortable2==0.2.7
 django-bootstrap-form==3.1
-django-debug-toolbar==1.5
+django-debug-toolbar==1.11.1
 django-form-admin==0.4.2
 django-mailer==0.1.0
 django-mathfilters==0.3.0
