@@ -35,7 +35,7 @@ pystache==0.5.3
 python-dateutil==2.2
 python-dotenv==0.13.0
 pytz==2014.2
-PyYAML==5.3.1
+PyYAML==5.4
 reportlab==3.4.0
 requests==2.23.0
 simplejson==3.8.0
