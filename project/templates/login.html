@@ -11,7 +11,7 @@
 <p>{% trans "Your username and password didn't match. Please try again." %}</p>
 {% endif %}
 
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}" class="form-signin" role="form">
+<form method="post" action="{% url 'login' %}" class="form-signin" role="form">
 {% csrf_token %}
 
 <h2 class="form-signin-heading">{% trans "Please sign in" %}</h2>
@@ -23,7 +23,7 @@
 <input type="hidden" name="next" value="{{ next }}" />
 <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Sign in" %}</button>
 <br/>
-<small><a href="{% url 'django.contrib.auth.views.password_reset' %}">{% trans "Forgot password" %}</a></small>
+<small><a href="{% url 'password_reset' %}">{% trans "Forgot password" %}</a></small>
 </form>
 
 {% endblock %}

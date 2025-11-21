@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from decimal import Decimal
 from datetime import datetime, timedelta
-from pytz import timezone as pytztimezone
 
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import transaction
 from django.db.models import Q, Avg
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
+from django.utils import timezone
 
 import elbroquil.libraries as libs
 import elbroquil.models as models
@@ -48,14 +48,15 @@ def order_history(request):
         only_latest_dates = request.POST.get("only-latest") is not None
 
     # Store latest few dates in variable
-    zone = pytztimezone(settings.TIME_ZONE)
-
     for payment in payment_records:
+        # Convert to local timezone
+        payment_date_local = timezone.localtime(payment.date)
+        
         if selected_date is None:
-            selected_date = zone.normalize(payment.date).strftime("%Y-%m-%d")
+            selected_date = payment_date_local.strftime("%Y-%m-%d")
 
-        date_texts.append(zone.normalize(payment.date).date)
-        date_values.append(zone.normalize(payment.date).strftime("%Y-%m-%d"))
+        date_texts.append(payment_date_local.date())
+        date_values.append(payment_date_local.strftime("%Y-%m-%d"))
 
         # Limit to latest 10 dates
         if only_latest_dates and len(date_texts) >= 10:

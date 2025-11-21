@@ -3,7 +3,7 @@
 import xlrd
 import re
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 # Parse the excel for Cal Rosset producer
 def parse_cal_rosset(book):

@@ -22,7 +22,7 @@
 			      		 <select id="quarter" name="quarter" class="form-control" value="{{ selected_quarter }}">
 							<option value="-1">{% trans "FILTER BY QUARTER" %}</option>
 							{% for quarter in quarters %}
-						  		<option value="{{ quarter.year }}_{{ quarter.quarter }}" {% if quarter.year == selected_quarter_year and quarter.quarter = selected_quarter_quarter %}selected{% endif %}>{{ quarter.year }} {% trans "Q: "%}{{ quarter.quarter }}</option>
+						  		<option value="{{ quarter.year }}_{{ quarter.quarter }}" {% if quarter.year == selected_quarter_year and quarter.quarter == selected_quarter_quarter %}selected{% endif %}>{{ quarter.year }} {% trans "Q: "%}{{ quarter.quarter }}</option>
 						  	{% endfor %}
 						</select>
 					</div>

@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "broquil"
+version = "2.0.0"
+description = "Cooperative food distribution management system"
+requires-python = ">=3.13"
+
+[tool.poe.tasks]
+# Docker Compose tasks
+start-dev = { cmd = "docker-compose up -d --build", help = "Start all services in development mode" }
+stop-dev = { cmd = "docker-compose down", help = "Stop all services" }
+restart-dev = { cmd = "docker-compose restart web", help = "Restart web service" }
+logs = { cmd = "docker-compose logs -f web", help = "Follow web service logs" }
+ps = { cmd = "docker-compose ps", help = "Show running services" }
+
+# Django management tasks
+shell = { cmd = "docker-compose exec web python manage.py shell", help = "Open Django shell" }
+migrate = { cmd = "docker-compose exec web python manage.py migrate", help = "Run database migrations" }
+makemigrations = { cmd = "docker-compose exec web python manage.py makemigrations", help = "Create new migrations" }
+createsuperuser = { cmd = "docker-compose exec web python manage.py createsuperuser", help = "Create Django superuser" }
+collectstatic = { cmd = "docker-compose exec web python manage.py collectstatic --noinput", help = "Collect static files" }
+
+# Database tasks
+db-shell = { cmd = "docker-compose exec db mysql -u ${MYSQL_USER:-broquil_user} -p${MYSQL_PASSWORD:-broquil_pass} ${MYSQL_DATABASE:-broquil}", help = "Open MySQL shell" }
+db-reset = { cmd = "docker-compose down -v && docker-compose up -d db", help = "Reset database (WARNING: destroys all data)" }
+
+# Testing tasks
+test = { cmd = "docker-compose exec web python manage.py test ${path}", help = "Run Django tests" }
+check = { cmd = "docker-compose exec web python manage.py check", help = "Check for Django issues" }
+
+# Utility tasks
+bash = { cmd = "docker-compose exec web bash", help = "Open bash shell in web container" }
+
+[tool.poe.tasks.clean]
+help = "Stop and remove all containers and volumes"
+shell = """
+docker-compose down -v
+"""
+
+[tool.poe.tasks.runserver-faketime]
+help = "Run development server with fake time (usage: FAKETIME='YYYY-MM-DD' poe runserver-faketime)"
+shell = """
+docker-compose run --rm --service-ports \
+  -e LD_PRELOAD=$(docker-compose run --rm web bash -c 'ls /usr/lib/*/faketime/libfaketime.so.1 2>/dev/null | head -1' | tr -d '\r') \
+  -e FAKETIME="${FAKETIME:-last wednesday}" \
+  web python manage.py runserver 0:8000
+"""
+
+
+[tool.poe.tasks.setup]
+help = "Initial setup: create .env from example and start services"
+sequence = [
+    { shell = "cp .env.example .env || true" },
+    { cmd = "docker-compose up -d --build" },
+    { shell = "echo 'Waiting for database...'" },
+    { shell = "sleep 10" },
+    { cmd = "docker-compose exec web python manage.py migrate" },
+    { shell = "echo 'Setup complete! Access the app at http://localhost:8000'" },
+    { shell = "echo 'Access Adminer at http://localhost:8080'" }
+]

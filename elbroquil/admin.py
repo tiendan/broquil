@@ -6,12 +6,12 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Permission
 from django.db.models import Q
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 import elbroquil.libraries as libs
 import elbroquil.models as models
 
-from suit_redactor.widgets import RedactorWidget
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 # Get an instance of a logger
 logger = logging.getLogger("MYAPP")
@@ -30,7 +30,9 @@ class AvailabilityInline(admin.TabularInline):
 class ProducerForm(forms.ModelForm):
     class Meta:
         widgets = {
-            'description': RedactorWidget(editor_options={'lang': 'ca'})
+            'description': CKEditor5Widget(
+                attrs={'class': 'django_ckeditor_5'}, config_name='extends'
+            )
         }
 
 
@@ -268,7 +270,9 @@ class CustomUserAdminSystemUsers(CustomUserAdmin):
 class EmailTemplateForm(forms.ModelForm):
     class Meta:
         widgets = {
-            'body': RedactorWidget(editor_options={'lang': 'ca'})
+            'body': CKEditor5Widget(
+                attrs={'class': 'django_ckeditor_5'}, config_name='extends'
+            )
         }
 
 
@@ -335,7 +339,6 @@ admin.site.register(User, CustomUserAdminActiveUsers)
 class InactiveUser(User):
     class Meta:
         proxy = True
-        app_label = "auth"
         verbose_name = _('user (inactive)')
         verbose_name_plural = _('users (inactive)')
 
@@ -343,7 +346,6 @@ class InactiveUser(User):
 class SystemUser(User):
     class Meta:
         proxy = True
-        app_label = "auth"
         verbose_name = _('user (system)')
         verbose_name_plural = _('users (system)')
 

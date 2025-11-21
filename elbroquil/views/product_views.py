@@ -4,11 +4,10 @@ from datetime import datetime
 from decimal import Decimal
 import logging
 import os
-from pytz import timezone as pytztimezone
 import xlrd
 
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db.models import Q
 from django.db import transaction
 from django.http import HttpResponseRedirect
@@ -148,17 +147,17 @@ def confirm_products(request):
         # If distribution date is passed, parse the strings and create DateTime
         # objects with timezone info
         if distribution_date and order_limit_date:
-            zone = pytztimezone(settings.TIME_ZONE)
-
             distribution_date = parse_date(distribution_date)
             order_limit_date = parse_datetime(order_limit_date)
 
-            order_limit_date = zone.localize(datetime.datetime(
+            # Create timezone-aware datetime using Django's make_aware
+            from django.utils import timezone as tz
+            order_limit_date = tz.make_aware(datetime(
                 order_limit_date.year,
                 order_limit_date.month,
                 order_limit_date.day,
-                order_limit_date.hour), is_dst=False)
-            order_limit_date = order_limit_date.astimezone(pytztimezone("UTC"))
+                order_limit_date.hour))
+            order_limit_date = order_limit_date.astimezone(tz.utc)
             print("Order limit date is parsed")
 
         with transaction.atomic():

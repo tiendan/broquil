@@ -1,0 +1,57 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: broquil_db
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-broquil}
+      MYSQL_USER: ${MYSQL_USER:-broquil_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-broquil_pass}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_pass}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    container_name: broquil_web
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - LD_PRELOAD=/usr/lib/aarch64-linux-gnu/faketime/libfaketime.so.1
+      - FAKETIME=2025-04-22 10:00:00
+      - DATABASE_ENGINE=mysql
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-broquil}
+      - MYSQL_USER=${MYSQL_USER:-broquil_user}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-broquil_pass}
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-unsafe-secret-key-change-in-production}
+      - DEBUG=${DEBUG:-True}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1,0.0.0.0}
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+  adminer:
+    image: adminer:latest
+    container_name: broquil_adminer
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:

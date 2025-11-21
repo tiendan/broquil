@@ -1,18 +1,17 @@
 from datetime import date, datetime, timedelta
 from decimal import Decimal
-from pytz import timezone as pytztimezone
 import json
 import os
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMultiAlternatives
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.dateparse import *
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from httplib2 import Http
 from googleapiclient.discovery import build
@@ -281,25 +280,25 @@ def get_producer_last_distribution_date(producer_id, allow_today=False):
 # Returns the order limit date for the given producer and given
 # distribution date
 def get_producer_order_limit_date(producer, next_dist_date):
-    zone = pytztimezone(settings.TIME_ZONE)
-
-    day = next_dist_date
-    day = zone.localize(datetime.datetime(day.year, day.month,
-                                          day.day, producer.order_hour),
-                        is_dst=False)
+    # Create a naive datetime for the order hour
+    day = datetime(next_dist_date.year, next_dist_date.month,
+                   next_dist_date.day, producer.order_hour)
+    
+    # Make it timezone-aware in the local timezone
+    day = timezone.make_aware(day)
 
     days_to_substract = (next_dist_date.weekday() - producer.order_day) % 7
     day -= timedelta(days=days_to_substract)
 
-    # Save the datetime in UTC timezone
-    day = day.astimezone(pytztimezone("UTC"))
+    # Convert to UTC
+    day = day.astimezone(timezone.utc)
 
     return day
 
 
 def get_today():
     # return datetime.date(2025, 4, 16)
-    return timezone.now().astimezone(pytztimezone(settings.TIME_ZONE)).date()
+    return timezone.localtime(timezone.now()).date()
 
 
 def get_now():

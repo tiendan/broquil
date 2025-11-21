@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.utils import translation
-from django.utils.translation import ugettext as _, check_for_language, get_language_from_request, activate, get_language
-from django.core.urlresolvers import resolve, Resolver404
+from django.utils.translation import gettext as _, check_for_language, get_language_from_request, activate, get_language
+from django.urls import resolve, Resolver404
 
 import elbroquil.libraries as libs
 import elbroquil.models as models

@@ -60,3 +60,13 @@ quickstart.py
 broquil.sublime-project
 .DS_Store
 dummy.txt
+
+# Docker and environment files
+.env
+.env.local
+docker-compose.override.yml
+staticfiles/
+
+# Database files
+db.sqlite3
+*.sqlite3
