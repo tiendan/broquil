@@ -1,159 +1,183 @@
 # -*- coding: utf-8 -*-
-from decimal import Decimal
 from datetime import date
+from decimal import Decimal
 
-from django.contrib.auth.decorators import login_required, permission_required
+import elbroquil.models as models
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.shortcuts import render
 from django.utils.translation import gettext as _
+from django.views.generic import TemplateView
 
-import elbroquil.models as models
 
+class ViewFeesView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+    """View to display and filter quarterly fees"""
 
-@login_required
-@permission_required('elbroquil.accounting')
-def view_fees(request):
-    # Read the user list
-    users = User.objects.filter(username__contains='@') \
-        .order_by('first_name', 'last_name')
-    quarterly_fees = models.Quarterly.objects.all() \
-        .order_by('-year', '-quarter')
+    template_name = "fee/view_fees.html"
+    permission_required = "elbroquil.accounting"
 
-    selected_member = -1
-    selected_quarter = "-1"
-    selected_quarter_year = -1
-    selected_quarter_quarter = -1
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    quarters = []
-    filtered_quarterly_fees = []
-    member_fees = []
+        # Read the user list
+        users = User.objects.filter(username__contains="@").order_by("first_name", "last_name")
+        quarterly_fees = models.Quarterly.objects.all().order_by("-year", "-quarter")
 
-    previous_year = -1
-    previous_quarter = -1
+        selected_member = -1
+        selected_quarter = "-1"
+        selected_quarter_year = -1
+        selected_quarter_quarter = -1
 
-    if request.method == 'POST':
+        quarters = []
+        filtered_quarterly_fees = []
+        member_fees = []
+
+        previous_year = -1
+        previous_quarter = -1
+
+        for fee in quarterly_fees:
+            if fee.year != previous_year or fee.quarter != previous_quarter:
+                quarters.append(fee)
+                previous_year = fee.year
+                previous_quarter = fee.quarter
+
+        context.update(
+            {
+                "users": users,
+                "quarters": quarters,
+                "selected_member": selected_member,
+                "selected_quarter": selected_quarter,
+                "selected_quarter_year": selected_quarter_year,
+                "selected_quarter_quarter": selected_quarter_quarter,
+                "filtered_quarterly_fees": filtered_quarterly_fees,
+                "member_fees": member_fees,
+            }
+        )
+        return context
+
+    def post(self, request, *args, **kwargs):
         form_name = request.POST.get("form-name").strip()
 
         if form_name == "quarter-form":
             selected_quarter = request.POST.get("quarter")
 
-            # Extract year and quarter from "selected_quarter" (with format
-            # 2012_3)
-            selected_quarter_year = int(selected_quarter.split('_')[0])
-            selected_quarter_quarter = int(selected_quarter.split('_')[1])
+            # Extract year and quarter from "selected_quarter" (with format 2012_3)
+            selected_quarter_year = int(selected_quarter.split("_")[0])
+            selected_quarter_quarter = int(selected_quarter.split("_")[1])
 
-            filtered_quarterly_fees = models.Quarterly.objects.filter(
-                year=selected_quarter_year,
-                quarter=selected_quarter_quarter) \
-                .prefetch_related('user', 'payment') \
-                .order_by('user__first_name', 'user__last_name')
+            filtered_quarterly_fees = (
+                models.Quarterly.objects.filter(year=selected_quarter_year, quarter=selected_quarter_quarter)
+                .prefetch_related("user", "payment")
+                .order_by("user__first_name", "user__last_name")
+            )
+
+            # Update session or pass to template
+            context = self.get_context_data()
+            context["selected_quarter"] = selected_quarter
+            context["selected_quarter_year"] = selected_quarter_year
+            context["selected_quarter_quarter"] = selected_quarter_quarter
+            context["filtered_quarterly_fees"] = filtered_quarterly_fees
+            return self.render_to_response(context)
 
         elif form_name == "member-form":
             selected_member = int(request.POST.get("member_id"))
 
-            member_fee_history = models.Quarterly.objects.filter(
-                user_id=selected_member).order_by('year', 'quarter')
+            member_fee_history = models.Quarterly.objects.filter(user_id=selected_member).order_by("year", "quarter")
 
             member_fee_years = []
             member_fee_quarters = []
 
-            # A really expensive, but yet more easily understandable way to do
-            # this
+            # A really expensive, but yet more easily understandable way to do this
             if len(member_fee_history):
                 initial_year = member_fee_history[0].year
-                final_year = member_fee_history[
-                    len(member_fee_history) - 1].year
+                final_year = member_fee_history[len(member_fee_history) - 1].year
 
                 # For each year in the history
                 for current_year in range(initial_year, final_year + 1):
                     year_fees = []
 
-                    # For each quarter, get the (if existing) payment and add
-                    # it to year_fees
+                    # For each quarter, get the (if existing) payment and add it to year_fees
                     for current_quarter in range(1, 5):
-                        year_fees.append(models.Quarterly.objects.filter(
-                            user_id=selected_member,
-                            year=current_year,
-                            quarter=current_quarter).first())
+                        year_fees.append(
+                            models.Quarterly.objects.filter(
+                                user_id=selected_member, year=current_year, quarter=current_quarter
+                            ).first()
+                        )
 
                     member_fee_years.append(current_year)
                     member_fee_quarters.append(year_fees)
 
             member_fees = list(zip(member_fee_years, member_fee_quarters))
 
-    for fee in quarterly_fees:
-        if fee.year != previous_year or fee.quarter != previous_quarter:
-            quarters.append(fee)
-            previous_year = fee.year
-            previous_quarter = fee.quarter
+            context = self.get_context_data()
+            context["selected_member"] = selected_member
+            context["member_fees"] = member_fees
+            return self.render_to_response(context)
 
-    return render(request, 'fee/view_fees.html', {
-        'users': users,
-        'quarters': quarters,
-        'selected_member': selected_member,
-        'selected_quarter': selected_quarter,
-
-        'selected_quarter_year': selected_quarter_year,
-        'selected_quarter_quarter': selected_quarter_quarter,
-
-        'filtered_quarterly_fees': filtered_quarterly_fees,
-        'member_fees': member_fees
-    })
+        return super().get(request, *args, **kwargs)
 
 
-@login_required
-@permission_required('elbroquil.accounting')
-def create_fees(request):
-    alert_message = None
+class CreateFeesView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+    """View to create quarterly fees for members"""
 
-    # Read the user list
-    users = User.objects.filter(
-        username__contains='@',
-        is_active=True).order_by('first_name', 'last_name')
+    template_name = "fee/create_fees.html"
+    permission_required = "elbroquil.accounting"
 
-    # Write down the year and the quarter for the fee to be generated
-    year = date.today().year
-    quarter = (date.today().month // 3) + 1
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    if quarter > 5:
-        quarter = 1
-        year = year + 1
+        # Read the user list
+        users = User.objects.filter(username__contains="@", is_active=True).order_by("first_name", "last_name")
 
-    if request.method == 'POST':
+        # Write down the year and the quarter for the fee to be generated
+        year = date.today().year
+        quarter = (date.today().month // 3) + 1
+
+        if quarter > 5:
+            quarter = 1
+            year = year + 1
+
+        context.update({"users": users, "alert_message": None, "year": year, "quarter": quarter})
+        return context
+
+    def post(self, request, *args, **kwargs):
+        alert_message = None
+
+        # Calculate current year and quarter
+        year = date.today().year
+        quarter = (date.today().month // 3) + 1
+
+        if quarter > 5:
+            quarter = 1
+            year = year + 1
+
         # Else, delete old fees and insert new ones
-        member_ids = request.POST.getlist('user_ids')
-        fee_amount = request.POST.get('fee_amount').strip()
+        member_ids = request.POST.getlist("user_ids")
+        fee_amount = request.POST.get("fee_amount").strip()
 
         # Search for already paid fees for this year&quarter
         paid_fees = models.Quarterly.objects.filter(
-            year=year, quarter=quarter, payment__isnull=False,
-            user__in=member_ids)
+            year=year, quarter=quarter, payment__isnull=False, user__in=member_ids
+        )
 
         if len(paid_fees) > 0:
             # If there is already a payment, user cannot create fees again
-            alert_message = _(
-                "Someone has alread paid the fee for this quarter! You cannot delete them!")
+            alert_message = _("Someone has alread paid the fee for this quarter! You cannot delete them!")
         elif len(member_ids) == 0:
             alert_message = _("Please choose members")
-        elif fee_amount == '':
+        elif fee_amount == "":
             alert_message = _("Please enter fee amount")
         else:
             with transaction.atomic():
-                models.Quarterly.objects.filter(
-                    year=year, quarter=quarter, user__in=member_ids).delete()
+                models.Quarterly.objects.filter(year=year, quarter=quarter, user__in=member_ids).delete()
 
                 for member_id in member_ids:
                     fee = models.Quarterly(
-                        user_id=member_id,
-                        year=year,
-                        quarter=quarter,
-                        amount=Decimal(fee_amount.replace(',', '.')))
+                        user_id=member_id, year=year, quarter=quarter, amount=Decimal(fee_amount.replace(",", "."))
+                    )
                     fee.save()
 
-    return render(request, 'fee/create_fees.html', {
-        'users': users,
-        'alert_message': alert_message,
-        'year': year,
-        'quarter': quarter
-    })
+        context = self.get_context_data()
+        context["alert_message"] = alert_message
+        return self.render_to_response(context)

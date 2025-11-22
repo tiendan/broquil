@@ -45,7 +45,7 @@
 				</ul>
 			</div>
 			<div
-				class="table-responsive {%if edit_enabled %}col-md-10{% else %}col-sm-12 col-md-8 col-md-offset-2{% endif %}">
+				class="table-responsive {%if edit_enabled %}col-md-9{% else %}col-sm-12 col-md-8 col-md-offset-2{% endif %}">
 				<table id="totals_table" class="category_table table table-striped table-condensed table-bordered">
 					<tbody>
 						{% for product, add_category_row in products %}
@@ -71,16 +71,16 @@
 								<p class="form-control-static"><strong>
 									{{ product.total_quantity|floatformat:"-2" }}</strong> <span style="width: 40px;">{{ product.unit }}</span></p>
 							</td>
-
+							{% if edit_enabled %}
+							<td class="quantity"><input id="product_arrived_{{ product.id }}" name="product_arrived_{{ product.id }}" type="text" class="product-order form-control bfh-number input-sm" data-keyboard="true" data-integer="false" data-allowzero="true" data-allowblank="true" data-buttons="false" {% if product.arrived_quantity != product.total_quantity %}value="{{ product.arrived_quantity }}"{% endif %}/></td>
+							{% endif %}
 						</tr>
 						{% endfor %}
 					</tbody>
 				</table>
 			</div>
-			<div class="table-responsive col-md-2">
-				<div class="sidebar">
+			<div class="table-responsive col-md-3">
 					<button id="save_button" type="button" class="btn btn-lg btn-success" disabled="disabled">{% trans "Save changes" %}</button>
-				</div>
 			</div>
 		</div>
 	</form>

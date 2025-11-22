@@ -1,9 +1,13 @@
+import logging
 
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
-import xlrd
 import re
 
+import xlrd
 from django.utils.translation import gettext as _
+
 
 # Parse the excel for Cal Rosset producer
 def parse_cal_rosset(book):
@@ -25,10 +29,10 @@ def parse_cal_rosset(book):
 
     for r in range(0, 20):
         for c in range(0, 10):
-            print("Row: {}, col: {}".format(r, c))
+            logger.debug("Row: {}, col: {}".format(r, c))
             cell = sheet.cell_value(rowx=r, colx=c)
             if isinstance(cell, str) and cell.startswith("Coop"):
-                print("Row: {}, col: {}, value={}".format(r, c, cell))
+                logger.debug("Row: {}, col: {}, value={}".format(r, c, cell))
 
                 price_column = c
                 unit_column = price_column + 1
@@ -58,8 +62,7 @@ def parse_cal_rosset(book):
             # is category name
             if empty_rows > 0:
                 empty_rows = 0
-                category_name = sheet.cell_value(
-                    rowx=current_row, colx=product_name_column)
+                category_name = sheet.cell_value(rowx=current_row, colx=product_name_column)
                 # logger.error("CATEGORY: ")
                 # logger.error(category_name)
             # Else it is product info
@@ -74,8 +77,7 @@ def parse_cal_rosset(book):
 
                 # Add VAT depending on product (10% for processed food, 4% for
                 # others)
-                if "elaborat" in origin.lower() or \
-                   "elaborad" in origin.lower():
+                if "elaborat" in origin.lower() or "elaborad" in origin.lower():
                     price = price * 1.10
                 else:
                     price = price * 1.04
@@ -86,23 +88,25 @@ def parse_cal_rosset(book):
                     price,
                     sheet.cell_value(rowx=current_row, colx=unit_column),
                     origin,
-                    sheet.cell_value(rowx=current_row, colx=comments_column)]
+                    sheet.cell_value(rowx=current_row, colx=comments_column),
+                ]
 
                 # logger.error("PRODUCT: ")
                 # logger.error(product)
-                # print "PRODUCT:", product
+                # logger.debug("PRODUCT:", product)
                 products.append(product)
 
         current_row += 1
 
     return products
 
+
 # Parse the excel for Can Pipirimosca producer
 
 
 def parse_can_pipirimosca(book):
     # Get the sheet with product information and read row and column counts
-    sheet = book.sheet_by_name('Comanda')
+    sheet = book.sheet_by_name("Comanda")
     products = []
     # row_count = sheet.nrows
     # col_count = sheet.ncols
@@ -112,7 +116,7 @@ def parse_can_pipirimosca(book):
     # Skip to header row
     # Header row contains "Productes" for in the price column
     while True:
-        # print current_row, sheet.cell_value(rowx=current_row, colx=1)
+        # logger.debug(current_row, sheet.cell_value(rowx=current_row, colx=1))
         if sheet.cell_value(rowx=current_row, colx=1) == "Productes":
             current_row -= 2
             break
@@ -137,7 +141,7 @@ def parse_can_pipirimosca(book):
             if sheet.cell_value(rowx=current_row, colx=1) == "Productes":
                 empty_rows = 0
                 category_name = sheet.cell_value(rowx=current_row - 1, colx=1)
-                # print "CATEGORY: ", category_name
+                # logger.debug("CATEGORY: ", category_name)
             # Else it is product info
             else:
                 # Create the array containing product info and append it to
@@ -149,8 +153,9 @@ def parse_can_pipirimosca(book):
                         sheet.cell_value(rowx=current_row, colx=2),
                         sheet.cell_value(rowx=current_row, colx=3),
                         None,
-                        None]
-                    # print "PRODUCT: ", product
+                        None,
+                    ]
+                    # logger.debug("PRODUCT: ", product)
                     products.append(product)
 
         current_row += 1
@@ -186,23 +191,21 @@ def parse_standard(book):
 
     # Do some checks on the dates if they were provided
     if distribution_date != "":
-        if type(distribution_date) is not str or \
-           type(order_limit_date) is not str:
+        if type(distribution_date) is not str or type(order_limit_date) is not str:
             raise ValueError(
-                _("Distribution date and order limit date should be in text format!") +
-                type(distribution_date).__name__ + ", " +
-                type(order_limit_date).__name__)
+                _("Distribution date and order limit date should be in text format!")
+                + type(distribution_date).__name__
+                + ", "
+                + type(order_limit_date).__name__
+            )
 
-        r = re.compile('([0-9]){4}-([0-9]){2}-([0-9]){2}')
+        r = re.compile("([0-9]){4}-([0-9]){2}-([0-9]){2}")
 
-        if r.match(distribution_date) is None or \
-           r.match(order_limit_date) is None:
-            raise ValueError(
-                _("Distribution date and order limit date should be in YYYY-MM-DD format!"))
+        if r.match(distribution_date) is None or r.match(order_limit_date) is None:
+            raise ValueError(_("Distribution date and order limit date should be in YYYY-MM-DD format!"))
 
         if order_limit_date:
-            order_limit_date += " " + \
-                str(sheet.cell_value(rowx=5, colx=1)).zfill(2) + ":00"
+            order_limit_date += " " + str(sheet.cell_value(rowx=5, colx=1)).zfill(2) + ":00"
 
     # Loop over the sheet rows
     while current_row < row_count:
@@ -215,11 +218,9 @@ def parse_standard(book):
 
             # If category name is filled, update it. Otherwise, use the
             # previous category name
-            category_name = sheet.cell_value(
-                rowx=current_row, colx=category_column).strip() or category_name
+            category_name = sheet.cell_value(rowx=current_row, colx=category_column).strip() or category_name
             # If unit is filled, update it. Otherwise, use the previous unit
-            unit_name = sheet.cell_value(
-                rowx=current_row, colx=unit_column).strip() or unit_name
+            unit_name = sheet.cell_value(rowx=current_row, colx=unit_column).strip() or unit_name
 
             product = [
                 category_name,
@@ -228,7 +229,8 @@ def parse_standard(book):
                 unit_name,
                 sheet.cell_value(rowx=current_row, colx=origin_column),
                 sheet.cell_value(rowx=current_row, colx=comments_column),
-                sheet.cell_value(rowx=current_row, colx=unit_demand_column)]
+                sheet.cell_value(rowx=current_row, colx=unit_demand_column),
+            ]
 
             products.append(product)
 
@@ -236,8 +238,9 @@ def parse_standard(book):
 
     return products, distribution_date, order_limit_date
 
+
 # When script is executed directly from command line, try to parse a
 # sample Excel file
 if __name__ == "__main__":
-    book = xlrd.open_workbook('/Users/onur/problem1.xlsx')
-    print(parse_standard(book))
+    book = xlrd.open_workbook("/Users/onur/problem1.xlsx")
+    logger.info(parse_standard(book))

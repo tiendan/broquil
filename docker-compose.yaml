@@ -23,7 +23,7 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     environment:
       - LD_PRELOAD=/usr/lib/aarch64-linux-gnu/faketime/libfaketime.so.1
-      - FAKETIME=2025-04-22 10:00:00
+      - FAKETIME=2025-04-23 10:00:00
       - DATABASE_ENGINE=mysql
       - MYSQL_DATABASE=${MYSQL_DATABASE:-broquil}
       - MYSQL_USER=${MYSQL_USER:-broquil_user}

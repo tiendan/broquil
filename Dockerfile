@@ -15,7 +15,8 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements-dev.txt .
+RUN pip install --no-cache-dir -r requirements.txt -r requirements-dev.txt
 
 # Final stage
 FROM python:3.13-slim
